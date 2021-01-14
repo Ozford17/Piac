@@ -1,0 +1,106 @@
+
+#centro table{
+	width: 90%;
+	border-collapse: separate;
+	border-spacing: 0px;
+
+}
+#centro #cabeza{
+	background:  var(--color_azul);
+	height: 3vw;
+
+}
+
+#centro table td{
+	font-size: 1vw !important;
+	height: 3vw;
+	
+} 
+#centro table td button{
+	width: 30%;
+	background: transparent;
+	border: var(--color_azul) solid 1px;
+	border-radius: 25px;
+	font-size: 1.3vw;
+	cursor: pointer;
+}
+
+#centro table td button:hover{
+	background: var(--color_azul);
+	border:white solid 1px;
+	color:white;
+}
+
+/*////////////////////////////////////////////////// Informes y estadisticas////////////////////////////////////////////////////////////*/
+
+#informe {
+	border: white solid 1px;
+	width: 80%;
+	margin-left: 10%;
+	border-radius: 25px;
+	height: 10vw;
+	background: opacity(0.5);
+	
+}
+#informe h2{
+	color: var(--color_azul);
+	margin-left: 30%;
+	margin-bottom: 1.8vw;
+
+
+}
+#informe label{
+	margin-left: 25%;
+	margin-top: 1.3vw;
+}
+#informe input[type=submit]{
+	background: var(--color_azul);
+	border-radius: 25px;
+	width: 15%;
+	height: 2vw;
+	color: white;
+	margin-left: 40%;
+	margin-top: 0.8vw;
+}
+#estadisticas{
+	border-radius: 25px;
+	border:white 1px solid;
+	width: 95%;
+	height: 75vw;
+	margin-left: 2.5%;
+	margin-bottom: 10vw;
+	margin-top: 5vw;
+}
+
+/*/////////////////////////////////////DAtos de la empresa ////////////////////////////////////////////////////////*/
+#cuadro{
+	width: 90%;
+	margin-left: 5%;
+
+
+}
+#cuadro #titulo{
+		width: 80%;
+		background-color:blue;
+		padding: 3% 10%;
+		
+}
+#cuadro ul{
+	display: flex;
+	width:100%;
+
+}
+#cuadro ul li{
+	text-align: center;
+	width: 56%;
+	padding: 2% 5%;
+	list-style: none;
+	background: #424242;
+	color: white;
+	border:white solid 1px;
+	cursor: pointer;
+	font-family: Roboto;
+}
+#cuadro #informacion{
+	width: 100%;
+}

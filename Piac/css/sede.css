@@ -1,0 +1,318 @@
+*{
+	margin:0;
+	padding: 0;
+	font-family: Roboto;
+}
+/*
+Colores de la pagina
+verde: #b6ce4d;
+azul: #00819e;
+verde del logo EB:#A1D436;
+*/
+@font-face{
+	font-family: Roboto;
+	font-size: normal;
+	font-weight: normal;
+	src:url(../estilos/Roboto-Black.ttf);
+}
+:root{
+	--color_verde:#B6CF41;
+	--color_azul:#0292AB;
+}
+#file{
+	position: relative;
+	width: 90%;
+	height: 2.0vw;
+	background: #2499e3;
+	border-radius: 25px;
+	
+}
+#texto{
+	margin-left: 30%;
+	font-size: 1.0vw;
+	color: white;
+	position: absolute;
+	margin-top: 0.5vw;
+
+
+}
+input.boton_archivo{
+	position: absolute;
+	top:8px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	
+
+}
+table{
+	text-align: center;
+}
+table tr{
+	height: 3vw;
+}
+a:link{
+	text-decoration: none !important;
+
+}
+p{
+	font-family: Roboto;
+	font-size: 1.8vw;
+	color: white;
+	text-align: center;
+}
+label{
+	
+	font-family: Roboto;
+	font-size: 1.0vw;
+	color: blue;
+}
+
+body{
+	background: url(../images/fondo.png);
+}
+
+input[type="submit"]{
+	background: var(--color_azul);
+	width: 30%;
+	height: 2vw;
+	text-align: center;
+	border-radius: 25px;
+	box-shadow: 0px 3px;
+	color: white;
+
+}
+input[type="number"]{
+	text-align: center;
+	border-radius: 25px;
+	color:black;
+
+}
+.agregar{
+	background: green;
+	height: 2vw;
+	color: white;
+	border-radius: 25px;
+	width: 20% !important;
+
+}
+.eliminar
+{
+	background: darkred;
+	border-radius:25px;
+	width: 20% !important;
+}
+
+#subtitulos{
+	color: white;
+	background: var(--color_azul);
+	font-family: Roboto;
+	text-align: center;
+	border-radius: 25px;
+}
+.arriba{
+	background:var(--color_verde);
+	margin-top: 1vw;
+	margin-left: 3%;
+	margin-right: 3%;
+	width: 94%;
+	height: 4vw;
+	position: relative;
+}
+
+.centro img{
+	margin-left: 5%;
+	width: 85%;
+}
+#div_grande{
+	background: white; 
+	margin-top: 5vw;
+	margin-left: 5%; 
+	width: 90%; 
+	border-radius: 30px; 
+	padding-top: 2.5vw; 
+	padding-bottom: 2.5vw;
+}
+#Grande{
+	width: 100%;
+	display: flex;
+	
+}
+#residuo{
+	
+	width: 95%;
+	margin-left: 2.5%;
+}
+#residuo #file{
+	width: 95% !important;
+	margin-left: 2.5%;
+}
+#residuo #texto{
+	margin-left: 40%;
+}
+#residuo textarea{
+	width: 95%;
+	height: 10vw;
+
+}
+.tabla_residuos{
+	border: 1px black solid;
+	width: 90%;
+	margin-left: 5%;
+	border-radius: 25px;
+	height: 2vw;
+	padding-top: 0.8vw;
+	position: relative;
+	
+}
+.tabla_residuos label{
+	color: gray;
+	opacity: 0.5;
+	position: absolute;
+	left:28%;
+	z-index: 0;
+}
+.tabla_residuos input[type="radio"]{
+	display: hidden;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	position: absolute;
+	opacity: 0;
+	z-index: 1;
+}
+
+/*///////////////////////////////Huella de carbono///////////////////////////////////////*/
+
+#centro_huella{
+	background: white;
+	
+	margin-left: 30%;
+	width: 68%;
+	text-align: center;
+	align-content: center;
+	margin-top: 5vw;
+	border-radius: 25px;
+	padding-top: 3vw;	
+	margin-bottom: 5vw;	
+
+}
+
+#centro_huella #subtitulo{
+	color: var(--color_azul);
+	margin-bottom: 1.5vw;
+}
+
+#centro_huella label
+{
+	color: black;
+	margin-top: 0.5vw ;
+	font-size: 1.3vw;
+}
+#centro_huella input[type=text], #centro_huella input[type=month], #centro_huella select{
+	margin-top: 0.5vw;
+	margin-bottom: 0.5vw;
+	border-radius: 20px;
+	font-size: 1.1vw;
+}
+
+#centro_huella input[type=submit]{
+	margin-bottom: 2vw;
+	font-size: 1.3vw;
+	width: 15%;
+
+}
+/*///////////////////////////////Huella hidrica///////////////////////////////////////*/
+
+#centro_hidrico{
+	
+	width: 68%;
+	float: left;
+	margin-left: 5%;
+	margin-top: 5vw;
+	border-radius: 20px;
+	background: white;
+	margin-bottom: 5vw;
+
+}
+
+#centro_hidrico #azul{
+	border:white 1px groove;
+	width: 30%;
+	height: 21vw;
+	position: relative;
+	float: left;
+	margin-left: 10%;
+	margin-top: 2vw;
+
+}
+#centro_hidrico #gris{
+	border:white 1px groove;
+	width: 30%;
+	height: 21vw;
+	position: relative;
+	float: left;
+	margin-left: 15%;
+	margin-top: 2vw;
+}
+#centro_hidrico #verde{
+	border:white 1px groove;
+	width: 30%;
+	height: 25vw;
+	position: relative;
+	float: left;
+	margin-left: 35%;
+	margin-top: 2vw;
+}
+#centro_hidrico img{
+	position: absolute;
+	margin-left: 20%;
+	margin-top: 2vw;
+	width: 55%;
+}
+#centro_hidrico label{
+	position: absolute;
+	margin-top: 14vw;
+	text-align: center;
+	color: black;
+	margin-left: 5%;
+	width: 90%;
+	text-align: justify;
+}
+#centro_hidrico input[type=text]{
+	position: absolute;
+	margin-top: 17vw;
+	margin-left: 30%;
+	width: 40%;
+	height: 2vw ;
+	border-radius: 20px;
+	text-align: center;
+}
+#centro_hidrico #gris input[type=text]{
+	position: absolute;
+	margin-top: 18vw;
+	margin-left: 30%;
+	width: 40%;
+	height: 2vw ;
+	border-radius: 20px;
+	text-align: center;
+}
+
+#centro_hidrico #verde input[type=text]{
+	position: absolute;
+	margin-top: 22vw;
+	margin-left: 30%;
+	width: 40%;
+	height: 2vw ;
+	border-radius: 20px;
+	text-align: center;
+}
+#centro_hidrico input[type="submit"]{
+	margin-left: 35%;
+	float: left;
+	margin-top: 3vw;
+	margin-bottom: 3vw;
+}

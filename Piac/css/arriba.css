@@ -1,0 +1,124 @@
+*{
+	margin:0;
+	padding: 0;
+	font-family: Roboto;
+}
+/*
+Colores de la pagina
+verde: #b6ce4d;
+azul: #00819e;
+verde del logo EB:#A1D436;
+*/
+@font-face{
+	font-family: Roboto;
+	font-size: normal;
+	font-weight: normal;
+	src:url(../estilos/Roboto-Black.ttf);
+}
+:root{
+	--color_verde:#B6CF41;
+	--color_azul:#0292AB;
+}
+body{
+	background: url(../images/fondo.png);
+}
+p{
+	font-family: Roboto;
+	font-size: 1.8vw;
+	color: white;
+	text-align: center;
+}	
+a:link{
+	text-decoration: none;
+}	
+.arriba a{
+	position: absolute;
+	color: white;
+	margin-top: 1vw;
+	margin-left: 85%;
+	font-family: Roboto;
+	font-size: 1.5vw;
+}
+
+
+.arriba{
+	background:var(--color_verde);
+	margin-top: 1vw;
+	margin-left: 3%;
+	margin-right: 3%;
+	width: 94%;
+	height: 4vw;
+	position: relative;
+}
+.arriba p{
+	position:absolute;
+	margin-top:1.0vw;
+	margin-left: 35%;
+
+}
+.arriba #Cerrar{
+	position: absolute;
+	margin-top: 1vw;
+	margin-left: 85%;
+}
+.arriba img{
+	position: absolute;
+	margin-top: -1vw;
+	margin-left: -1vw;
+	width: 5%;
+	transform: rotate(-30deg);
+}
+#menu{
+	background: var(--color_verde);
+	border-radius: 15px;
+	margin-top: 5vw;
+	width: 25%;
+	height: 40vw;
+	position: relative;
+	float: left;
+}
+#menu a{
+	position: absolute;
+	width: 80%;
+	border:white 1px solid;
+	margin-left: 10%;
+	height: 5vw;
+	display: block;
+	background: transparent;
+	border-radius: 10px;
+	text-align: center;
+}
+#menu button{
+	background: transparent;
+	border: transparent;
+	margin-top: 1.5vw;
+
+}
+#menu a:nth-child(1){
+	margin-top: 2.5vw;
+
+}
+#menu a:nth-child(2){
+	margin-top: 10vw;
+}
+#menu a:nth-child(3){
+	margin-top: 17.5vw;
+}
+#menu a:nth-child(4){
+	margin-top: 25vw;
+}
+#menu a:nth-child(5){
+	margin-top: 32.5vw;
+}
+#menu a:hover{
+	background: #e2ff51;
+}
+#centro{
+	width: 68%;
+	margin-left: 5%;
+	margin-top: 5vw;	
+	height: 35vw;
+	float: left;
+	
+	
+}

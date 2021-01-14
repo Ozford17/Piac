@@ -1,0 +1,23 @@
+
+
+#izquierda{
+	width: 25%;
+	position: absolute;
+	margin-left: 8%;
+	
+
+}
+#izquierda img{
+	width: 80%;
+	margin-top: 5vw;
+	cursor: pointer;
+}
+#centro{
+	width: 67%;
+	margin-left: 33%;
+}
+#centro img{
+	width: 80%;
+	margin-left: 10%;
+	margin-top: 10%;
+}
