@@ -164,8 +164,9 @@ require_once "Conexion.php";
      /*================================================================================================================
       actualizar las sedes por empresa
      ===============================================================================================================*/
-     public function ActualizarSedeEmpresa($cod, $nombre, $ciudad,$direccion, $telefono, $representante , $correo){
-      $sql="UPDATE Sede Set Nombre='".$nombre."', Ciudad='".$ciudad."', Direccion='".$direccion."', Telefono='".$telefono."', Representante='".$representante."', Correo='".$correo."' where Codigo=".$cod.";";
+     public function ActualizarSedeEmpresa($cod, $nombre, $ciudad,$direccion, $telefono, $representante ){
+      $sql="UPDATE Sede Set Nombre='".$nombre."', Ciudad='".$ciudad."', Direccion='".$direccion."', Telefono='".$telefono."', Representante='".$representante."'where Codigo=".$cod.";";
+      echo $sql."<br>";
       $resultado=$this->consultar($sql);
       return $resultado;
      }

@@ -24,16 +24,16 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
  						<td id="telefono">'.$fila[4].'</td>
  						<td id="representante">'.$fila[5].'</td>
  						<td id="correo">'.$fila[6].'</td>
- 						<td ><img src="../../../images/editar.png" id="editar_'.$fila[0].'" style="cursor:pointer; width:80%;"></td>';
+ 						<td ><img src="../../../images/editar.png" id="editar_'.$fila[0].'" style="cursor:pointer; cursor: pointer;  width: 80%; height: 3vw;"></td>';
  				if ($fila[0]!=1) {
- 						echo'<td ><img src="../../../images/eliminar.png" id="eliminar_'.$fila[0].'" style="cursor:pointer; width:80%;"</td>';
+ 						echo'<td ><img src="../../../images/eliminar.png" id="eliminar_'.$fila[0].'" style="cursor:pointer; width:80%; cursor: pointer; width: 80%; height: 3vw;"</td>';
  					}
  				echo '</tr>';
 
  				echo '<script>	
 						$("#editar_'.$fila[0].'").click(function(event){
  								/* Se saca los valores que guardan los td*/
- 								var codigo=$("#codigo").val();
+ 								var codigo='.$fila[0].';
  								var nombre=$(this).parents("tr").find("td").eq(1).text();	
  								var ciudad=$(this).parents("tr").find("td").eq(2).text();
  								var direccion=$(this).parents("tr").find("td").eq(3).text();
@@ -41,7 +41,9 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
  								var representante=$(this).parents("tr").find("td").eq(5).text();
  								var correo=$(this).parents("tr").find("td").eq(6).text();
  								$("#editar").off("click");
- 								$("#derecha").append(\'<form id="formulario" action="Javascript:Enviar.focus();" method="POST" aling="center">\'+
+								 var Form=\'<form id="formulario" action="Javascript:Enviar.focus();" method="POST" aling="center">\'+
+									 \'<h2>Editar datos de sede</h2>\'+
+									 \'<br>\'+
  									\'<input type="text" name="codigo" hidden="" value="\'+codigo+\'" >\'+
  									\'<label for="Nombre">Nombre</label><br>\'+
  									\'<input type="text" value="\'+nombre+\'" name="Nombre" id="Nombre"><br>\'+
@@ -54,26 +56,14 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
  									\'<label for="Representante">Representante</label><br>\'+
  									\'<input type="text" name="Representante" value="\'+representante+\'" id="Representante"><br>\'+
  									\'<label for="Correo">Correo</label><br>\'+
-									\'<input type="text" name="correo" id="Correo"  value="\'+correo+\'"><br>\'+
+									\'<input type="text" name="Correo" id="Correo"  value="\'+correo+\'" disabled="true"><br> <br>\'+
  									\'<input type="submit" name="Enviar" id="Enviar" value="Enviar"> \'+
- 									\'<button id="cancelar">Cancelar</button>\'+
- 									\'</form>\');
+									 \'</form>\';
+									 $("#modal").html(" ");
+									 $("#modal").append(Form);
+									 $("#modal").modal(Form);
 						
- 									$("#cancelar").on("click",function(e){
- 											$("#tabla_sede").remove();
-	    								$("#div_nuevo").append("<div id=tabla_sede></div>");
-										$(function(){
-										$.get("bean/sedes.php",{cod:codigo},function(data){ 
-											$("#tabla_sede").append(data);
-										
-											});
-										});
-						
-						
-										$("#formulario").remove();
-										$("#editar").on("click");
-						
- 									});
+ 									
  									$("#Enviar").on("click", function (e) {
 	 			
     									$.ajax({
@@ -90,7 +80,7 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
 	    								$("#tabla_sede").remove();
 	    								$("#div_nuevo").append("<div id=tabla_sede></div>");
 										$(function(){
-										$.get("bean/sedes.php",{cod:codigo},function(data){ 
+										$.get("bean/sedes.php",{cod:'.$cod.'},function(data){ 
 											$("#tabla_sede").append(data);
 										
 											});
@@ -111,7 +101,8 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
  		
  		
  	
- 		echo '</table>';
+		 echo '</table> 
+		 	<div id="modal" style="text-align:center;"></div>';
 
 
  ?>

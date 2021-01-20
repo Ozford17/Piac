@@ -7,6 +7,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="./../../../src/js/jquery.modal.min.js"></script>
+	<link rel="stylesheet" href="./../../../src/js/jquery.modal.min.css">
 	<title>Document</title>
 	<style>
 		h2{
@@ -33,7 +35,45 @@
 		{
 			height:5vw;
 		}
+		#Boton
+		{
+			width: 18%;
+    		height: 3vw;
+   			margin: 1.5vw 0 0 3%;
+			position:relative;
+			display:block;
+			color: white;
+		}
+		#Boton:hover
+		{
+			border: #B6CF41 solid 1px;
+    		border-radius: 25px;
+			color:black;
+			cursor:pointer;
+		}
+		
+
+		#atras_1 
+		{
+			width: 22%;
+    		height: 3vw;
+    		margin-left: 5%;
+			position:absolute;
+		}
+		#texto_btn
+		{
+			font-size:2vw;
+			position:absolute;
+			margin-left: 32%;
+    		margin-top: 0.2vw;
+		}
+
+		
+		
 	</style>
+	<script>
+		
+	</script>
 </head>
 <body>
 	
@@ -99,14 +139,14 @@
 				<td style='height: 5vw;'>".$fila[4]."</td>
 				<td style='height: 5vw;'>".$fila[5]."</td>
 				<td style='height: 5vw;'>".$fila[6]."</td>
-				<td style='height: 5vw;' width='20%'>
+				<td id='sedes_".$fila[0]."' style='height: 5vw;' width='20%'>
 					<div   style='cursor:pointer; display:block;
 					border-radius:10px;	background:transparent;
 					width: 80%; height: 2vw;
 					padding-top:.7vw;	margin-left:10%;
 					border:#30a446 solid 1px;' 
 					id='agregar' >
-					<span style='color: #30a446; font-size:1.3vw; font-weight:600; margin-left:4%;'>Sedes</span></div>
+					<span style='color: #30a446; font-size:1.3vw; font-weight:600; margin-left:4%;' >Sedes</span></div>
 				</td>
 			</tr>
 			";
@@ -115,9 +155,9 @@
 				$("#sedes_'.$fila[0].'").click(function(event){
 							$("#mostrar").append("<div id=\"div_nuevo\"></div>")
 							$("#div_nuevo").css({		
-								"width":"0%",
+								"width":"100%",
 								"height":"30vw",
-								"margin-left":"100%",
+								"margin-left":"0%",
 								"border-size":"1px",
 								"border-style":"solid",
 								"borde-color":"1px",
@@ -138,14 +178,14 @@
 							$("#div_nuevo").animate({
 									
 									"transition":"5s",
-									"width":"80%",
+									"width":"90%",
 									"margin-left":"1%",
 									"z-index":"2",
 									"positon":"absolute"
 						
 								});
 							var codigo=$("#codigo").val();
-							$("#div_nuevo").append("<img id=\'atras_'.$fila[0].'\' src=\'../../../images/atras.png\' width=\'5%\'>");
+							$("#div_nuevo").append(" <div id=\'Boton\'> <img id=\'atras_'.$fila[0].'\' src=\'../../../images/atras.png\' width=\'5%\'> <span id=\'texto_btn\'>Atrás</span></div>");
 							$("#atras").css({"margin-top":"2vw","margin-left":"1%","width":"4%","cursor":"pointer"});
 				
 							$("#div_nuevo").append("<div id=tabla_sede></div>");
