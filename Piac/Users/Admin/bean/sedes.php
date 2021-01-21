@@ -91,10 +91,36 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
 										$("#editar").on("click");
 						
 	 								});
+						 });
+						 $("#eliminar_'.$fila[0].'").click(function(event){
+							 var Resultado=confirm("¿Seguro que quiere eliminar esta sede?");
+							 if(Resultado == true)
+							 {	
+								$.ajax({
+									url:"bean/Eliminar_s.php",
+									type:"POST",
+									dataType: "html",
+									data:{codigo:'.$fila[0].'},
+									success:function(res){
+										console.log(res);
+										var Oson = jQuery.parseJSON(res);
+										if(Oson.success == 0)
+										{
+											alert("Se eliminó la sede");
+										}
+										else
+										{
+											alert(Oson.mensaje);
+										}
 
-	 		
 
- 					});
+									}
+								})	 
+							 }
+							 
+
+						 });
+					
  				</script>';
 
  		}

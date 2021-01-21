@@ -101,7 +101,8 @@ require_once "Conexion.php";
       Listar las sedes por empresa
      ===============================================================================================================*/
      public function BuscarSedeEmpresa($cod){
-      $sql="SELECT * from Sede where Empresa=".$cod.";";
+      $sql="SELECT * from Sede where Estado = 0 and Empresa=".$cod.";";
+      //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -167,6 +168,14 @@ require_once "Conexion.php";
      public function ActualizarSedeEmpresa($cod, $nombre, $ciudad,$direccion, $telefono, $representante ){
       $sql="UPDATE Sede Set Nombre='".$nombre."', Ciudad='".$ciudad."', Direccion='".$direccion."', Telefono='".$telefono."', Representante='".$representante."'where Codigo=".$cod.";";
       echo $sql."<br>";
+      $resultado=$this->consultar($sql);
+      return $resultado;
+     }
+     /*================================================================================================================
+      actualizar las sedes
+     ===============================================================================================================*/
+     public function ActualizarDatosSedeEmpresa($Codigo,$actua){
+      $sql="UPDATE Sede Set $actua where Codigo=".$Codigo.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
