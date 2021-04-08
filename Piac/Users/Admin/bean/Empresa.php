@@ -9,7 +9,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="./../../../src/js/jquery.modal.min.js"></script>
 	<link rel="stylesheet" href="./../../../src/js/jquery.modal.min.css">
-	<title>Document</title>
+	<title>Piac - Empresas</title>
 	<style>
 		h2{
 			text-align:center;
@@ -27,6 +27,20 @@
     		font-size: 0.9vw;
 		}
 
+		#tabla
+		{
+			margin:3vw 0 0 4%; 
+			width:96%; 
+			text-align: center; 
+			border-collapse:collapse; 
+			position:absolute
+		}
+		#tabla th
+		{
+			background:#0295AB;
+			height:3vw;	
+		}
+
 		#div_empresa table, #div_sede table
 		{
 			border-collapse:collapse;
@@ -34,6 +48,15 @@
 		#div_empresa table tr, #div_sede table tr 
 		{
 			height:5vw;
+		}
+		#barra_azul
+		{
+			background: #0295AB; 
+			width: 100%;  
+			height: 5vw; 
+			margin-left: 0%; 
+			padding-top:1.5vw;
+			z-index: 4;
 		}
 		#Boton
 		{
@@ -51,9 +74,37 @@
 			color:black;
 			cursor:pointer;
 		}
-		
+		#agregar
+		{
+			cursor:pointer;
+			display:block;
+			border-radius:20px;
+			background:#9ca913;
+			width: 13%; 
+			height: 3vw;
+			padding-top:.7vw;
+			margin-left:10%;
+		}
+		#agregar span
+		{
+			color: white; 
+			font-size:1.8vw; 
+			font-weight:600; 
+			margin-left:20%;
+		}
+		#mensaje 
+		{
+			display:none;
+		}
+		#Datos
+		{
+			width: 100%; 
+			z-index: 1; 
+			position:relative; 
+			margin-top:2vw;
+		}
 
-		#atras_1 
+		.atras
 		{
 			width: 22%;
     		height: 3vw;
@@ -67,12 +118,29 @@
 			margin-left: 32%;
     		margin-top: 0.2vw;
 		}
+		#mostrar
+		{
+			width:100%; 
+			position:absolute;
+			margin-top:3vw;  
+		}
 
 		
 		
 	</style>
 	<script>
-		
+		$('#Boton').click(function(event){
+			$('#agregar_s_e').remove();
+			$("#div_nuevo").remove();
+					$('#mensaje').toggle( "slow", function() {
+						// Animation complete.
+						$("#tabla").show();
+						$("#tabla").css({"opacity":"1","display":"block"}); 
+						
+					});
+					
+			});
+		$("#tabl").load("bean/tabla_empresa.php");
 	</script>
 </head>
 <body>
@@ -81,28 +149,10 @@
 
 <!----------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------->
-<div style="
-		background: #0295AB; 
-		width: 100%;  
-		height: 5vw; 
-		margin-left: 0%; 
-		padding-top:1.5vw;
-		z-index: 4;">
-	<!--<img src="../../images/agregar.png" id="agregar" style="cursor:pointer;
-															width: 13%; 
-															height: 4vw;
-															margin:2vw 0 0 10%;">-->
-	<div   style="cursor:pointer;
-				display:block;
-				border-radius:20px;
-				background:#9ca913;
-				width: 13%; 
-				height: 3vw;
-				padding-top:.7vw;
-				margin-left:10%;
-				" 
-			id="agregar" >
-				<span style="color: white; font-size:1.8vw; font-weight:600; margin-left:20%;">Agregar</span></div>															
+<div id='barra_azul' >
+	<div id="agregar" >
+		<span>Agregar</span>
+	</div>															
 	<div id="derecha">
 		
 	</div>
@@ -110,117 +160,24 @@
 
 <!----------------------------------------------------------------------------------------------------->
 <!----------------------------------------------------------------------------------------------------->
-<div id="DAtos"style="width: 100%; z-index: 1; position:relative">
+<div id="Datos"style="">
 <br>
 <h2>Empresas registradas en el sistema</h2>
-<table id="tabla" aling="center" style=" margin:6vw 0 0 4%; width:96%; text-align: center; border-collapse:collapse; position:absolute">
-<div id="mostrar" style="widht:100%; postion:absolute; margin-top:3vw;  "></div>
 
-	<tr>
-		<th>Nit</th>
-		<th>Nombre</th>
-		<th>Representante</th>
-		<th width='15%'>Teléfono</th>
-		<th>Correo</th>
-		<th>CIIU</th>
-		<th width="10%">Ver</th>
-	</tr>
-	
-		<?php
-		$res=$consultas->BuscarEmpresa();
-		while($fila=mysqli_fetch_array($res))
-		{
-			echo "
-			<tr style=' border-bottom:black solid 1px; padding-top:1vw;'>
-				<td style='height: 5vw;' hidden=''><input type='text' id='codigo' value='".$fila[0]."''></td>
-				<td style='height: 5vw;' width='10%'> ".$fila[1]."</td>
-				<td style='height: 5vw;'>".$fila[2]."</td>
-				<td style='height: 5vw;'>".$fila[3]."</td>
-				<td style='height: 5vw;'>".$fila[4]."</td>
-				<td style='height: 5vw;'>".$fila[5]."</td>
-				<td style='height: 5vw;'>".$fila[6]."</td>
-				<td id='sedes_".$fila[0]."' style='height: 5vw;' width='20%'>
-					<div   style='cursor:pointer; display:block;
-					border-radius:10px;	background:transparent;
-					width: 80%; height: 2vw;
-					padding-top:.7vw;	margin-left:10%;
-					border:#30a446 solid 1px;' 
-					id='agregar' >
-					<span style='color: #30a446; font-size:1.3vw; font-weight:600; margin-left:4%;' >Sedes</span></div>
-				</td>
-			</tr>
-			";
+	<div id="mensaje">
+		<div id='Boton'>
+			<img class='atras' src='../../../images/atras.png' width='5%'>
+			<span id='texto_btn'>Atrás</span>
+		</div>
+		<div id="mostrar"></div>
+	</div>
+	<div id="tabl">
 
-			echo '<script>	
-				$("#sedes_'.$fila[0].'").click(function(event){
-							$("#mostrar").append("<div id=\"div_nuevo\"></div>")
-							$("#div_nuevo").css({		
-								"width":"100%",
-								"height":"30vw",
-								"margin-left":"0%",
-								"border-size":"1px",
-								"border-style":"solid",
-								"borde-color":"1px",
-								"background-color":"#ffffff",
-								"positon":"absolute",
-								"border-radius":"15px",
-								"display":"block"
-				
-							});
-							$("#tabla").toggle(1000);
-						
-			
-							$("#tabla").css({
-								"visibility":"hidden"
-							});
-							
-							
-							$("#div_nuevo").animate({
-									
-									"transition":"5s",
-									"width":"90%",
-									"margin-left":"1%",
-									"z-index":"2",
-									"positon":"absolute"
-						
-								});
-							var codigo=$("#codigo").val();
-							$("#div_nuevo").append(" <div id=\'Boton\'> <img id=\'atras_'.$fila[0].'\' src=\'../../../images/atras.png\' width=\'5%\'> <span id=\'texto_btn\'>Atrás</span></div>");
-							$("#atras").css({"margin-top":"2vw","margin-left":"1%","width":"4%","cursor":"pointer"});
-				
-							$("#div_nuevo").append("<div id=tabla_sede></div>");
-							$(function(){
-								$.get("bean/sedes.php",{cod:'.$fila[0].'},function(data){ 
-									$("#tabla_sede").append(data);
-								
-								});
-							});
-
-							$("#atras_'.$fila[0].'").click(function(event){
-									$("#div_nuevo").toggle(2000);
-									$("#tabla_sede").toggle(2000,function(){
-										$("#tabla").show();
-										$("#tabla").css({"opacity":"1","visibility":"visible"}); 
-										$("#div_nuevo").remove();
-								});
-					
-								});
-				});
-			</script>';
-		}
-		?>
-	
-</table>
+	</div>
 </div>
 
-
-<br>
-<br>
-<br>
-<br>
-
 <script type="text/javascript">
-		function agregar()
+	function agregar()
           {
             
             che= document.getElementById("rb_Empresa");
@@ -241,27 +198,35 @@
             }
            
           }
+
+
 	$("#agregar").click(function(e){
 		e.preventDefault();
 		if($("#agregar_s_e").length > 0)
 		{
+			alert($("#agregar_s_e").length);
 		}
 		else
 		{	
+			
+			$("#mensaje").css({
+				"display":"block"
+			})
+			$('#mostrar').css({
+				"display":"block"				
+			})
 			$("#mostrar").append('<div id="agregar_s_e"></div>'); //Agregar el fomulario de agregar
 			$("#tabla").animate({
 				"opacity":"0",
 				"transition":"2s"
 			});
 			$('#agregar_s_e').css({
-				"border-style":"solid",
-				"border-size":"1px",
-				"border-color":"black",
 				"width":"0%",
 				"margin-left":"100%",
 				"position":"absolute",
 				"background":"white"
 			});
+			0
 			$('#agregar_s_e').animate({
 				"margin-left":'5%',
 				"width":"80%",
@@ -273,7 +238,7 @@
 			/*======================================= div de agregar sede o empresa ======================================================================*/
 			/*============================================================================================================================================*/
 
-			$('#agregar_s_e').append("<img id='atras' src='../../../images/atras.png'>");
+			
 			$('#agregar_s_e').append('<div style="text-align:center;"><label>Selecione:</label><br> <br>'+
 										'<label for="rb_Empresa">Empresa</label>'+
 										'<input style="margin-right:5%; margin-left:2%;" type="radio" name="usuario" id="rb_Empresa" onchange="javascript:agregar();" value="Empresa">'+
@@ -288,7 +253,7 @@
 
 					'<table  style="margin-left: 20%;  width: 36%;  text-align: left;">'+
 					'<tr>'+
-						'<td colspan=4><h3 align="center">Formulario para empresa</h3></td>'+
+						'<td colspan="4"><h3 align="center">Formulario para empresa</h3></td>'+
 					'</tr>'+
 					'<tr>'+
 						'<td><label for="NIT">Nit</label></td>'+
@@ -327,28 +292,23 @@
 					'</from>'+
 
 				'</div>');
-			$("#atras").click(function(event){
-
-				$("#agregar_s_e").toggle(2000,function(){
-					$("#tabla").show();
-					$("#tabla").css({"opacity":"1","visibility":"visible"}); 
-					$("#div_nuevo").remove();
-				});
-			});
-			$('#enviar_empresa').click(function(event){
+			
+			$('#formulario_empresa').submit(function(event){
 				$.ajax({
     				url: "bean/ingresar_empresa.php",
     				type: "POST",
     				dataType:"html",
     				data: $("#formulario_empresa").serialize(),
     				success: function (data) {
-    				  console.log(data);
+    				 $("#mensaje").css({"display":"none"})
     				  $('#notificacion').html(data);
-    				  $('#tabla').load('bean/empresa.php');
+    				  $('#tabl').load('bean/tabla_empresa.php');
     				}
 				
     			});
 			});
+
+
 			/*Div del formulario de la sede  en ambos se ejecuta el script en el home*/
 			$('#agregar_s_e').append('<div id="div_sede" hidden="">'+
 				'<form style="text-align:center;margin-bottom:10vw; width: 80%; background: #d4eaef; margin-left:15%;" id="formulario_sede" action="javascript:enviar_sede.focus();" method="post">'+
@@ -416,15 +376,8 @@
 				}
 
 			});
-			$('#atras').css({"margin-top":"2vw","margin-left":"1%","width":"4%","cursor":"pointer"});
-			$('#atras').click(function(event){
-					$('#atras').remove();
-					$('#agregar_s_e').html(" ");
-					$('#agregar_s_e').toggle( "slow", function() {
-						// Animation complete.
-						$("#agregar_s_e").remove();
-					});
-			});
+			
+			
 		}
 	});
 	

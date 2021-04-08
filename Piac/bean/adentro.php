@@ -6,7 +6,8 @@ if ($_POST['nombre_usuario'] && $_POST['contraseña'])
 	require_once "../src/consultas.php";
 	$consulta = new consultas();  
 	$nombre=$_POST['nombre_usuario'];
-	$contraseña=$_POST['contraseña'];
+	$contraseña=hash("sha256", $_POST['contraseña']);
+	//$contraseña=$_POST['contraseña'];
 	$_SESSION['tipo']=0;
 	$res=$consulta->verificarUsuario($nombre,$contraseña);
 	while ($fila=mysqli_fetch_array($res)) {

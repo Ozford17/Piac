@@ -2,7 +2,10 @@
 require_once "../../../src/consultas.php";
 $consultas=new consultas();
 $cod=$_GET['cod'];
-echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:center;" aling="center" >
+$nom=$_GET["nom"];
+echo ' 
+<h2>Sedes de la empresa '.$nom.' </h2>
+<table style="margin-left:3%; margin-top:2vw; width:90%; text-align:center;" aling="center" >
  	<tr>
  		<th width="20%">Nombre</th>
  		<th>Ciudad</th>
@@ -32,6 +35,7 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
 
  				echo '<script>	
 						$("#editar_'.$fila[0].'").click(function(event){
+								
  								/* Se saca los valores que guardan los td*/
  								var codigo='.$fila[0].';
  								var nombre=$(this).parents("tr").find("td").eq(1).text();	
@@ -61,30 +65,33 @@ echo ' <table style="margin-left:3%; margin-top:2vw; width:90%; text-align:cente
 									 \'</form>\';
 									 $("#modal").html(" ");
 									 $("#modal").append(Form);
-									 $("#modal").modal(Form);
+									 $("#modal").modal();
 						
  									
- 									$("#Enviar").on("click", function (e) {
+ 									$("#Enviar").click(function (e) {
 	 			
     									$.ajax({
-    									  url: "bean/Update.php",
-    									  type: "POST",
-    									  dataType:"html",
-    									  data: $("#formulario").serialize(),
-    									  success: function (data) {
-    									    console.log(data);
-								
-    									    
-    									  }
+											url: "bean/Update.php",
+    									  	type: "POST",
+    									  	dataType:"html",
+    									  	data: $("#formulario").serialize(),
+    									  	success: function (data) {
+												let resp=jQuery.parseJSON(data);
+												if(resp.success=="true")
+												{
+													$("#modal").html("Se ejecuto la actualización");
+													$("#modal").modal();
+												  	$.get("bean/sedes.php",{cod:'.$cod.',nom:$nom},function(dato){ 
+													  	$("#tabla_sede").html(dato);
+													});
+												}
+												else
+												{
+													$("#modal").html(resp.mensaje);
+												}
+											}
     									});
-	    								$("#tabla_sede").remove();
-	    								$("#div_nuevo").append("<div id=tabla_sede></div>");
-										$(function(){
-										$.get("bean/sedes.php",{cod:'.$cod.'},function(data){ 
-											$("#tabla_sede").append(data);
-										
-											});
-										});
+	    								
 						
 						
 										$("#formulario").remove();

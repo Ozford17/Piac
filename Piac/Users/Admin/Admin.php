@@ -35,8 +35,12 @@
     <title>Soporte</title>
     <link rel="stylesheet" href="../../css/admin1.css">
     <link rel="stylesheet" href="../../Users/Admin/Cositas/Menu.css">
+    <link rel="stylesheet" href="../../src/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    
     <script type="text/javascript" src="../../src/js/jquery-3.4.1.min.js"></script>
     <script src="../../Users/Admin/Cositas/ajax/menu.js"></script>
+    
     <style>
         .plastic{
             width:25%;

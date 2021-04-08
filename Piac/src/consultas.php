@@ -24,7 +24,7 @@ require_once "Conexion.php";
       Listar todos los usuario
     ===============================================================================================================*/
     public function BuscarUsuario(){
-      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña FROM usuario u, Sede s where u.Sede=s.Codigo order by u.Sede asc";
+      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña, u.Estado FROM usuario u, Sede s where u.Sede=s.Codigo order by u.Sede asc";
       $resultado=$this->consultar($sql);
       return $resultado;
     }
@@ -167,7 +167,7 @@ require_once "Conexion.php";
      ===============================================================================================================*/
      public function ActualizarSedeEmpresa($cod, $nombre, $ciudad,$direccion, $telefono, $representante ){
       $sql="UPDATE Sede Set Nombre='".$nombre."', Ciudad='".$ciudad."', Direccion='".$direccion."', Telefono='".$telefono."', Representante='".$representante."'where Codigo=".$cod.";";
-      echo $sql."<br>";
+      //echo $sql."<br>";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -231,7 +231,7 @@ require_once "Conexion.php";
       insertar sede
      ===============================================================================================================*/
      public function agregar_sede($codigo,$nombre,$ciudad,$direccion,$telefono,$representante,$correo,$empresa,$coordenadas){
-      $sql="INSERT INTO Sede value('".$codigo."','".$nombre."','".$ciudad."','".$direccion."','".$telefono."','".$representante."','".$correo."','".$empresa."','".$coordenadas."', 1, 1);";
+      $sql="INSERT INTO Sede value('".$codigo."','".$nombre."','".$ciudad."','".$direccion."','".$telefono."','".$representante."','".$correo."','".$empresa."','".$coordenadas."', 1, 1,0);";
       $resultado=$this->consultar($sql);
       return $resultado;
      
@@ -284,6 +284,24 @@ require_once "Conexion.php";
      ===============================================================================================================*/
      public function Actualizar_usuario($correo,$nombre, $contraseña, $tipo){
       $sql="UPDATE usuario set nombre='".$nombre."', contraseña='".$contraseña."', tipo_usuario=".$tipo." where correo='".$correo."'; ";
+      $resultado=$this->consultar($sql);
+      return $resultado;
+     }
+     /*================================================================================================================
+      Actualizar datos del usuario
+     ===============================================================================================================*/
+     public function Actualizar_datos_usuario($correo,$nombre, $contraseña){
+      $sql="UPDATE usuario set nombre='".$nombre."', contraseña='".$contraseña."' where correo='".$correo."'; ";
+      //echo $sql;
+      $resultado=$this->consultar($sql);
+      return $resultado;
+     }
+     /*================================================================================================================
+      Bloquear y desboquear usuario
+     ===============================================================================================================*/
+     public function block_desblock_usu($codigo,$valor){
+      $sql="UPDATE usuario set Estado='$valor' where codigo='".$codigo."'; ";
+      //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
      }
