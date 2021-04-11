@@ -1,63 +1,98 @@
 <?php
-session_start();
-if (empty($_SESSION['nombre']) ){
-	{
-		header('location:../../bean/cerrar.php');
-	}
-}
+    SESSION_START();
+    if(is_null($_SESSION["nombre"])) {
+        header("Location:./index.php");
+        //echo "<script>alert('No existe esta sesssion')".$_SESSION["nombre"]."</script>";
+    }
+    else{
+        require '../../src/consultas.php';
+        $consultas= new consultas();
+
+        $resp=$consultas->BuscarEmpresa();
+        $empresas=mysqli_num_rows($resp); 
+
+        $resp=$consultas->BuscarUsuario();
+        $usuarios=mysqli_num_rows($resp); 
+        
+        
+        $resp=$consultas->total_co2_emitido();
+        if($fila=mysqli_fetch_assoc($resp))
+        {
+            $Co=$fila["total"];
+        }
+        $Co=number_format($Co/1000, 2,'.','');
+
+
+    }
+    
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-	<link rel="shortcut icon" href="../../images/Logo.png" />
-	<title>PIAC</title>
-	<script type="text/javascript" src="../../src/js/jquery-3.4.1.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="../../css/admin.css">
-	<script type="text/javascript">
-		$(document).ready(function(){
-			$('#Cerrar').click(function(e){
-				e.preventDefault();
-				window.location=('../../bean/cerrar.php');
-			});
-		});
-		
-	</script>
-	<style>
-		.arriba #Cerrar{
-			position: absolute;
-			margin-top: 1vw;
-			margin-left: 85%;
-			color: white;
-			font-size: 1.5vw;
-			cursor: pointer;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../../images/Logo.png" />
+    <title>Soporte</title>
+    <link rel="stylesheet" href="../../css/admin1.css">
+    <link rel="stylesheet" href="../../Users/Admin/Cositas/Menu.css">
+    <link rel="stylesheet" href="../../src/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    
+    <script type="text/javascript" src="../../src/js/jquery-3.4.1.min.js"></script>
+    <script src="../../Users/Admin/Cositas/ajax/menu.js"></script>
+    
+    <style>
+        .plastic{
+            width:25%;
+            height:10vw;
+            display:inline-block;
+            margin-left:5%;
+            border-radius:15px;
+            position:relative;
+        }
+        .plastic .titulo{
+            color:white;
+            position:absolute;
+            font-size:1.5vw;
+            margin-left:10%;
+            margin-top:1.5vw;
+        }
+        .plastic .numero{
+            color:white;
+            position:absolute;
+            font-size:3vw;
+            right:10%;
+            bottom: 1.3vw;
+            margin-top:30%;
+        }
+        
 
-		}
-		a:link{
-			text-decoration: none;
-		}
-		a{
-			color: white;
-		}
-	</style>
+    </style>
+    
+    <script>
+    </script>
 </head>
 <body>
-	<div class="arriba"><img src="../../images/Logo.png"> <p id="Cerrar"> Cerrar sesion</p></div>
-
-	<div id="menu">
-	<div id="imagenes"><img src="../../images/admin/empresa.png" id="Empresa"><p>EMPRESA</p><hr></p></div>
-	<div id="imagenes"><img src="../../images/admin/usuario.png" id="Usuario"><p>USUARIOS</p><hr></p></div>
-	<div id="imagenes"><img src="../../images/admin/registro.png" id="Registro"><p>REGISTRO</p><hr></p></div>
-	</div>
-	<div>
-		<div id="mostrar" style="margin-left: 5%; width: 90%; height: 50vw; border: 5px white inset; margin-bottom: 10vw; position: relative; "></div>
-	</div>
-		
+    <div class="lado">
+        <div class="perfil">
+            <img src="../../images/Logo.png" alt="Logo">
+        </div>
+        <div class="men">
+            <?php  require("../../Users/Admin/Cositas/Menu.php")?>
+        </div>
+    </div>
+    <div class="centro">
+        <div class="barra">
+            <span><?=$_SESSION["nombre"]?></span>
+            <div class="cerrar">Cerrar Sesión</div>
+        </div>
+        <div class="princ">
+            <div class="plastic" style="background:#8297d6;"><span class="titulo">Empresas</span><span class="numero"><?=$empresas?></span></div>
+            <div class="plastic" style="background:#82cdff;"><span class="titulo">Usuarios</span><span class="numero"><?=$usuarios?></span></div>
+            <div class="plastic" style="background:#9cc95a;"><span class="titulo">Co2 Ton-Co2</span><span class="numero"><?=$Co?></span></div>
+        </div>
+    </div>
     
     
-    
-	<script src="../../lib/js/jquery-min.js"></script>
-    <script src="../../js/funcionajax.js"></script>
-    <script src="../../lib/js/bootstrap4/jquery-3.1.1.min.js"></script>
-    <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </body>
 </html>

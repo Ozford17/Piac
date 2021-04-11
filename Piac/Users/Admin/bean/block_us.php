@@ -15,5 +15,6 @@ else
     $mensaje["success"]="true";
     $mensaje["mensaje"]="No se enviaron datos";
 }
+echo json_encode($mensaje);
 
 ?>

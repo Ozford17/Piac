@@ -35,7 +35,7 @@ if ($_POST['nombre_usuario'] && $_POST['contraseña'])
 		$mensaje['mensaje']="Datos de usuario incorrectos";
 	}else if ($_SESSION['tipo']==1) {
 		$mesaje["error"]="false";
-		$mensaje["direc"]="Users/Admin/Admin.php";
+		$mensaje["direc"]="Users/Admin/";
 	}else if ($_SESSION['tipo']==2) {
 		$mesaje["error"]="false";
 		$mensaje["direc"]="Users/Empresa/home.php";

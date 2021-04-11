@@ -4,17 +4,50 @@ $consultas=new consultas();
 session_start();
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Usuarios</title>
-	<link rel="stylesheet" href="../../src/js/jquery.modal.min.css">
+	<script type="text/javascript" src="../../../src/js/jquery-3.4.1.min.js"/>
+	<script type="text/javascript" src="../../../src/js/jquery.modal.min.js"/>
 	
-	<script type="text/javascript" src="../../src/js/jquery.modal.min.js">
-	<script type="text/javascript" src="../../src/js/jquery-3.4.1.min.js">
+
+	<link rel="stylesheet" href="../../../src/js/jquery.modal.min.css">
+	
+	
 	<script>
+		$(document).ready(()=>{
+			$('#todo').load('bean/tabla_usuario.php');
+		})
+		
+		
+		function Accion_usu(codigo,parametro){
+			let cod=codigo;
+			if(parametro==1){
+				$.ajax({
+					url:'bean/block_us.php',
+					method:'POST',
+					dataType:'html',
+					data:{codigo:cod},
+					success:dato=>{
+						let res= jQuery.parseJSON(dato);
+						if(res.success=='true')
+						{
+							$('#mostrar').html('Usuario actualizado');
+							$('#mostrar').modal();
+							$('.modal a.close-modal').click(()=>{ $('#todo').load('bean/tabla_usuario.php');})
+						}
+						else
+						{
+							$('#mostrar').html(res.mensaje);
+							$('#mostrar').modal();
+						}
+					}
+				})
+			}
+		}
 		
 
 		$("#agregar").click(function(event){
@@ -136,6 +169,26 @@ session_start();
 						else
 						{
 							alert("Todo bien por aqui");
+							$.ajax({
+								url:'bean/Registro.php',
+								method:'POST',
+								dataType:'html',
+								data:$('#formulario-crear-us').serialize,
+								success:dato=>{
+									let res= jQuery.parseJSON(dato);
+									if(res.success=='true')
+									{
+										$('#mostrar').html('Creación Completada');
+										$('#mostrar').modal();
+									}
+									else
+									{
+										$('#mostrar').html(res.mensaje);
+										$('#mostrar').modal();
+										console.log(dato);
+									}
+								}
+							})
 							$('#notificacion').html("");
 						}
 
@@ -159,7 +212,7 @@ session_start();
 		{
 			margin-top:1vw;
 		}
-		input[type=text], input[type=password]
+		input[type=text], input[type=password], select, input[type=mail]
 		{
 			height:2vw;
 			border-radius: 6px;
@@ -178,6 +231,11 @@ session_start();
 			border-radius: 6px;
 			
 		}
+		#todo
+		{
+			width:80%;
+		}
+		
 		
 	</style>
 
@@ -203,137 +261,8 @@ session_start();
 					" 
 				id="agregar" >
 					<span style="color: white; font-size:1.8vw; font-weight:600; margin-left:20%;">Agregar</span></div>
-<div style="width: 80%;">
-<div id="mostrar" style="widht:100%; postion:absolute; margin-top:3vw;  "></div>
-<table aling="center" id="tabla"  style=" margin:6vw 0 0 5%;text-align: center; position: absolute;">
-	<tr>
-		<th width="15%">Nombre</th>
-		<th>Correo</th>
-		<th width="15%">Tipo usuario</th>
-		<th>Sede</th>
-		<th width="15%" >Editar</th>
-		<th width="15%" >Block/Desblock</th>
-	</tr>
-	<?php 
-	$respuesta=$consultas->BuscarUsuario();
-	while ($fila=mysqli_fetch_array($respuesta)) {
-		echo "<tr >
-				<td>".$fila[1]."</td>
-				<td>".$fila[2]."</td>
-				<td>".$fila[3]."</td>
-				<td>".$fila[4]."</td>
-				<td><img id='edit_$fila[0]' src='../../images/editar.png' style='cursor:pointer;  width: 40%; height: 3vw;'></td>
-				<td>";
-				if($fila[6]==0)
-				{
-					echo "<i id='elim_$fila[0]' style='color:red; cursor:pointer;' class='fa fa-ban fa-3x' title='Bloquear' aria-hidden='true'>";
-				}
-				else
-				{
-					echo "<i style='color:#45619d; cursor:pointer;' class='fa fa-check fa-2x' title='Activar' aria-hidden='true'></i>";
-				}
-				 
-			  echo "</td></tr>
-			  <script>
-				$('#edit_$fila[0]').click(function(event){
-					let datos =$(\"<form id='fomulario_usuario' action='javascript:Enviar_usu.focus();' method='post'>\"+
-								\"	<h2>Editar usuario</h2>\"+
-								\"	<input name='Codigo' value='". base64_encode($fila[0])."' hidden>\"+	
-								\"	<label>Nombre:</label><br>\"+
-								\"	<input type='text' name='Nombre' value='$fila[1]' ><br>\"+
-								\"	<label>Correo:</label><br>\"+
-								\"	<input type='text' name='Correo' value='$fila[2]' ><br>\"+
-								\"	<label>Contraseña:</label><br>\"+
-								\"	<div><input type='password' name='Contrasena' id='Contrasena'><i class='fa fa-eye fa-border fa-lg' aria-hidden='true'></i></div>\"+
-								\"	<label>Confirmar Contraseña:</label><br>\"+
-								\"	<input type='password' name='Con_Contrasena' id='Con_Contrasena'><br>\"+
-								\"	<input type='submit' name='Enviar_usu' id='Enviar_usu' value='Enviar'><br>\"+
-								
-								\" </form>\");
-					
-					$('#mostrar').html(datos);
-					$('#mostrar').modal();
-					$('.fa-eye').click(e=>{
-						let Con= document.getElementById('Contrasena');
-						if(Con.type=='password'){
-							Con.type='text';
-						}
-						else{
-							Con.type='password';
-						}
-					})
-					$('#Enviar_usu').click(function(event){
-						event.preventDefault();
-						let Con= document.getElementById('Contrasena').value;
-						let Con_con= document.getElementById('Con_Contrasena').value;
-
-						if(Con!=Con_con)
-						{
-							alert('Las contraseñas no coinciden');
-						}
-						else
-						{
-							$('#fomulario_usuario').submit();
-						}
-
-					})
-					$('#fomulario_usuario').submit(e=>{
-						$.ajax({
-							url:'bean/actualizar_usuario.php',
-							method:'POST',
-							dataType:'html',
-							data:$('#fomulario_usuario').serialize(),
-							success:dato=>{
-								let res= jQuery.parseJSON(dato);
-								if(res.success=='true')
-								{
-									$('#mostrar').html('Datos Actualizados');
-									$('#mostrar').modal();
-								}
-								else
-								{
-									$('#mostrar').html(res.mensaje);
-									$('#mostrar').modal();
-								}
-							}
-						})
-					});
-					
-				});
-				$('#elim_$fila[0]').click(event=>{
-					let con=confirm('Seguro de querer bloquear este usuario?');
-					if(con==true){
-						$.ajax({
-							url:'bean/block_us.php',
-							method:'POST',
-							dataType:'html',
-							data:{codigo:'".base64_encode($fila[0])."'},
-							success:dato=>{
-								let res= jQuery.parseJSON(dato);
-								if(res.success=='true')
-								{
-									$('#mostrar').html('Usuario actualizado');
-									$('#mostrar').modal();
-								}
-								else
-								{
-									$('#mostrar').html(res.mensaje);
-									$('#mostrar').modal();
-								}
-							}
-						})
-					}
-					else{
-						alert('Cancelado');
-					}
-
-				});
-			  </script>
-		     ";
-	}
-	?>
-</table>
-</div>
+	<div id="mostrar" style="widht:100%; postion:absolute; margin-top:3vw;  "></div>
+	<div style="width: 80%;" id='todo'></div>
 
 <br>
 <br>

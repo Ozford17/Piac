@@ -45,6 +45,15 @@ require_once "Conexion.php";
       $resultado=$this->consultar($sql);
       return $resultado;
     }
+    /*=============================================================================================================
+      buscar un usuario por codigo
+    ===============================================================================================================*/
+    public function BuscarUsuario_codigo($codigo){
+      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña FROM usuario u, Sede s where u.codigo='".$codigo."' and u.Sede=s.Codigo";
+      echo $sql;
+      $resultado=$this->consultar($sql);
+      return $resultado;
+    }
      /*=============================================================================================================
       Maximo de codigo en usuario
     ===============================================================================================================*/
@@ -57,7 +66,8 @@ require_once "Conexion.php";
       Insertar usuario
     ===============================================================================================================*/
     public function Insert_usuario($codigo,$nombre,$correo,$contraseña,$tipo,$sede){
-      $sql="INSERT into usuario values(".$codigo.",'".$nombre."','".$correo."','".$contraseña."', ".$tipo.", ".$sede.");";
+      $sql="INSERT into usuario values(".$codigo.",'".$nombre."','".$correo."','".$contraseña."', ".$tipo.", ".$sede.",0);";
+      echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
     }
