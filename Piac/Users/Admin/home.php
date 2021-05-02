@@ -1,10 +1,12 @@
 <?php
     SESSION_START();
     if(is_null($_SESSION["nombre"])) {
-        header("Location:./index.php");
-        //echo "<script>alert('No existe esta sesssion')".$_SESSION["nombre"]."</script>";
+        echo "<script>alert('Debe logearse de nuevo.')</script>";
+        header('Location:'.$_SERVER['HTTP_REFERER']);
+        
     }
     else{
+        
         require '../../src/consultas.php';
         $consultas= new consultas();
 

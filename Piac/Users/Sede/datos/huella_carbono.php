@@ -668,11 +668,16 @@
     			
 
 			});
+			if(contar=0)
+			{
+				$('#div_de_eliminacion').html("No hay maquinas seleccionadas");
+	        	$('#div_de_eliminacion').modal();
+			}else{
 
-			var div_grande=document.createElement("div");
-			div_grande.id="div_de_eliminacion";
-			$('#informaciones_f_f').append(div_grande);
-			$.ajax({
+				var div_grande=document.createElement("div");
+				div_grande.id="div_de_eliminacion";
+				$('#informaciones_f_f').append(div_grande);
+				$.ajax({
 	      				url: "../datos/modal_f_f.php?f=f_f",
 	      				type: "POST",
 	     				 dataType:"html",
@@ -684,21 +689,22 @@
 	        				
 	      				}
 	    				});			
-			/*
-			for (var i = 0; i < listado_codigos.length; i++) {
-				console.log(listado_codigos[i]);
-				$.ajax({
-	      				url: "../datos/actualizar_f_f.php",
-	      				type: "POST",
-	     				 dataType:"html",
-	     				 data: {codigo:listado_codigos[i]},
-	      				success: function (data) {
-	      				  	console.log(data);
-	        				alert("ok"+[i]);
-	      				}
-	    				});
-				
-			}*/
+				/*
+				for (var i = 0; i < listado_codigos.length; i++) {
+					console.log(listado_codigos[i]);
+					$.ajax({
+	      					url: "../datos/actualizar_f_f.php",
+	      					type: "POST",
+	     					 dataType:"html",
+	     					 data: {codigo:listado_codigos[i]},
+	      					success: function (data) {
+	      					  	console.log(data);
+	        					alert("ok"+[i]);
+	      					}
+	    					});
+						
+				}*/
+			}
 
 		});
 //-------------------------------------------------------------------------------------------------------------------------------------//		

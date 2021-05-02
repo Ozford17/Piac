@@ -49,11 +49,13 @@
 </body>
 </html>
 <?php
-if(isset($_GET['c']))
+if(isset($_GET['c']) || isset($_GET['destroy']) && $_GET['cmd']=="destroy" )
 {
 	session_start();
 	session_destroy();
-	header('Location:https://www.piac.ecoblue.co/');
+	header("location:index.php");
 	exit();
+
+	
 }
 ?>

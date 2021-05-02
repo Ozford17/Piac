@@ -57,3 +57,11 @@
 		background: #1a95d5;
 		color: white;
 }
+
+.cerrar{
+	cursor:pointer;
+
+}
+.cerrar:hover{
+	border:grey solid 1px;
+}

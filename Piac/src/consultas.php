@@ -690,7 +690,7 @@ require_once "Conexion.php";
      =================================================================================================================*/
       public function consultar_fuente_fijas_codigo($codigo){
           $sql="select f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre,f.Fecha, f.Estado, f.Observacion  from fuentes_fijas f, elemento e where f.Elemento=e.Codigo and f.Codigo=$codigo and estado=0;";
-            
+          //echo $sql;
           $resultado=$this->consultar($sql);  
           return $resultado;
         }

@@ -1,6 +1,6 @@
 <?php
 
-if (is_array($_POST['codigo']) && isset($_GET['f'])) {
+if (isset($_POST['codigo']) && is_array($_POST['codigo']) && isset($_GET['f'])) {
 	require_once'../../../src/consultas.php';
 	$consultas=new consultas();
 
@@ -234,5 +234,8 @@ if (is_array($_POST['codigo']) && isset($_GET['f'])) {
 		echo '<tr><td colspan="2"><input s type="submit" name="Enviar_eliminar_f_m_e" id="Enviar_eliminar_f_m" Value="Eliminar"></td></tr>';
 		echo "</table></form>";
 	}
+}
+else{
+	echo "No hay valores seleccionados";
 }
 ?>

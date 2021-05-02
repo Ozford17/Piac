@@ -20,7 +20,7 @@ $(document).ready(function(){
 
     $(".Generales").click(function(e){
         e.preventDefault();
-        window.location="../../Users/Admin/Admin.php";
+        window.location="../../Users/Admin/";
         exit();
     });
     
@@ -38,4 +38,11 @@ $(document).ready(function(){
         e.preventDefault();
         $(".princ").load("/Users/Admin/bean/Usuario.php");
     });
+
+    $(".cerrar").click(e=>{
+        e.preventDefault();
+        window.location="../../index.php?c";
+        exit();
+        
+    })
 })

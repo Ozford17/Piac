@@ -43,8 +43,8 @@
 	<div id="centro_huella">
 		<center><p style="color:black;">Reporte de consumos.</p></center><br>	
 		<p style="color: black; text-align:justify; font-size: 1.0vw; width: 90%; margin-left: 5%;">En esta sección debemos registrar mensualmente los consumos teniendo en cuenta los alcances uno y dos. <br>	
-A continuación, puedes escoger el mes en el cual vas a realizar el cargue de la información correspondiente, teniendo en cuenta los principios establecidos para la cuantificación de gases de efecto invernadero GEI: 
-Integridad, transparencia, precisión, consistencia y relevancia para garantizar un inventario coherente con las actividades realizadas.</p>
+		A continuación, puedes escoger el mes en el cual vas a realizar el cargue de la información correspondiente, teniendo en cuenta los principios establecidos para la cuantificación de gases de efecto invernadero GEI: 
+		Integridad, transparencia, precisión, consistencia y relevancia para garantizar un inventario coherente con las actividades realizadas.</p>
 		<table width="100%" style="">
 			<?php 	
 			$meses= array();
@@ -143,7 +143,6 @@ Integridad, transparencia, precisión, consistencia y relevancia para garantizar
 				
 				$fecha = DateTime::createFromFormat('!m', $fecha_registro);
 				$mes = $fecha->format('F');
-
 				
 						$fechita=$año_registro."-".$fecha_registro."-01"; 	
 				

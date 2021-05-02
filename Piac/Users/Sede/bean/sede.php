@@ -1,13 +1,14 @@
-<?php
-$s=$_GET['s'];
-
+<?php	
+	$s=$_GET['s'];
+	
 			session_start();
-			function Mostrar(){
-			require_once'./src/consultas.php';
-			$consultas= new consultas();
+			function Mostrar()
+			{
+				require_once '../../../src/consultas.php';
+				$consultas= new consultas();
 
-			$res=$consultas->consultar_sede_codigo(base64_decode($_GET['s']));	
-			if($fila=mysqli_fetch_array($res)){
+				$res=$consultas->consultar_sede_codigo(base64_decode($_GET['s']));	
+				if($fila=mysqli_fetch_array($res)){
 				
 					if ($fila[9]=="1") {
 						
@@ -23,18 +24,25 @@ $s=$_GET['s'];
 					      				}
 					    			});';
 						}
-						else{
+						else
+						{
+							
 							if ($_SESSION['tipo']=="2") {
 								echo '$("#huellita").html("Para esta sede no esta activado el servicio de huella de carbono, cambie esta opcion en la ventana de datos empresa:https://piac.ecoblue.co/Users/Empresa/DatosPersonales.php.");';
 								}
 								else if ($_SESSION['tipo']=="3") {
 										echo '$("#huellita").html("Para esta sede no esta activado el servicio de huella de carbono, comuniquese con el administrador de su empresa. ");';
-									}	
-
-							}
+								}	
 							
+
 						}
-					}
+							
+				}
+				else
+				{
+					echo "entro aqui";
+				}
+			}
 				
 ?>
 
@@ -47,24 +55,29 @@ $s=$_GET['s'];
 	<link rel="stylesheet" type="text/css" href="../../../css/sede.css">
 	<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<style type="text/css">
-		#tabla_d tr td{
+		#tabla_d tr td
+		{
 			padding-top: 2vw;
 		}
 		hr{
 			height: 0.1vw;
 			background: black;
 		}
-		#huellita{
+		#huellita
+		{
 			margin-top: 2vw;
 			margin-bottom: 2vw;
 		}
-		#huellita table{
+		#huellita table
+		{
 			width: 100%;
 		}
-		#huellita input[type='submit']{
+		#huellita input[type='submit']
+		{
 			width: 20%;
 		}
-		#huellita label{
+		#huellita label
+		{
 			color: black !important;
 		}
 	</style>
@@ -97,20 +110,20 @@ $s=$_GET['s'];
 			$res=$consultas->consultar_sede_codigo(base64_decode($_GET['s']));	
 			if($fila=mysqli_fetch_array($res)){
 				
-			?>
+				echo '
 				<table width="100%" id="tabla_d">
 						<tr>
 							<td>
 								<span>Nombre de la empresa:</span><br>
-								<span><?echo $fila[1];?></span>
+								<span>'.$fila[1].'</span>
 							</td>
 							<td>
 								<span>Ciudad:</span><br>
-								<span><?echo $fila[2];?></span>
+								<span>'.$fila[2].'</span>
 							</td>
 							<td>
 								<span>Direccion:</span><br>
-								<span><?echo $fila[3];?></span>
+								<span>'.$fila[3].'</span>
 							</td>
 
 							
@@ -122,15 +135,15 @@ $s=$_GET['s'];
 						<tr>
 							<td>
 								<span>Telefono:</span><br>
-								<span><?echo $fila[4];?></span>
+								<span>'.$fila[4].'</span>
 							</td>
 							<td>
 								<span>Representante:</span><br>
-								<span><?echo $fila[5];?></span>
+								<span>'.$fila[5].'</span>
 							</td>
 							<td>
 								<span>Correo:</span><br>
-								<span><?echo $fila[6];?></span>
+								<span>'.$fila[6].'</span>
 							</td>
 
 							
@@ -142,15 +155,15 @@ $s=$_GET['s'];
 						<tr>
 							<td>
 								<span>Coordenadas:</span><br>
-								<span><?echo $fila[8];?></span>
+								<span>'.$fila[8].'</span>
 							</td>
 							<td>
 								<span>Huella Carbono:</span><br>
-								<span><?if ($fila[9]=="1"){echo "Si"; }else{echo "No";}?></span>
+								<span>'; if ($fila[9]=="1"){echo "Si"; }else{echo "No";}echo '</span>
 							</td>
 							<td>
 								<span>Huella Hidrica:</span><br>
-								<span><?if ($fila[10]=="1"){echo "Si";}else{echo "No";}?></span>
+								<span>';if ($fila[10]=="1"){echo "Si";}else{echo "No";} echo'</span>
 							</td>
 
 							
@@ -159,8 +172,8 @@ $s=$_GET['s'];
 							<td colspan="3"><hr></td>
 						</tr>
 
-			</table>
-			<?php }?>
+				</table>';
+			}?>
 		</div>
 		<div id="huellita">
 
