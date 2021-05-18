@@ -15,8 +15,10 @@ $sede=$_SESSION['sede'];
 	<title>Informe y estadisticas </title>
 	<link rel="shortcut icon" href="../../images/Logo.png" />
 	<link rel="stylesheet" type="text/css" href="../../css/empresa.css">
-  <link rel="stylesheet" type="text/css" href="../../css/arriba.css">
+  	<link rel="stylesheet" type="text/css" href="../../css/arriba.css">
+	
 	<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+	<script src='./../../src/js/jquery-3.4.1.min.js'></script>
 	<script type="text/javascript">
 		google.charts.load('current', {'packages':['corechart']});
      	google.charts.setOnLoadCallback(Chart);
@@ -66,8 +68,31 @@ $sede=$_SESSION['sede'];
         		};
 
         		var chart = new google.visualization.PieChart(document.getElementById('torta'));
-
-        		chart.draw(data, options);
+				chart.draw(data, options);
+				let image=document.createElement("img");
+				image.setAttribute("id","imagen");
+				image.setAttribute("src",chart.getImageURI());
+				campo.appendChild(image);
+				
+           
+        		var dataUrl = chart.getImageURI();	
+        		$.ajax({
+        		        url: 'bean/Guardar_grafica.php',         
+        		        type: 'POST', 
+						dataType:"html",  
+						data:{ img: dataUrl, nombre: "materiales_r" },              
+        		        success: data=>
+        		        {
+							let resp=jQuery.parseJSON(data);
+							if(!data.success)
+							{
+								console.log(data.mesaje);
+							}
+        		        }
+        		    });                
+  				
+    			 
+        		
       /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/  					
         		
 		}
@@ -260,9 +285,9 @@ $sede=$_SESSION['sede'];
 </div>
 <div id="centro">
 	<div id="informe">
-		<h2>Informes de emision de CO2</h2>
-		<form name="form" action="bean/Descargar.php">
-			<label>Descargar informe por: </label>
+		<h2>Informes de emision</h2>
+		<form name="form" action="bean/Descargar.php" method='POST'>
+			<label>Descargar informe  </label>
 			<select name="tipo_informe" onChange="Cargar_sede()">
 				<option value="S">Seleccione</option>
 				<option value="G">General</option>
@@ -270,6 +295,7 @@ $sede=$_SESSION['sede'];
 			</select>
 			<select name="sede" hidden="" >
 				<option value="s">Seleccione</option>
+				<option value="a">ALL</option>
 				<?php
 					$resp=$consultas->BuscarEmpresa_sede($sede);
 					if ($fila=mysqli_fetch_array($resp)) {
@@ -284,18 +310,26 @@ $sede=$_SESSION['sede'];
 			</select><br>
 			<label for="per">Periodo</label>
 			<select name="periodo" id="per" onChange="Cargar_mes()">
-				<option value="s">Seleccione</option>
+				<option value="S">Seleccione</option>
 				<option value="a">Anual</option>
 				<option value="m">Mensual</option>
 			</select>
 			<select name="mes" style="display: none;">
 				<option value="S">Seleccione</option>
 				<?php
-					for($i=1;$i<=12;$i++){
-						echo "<option value='".$i."'>".$i."</option>";
+					/** Peticion a base de datos de los años registrados */
+					$resp=$consultas->Listar_ano_informe();
+					if(mysqli_num_rows($resp))
+					{
+						while($fila=mysqli_fetch_array($resp))
+						{
+							echo "<option value='".$fila[0]."'>".$fila[0]."</option>";
+						}
+						
 					}
 				?>
 			</select><br>
+			<input type="text" name="Empresa" value='<?=$_SESSION['empresa']?>' hidden=''>
 			<input type="submit" name="Enviar" value="Enviar">
 		</form>
 		

@@ -426,7 +426,9 @@ require_once "Conexion.php";
       Consultar Huella de carbono por alcance
      ===============================================================================================================*/
      public function consultar_huella($alcance){
-      $sql="SELECT h.Codigo,se.Nombre,t.Alcance,s.Nombre as Tipo,e.Nombre as Elemento,h.Fuente,h.Fecha,h.Total_huella,e.Unidad,e.Unidad_emision FROM huella_carbono h,elemento e, subtipo s, tipo t ,Sede se WHERE h.Elemento=e.Codigo and e.Subtipo=s.Codigo and s.Tipo=t.Codigo and h.Sede=se.Codigo and t.Alcance=".$alcance.";";
+      $sql="SELECT h.Codigo,se.Nombre,t.Alcance,s.Nombre as Tipo,e.Nombre as Elemento,h.Fuente,h.Fecha,h.Total_huella,e.Unidad,e.Unidad_emision 
+            FROM huella_carbono h,elemento e, subtipo s, tipo t ,Sede se 
+            WHERE h.Elemento=e.Codigo and e.Subtipo=s.Codigo and s.Tipo=t.Codigo and h.Sede=se.Codigo and t.Alcance=".$alcance.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -1082,7 +1084,7 @@ require_once "Conexion.php";
 
       
       /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      GRAFICACION POR SEDE 
+                                            GRAFICACION POR SEDE 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
       /*=============================================================================================================
@@ -1156,6 +1158,415 @@ require_once "Conexion.php";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
+
+  /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                            GRAFICACION POR EMPRESA ------- General---- Todos los años registrados
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+      
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas por empresa de total de CO2 emitido
+      ===============================================================================================================*/
+      public function Consultar_grafica_GEI_empresa_general($empresa){
+        $sql="SELECT ft.año ,sum(ft.Total_carbono ) as total_carbono FROM 
+              ( 
+                      SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
+                      from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                      where fr.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                UNION 
+                      Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                      from ( 
+                          SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                          from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                          where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                      ) as hffc
+                UNION 
+                      Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                        from (
+                          SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                          from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                          where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                        ) as hfm
+                UNION 
+                      Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                      from huella_carbono_extintores fe, extintor_sede es, sede s
+                      where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa 
+                      GROUP by año
+                UNION 
+                      Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                      from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                      where  l.sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                UNION
+                      SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
+                      from huella_carbono_energia hce, sede s
+                      where hce.Sede=s.Codigo and s.Empresa=1 GROUP by año
+              ) 
+              as ft GROUP by ft.año ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      
+      /*=============================================================================================================
+         Consultas para hacer las graficas por empresa de las sedes registradas
+      ===============================================================================================================*/
+      public function Consultar_huella_carbono_sedes_empresa_general($empresa){
+        $sql="SELECT ft.sede,ft.Nombre ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  s.Codigo as sede, s.Nombre, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+          UNION 
+                Select  hffc.sede , hffc.Nombre, sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  s.Codigo as sede , s.Nombre, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+                ) as hffc
+          UNION 
+                Select  hfm.sede, hfm.Nombre , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  s.Codigo as sede , s.Nombre, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+                  ) as hfm
+          UNION 
+                Select  s.Codigo as sede, s.Nombre , sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa 
+                GROUP by sede
+          UNION 
+                Select  s.Codigo as sede, s.Nombre , sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+          UNION
+                SELECT s.Codigo as sede, s.Nombre , sum(hce.Total_CO2) as Total_carbono 
+                from huella_carbono_energia hce, sede s
+                where hce.Sede=s.Codigo and s.Empresa=1 GROUP by sede
+        ) 
+        as ft GROUP by ft.sede";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de alcance 1
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance1_empresa_general($empresa){
+        $sql="SELECT ft.año ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+          UNION 
+                Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                ) as hffc
+          UNION 
+                Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                  ) as hfm
+          UNION 
+                Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa 
+                GROUP by año
+          UNION 
+                Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Empresa=$empresa GROUP by año
+        
+        ) 
+        as ft GROUP by ft.año ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de alcance 2
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance2_empresa_general($empresa){
+        $sql="SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
+              from huella_carbono_energia hce, sede s
+              where hce.Sede=s.Codigo and s.Empresa=$empresa 
+              GROUP by año";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de Dioxido Carbono CO2
+      ===============================================================================================================*/
+      public function Consultar_grafica_CO2_empresa_general($empresa){
+        $sql="  SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2 
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+              UNION 
+                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de Oxido Nitroso N2O
+      ===============================================================================================================*/
+      public function Consultar_grafica_N2O_empresa_general($empresa){
+        $sql="  SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_NO2) as N2o
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+              UNION 
+                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_NO2) as N2o
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de Metano CH4
+      ===============================================================================================================*/
+      public function Consultar_grafica_CH4_empresa_general($empresa){
+        $sql="  SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_CH4) as Ch4
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+              UNION 
+                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CH4) as Ch4
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+
+    /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                                            GRAFICACION POR EMPRESA ------- General---- Un año en especifico
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas por empresa de total de CO2 emitido en un año predeterminado
+      ===============================================================================================================*/
+      public function Consultar_grafica_GEI_empresa_año($empresa,$ano){
+        $sql="SELECT ft.mes ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fr.Fecha_registro)=$ano 
+                GROUP by mes
+            UNION 
+                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano 
+                    GROUP by mes
+                ) as hffc
+            UNION 
+                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano  
+                    GROUP by mes
+                  ) as hfm
+            UNION 
+                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa and YEAR(fe.Fecha_registro)=$ano
+                GROUP by mes
+            UNION 
+                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Empresa=$empresa and YEAR(l.Fecha_registro)=$ano
+                GROUP by mes
+            UNION
+                SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
+                from huella_carbono_energia hce, sede s
+                where hce.Sede=s.Codigo and s.Empresa=1 and YEAR(hce.Fecha_registro)=$ano
+                GROUP by mes
+          ) 
+          as ft GROUP by ft.mes ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas por empresa de las sedes registradas y su de total de CO2 emitido en un año predeterminado
+      ===============================================================================================================*/
+      public function Consultar_huella_carbono_sedes_empresa_año($empresa,$ano){
+        $sql="SELECT ft.sede,ft.Nombre ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  s.Codigo as sede, s.Nombre, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fr.Fecha_registro)=$ano 
+                GROUP by sede
+          UNION 
+                Select  hffc.sede , hffc.Nombre, sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  s.Codigo as sede , s.Nombre, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano 
+                    GROUP by sede
+                ) as hffc
+          UNION 
+                Select  hfm.sede, hfm.Nombre , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  s.Codigo as sede , s.Nombre, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano 
+                    GROUP by sede
+                  ) as hfm
+          UNION 
+                Select  s.Codigo as sede, s.Nombre , sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa and YEAR(fe.Fecha_registro)=$ano 
+                GROUP by sede
+          UNION 
+                Select  s.Codigo as sede, s.Nombre , sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Empresa=$empresa and YEAR(l.fecha_registro)=$ano 
+                GROUP by sede
+          UNION
+                SELECT s.Codigo as sede, s.Nombre , sum(hce.Total_CO2) as Total_carbono 
+                from huella_carbono_energia hce, sede s
+                where hce.Sede=s.Codigo and s.Empresa=1 and YEAR(hce.Fecha_registro)=$ano 
+                GROUP by sede
+        ) 
+        as ft GROUP by ft.sede ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de alcance 1
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance1_empresa_año($empresa,$ano){
+        $sql="SELECT ft.mes ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Empresa=$empresa and Year(fr.Fecha_registro)=$ano
+                GROUP by mes
+          UNION 
+                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Empresa=$empresa and Year(fc.Fecha_registro)=$ano
+                    GROUP by mes
+                ) as hffc
+          UNION 
+                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and Year(fm.Fecha_registro)=$ano
+                    GROUP by mes
+                  ) as hfm
+          UNION 
+                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa and Year(fe.Fecha_registro)=$ano
+                GROUP by mes
+          UNION 
+                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Empresa=$empresa and Year(l.Fecha_registro)=$ano
+                GROUP by mes
+        
+        ) 
+        as ft GROUP by ft.mes ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de alcance 2
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance2_empresa_año($empresa,$ano){
+        $sql="SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
+              from huella_carbono_energia hce, sede s
+              where hce.Sede=s.Codigo and s.Empresa=$empresa and  YEAR(hce.Fecha_registro)=$ano
+              GROUP by mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+     
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de Dioxido Carbono CO2
+      ===============================================================================================================*/
+      public function Consultar_grafica_CO2_empresa_año($empresa,$ano){
+        $sql="  SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2 
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
+                GROUP by mes
+              UNION 
+                SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
+                GROUP by mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de Oxido Nitroso N2O
+      ===============================================================================================================*/
+      public function Consultar_grafica_N2O_empresa_año($empresa,$ano){
+        $sql="  SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_NO2) as N2o
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
+                GROUP by mes
+              UNION 
+                SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_N2O) as N2o
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
+                GROUP by mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de empresa en general de Metano CH4
+      ===============================================================================================================*/
+      public function Consultar_grafica_CH4_empresa_año($empresa,$ano){
+        $sql="  SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_CH4) as Ch4
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Empresa=$empresa and  YEAR(fc.Fecha_registro)=$ano
+                GROUP by mes
+              UNION 
+                SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CH4) as Ch4
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
+                GROUP by mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      
+      
 
 
 
