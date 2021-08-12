@@ -20,6 +20,37 @@ $sede=$_SESSION['sede'];
 	<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
 	<script src='./../../src/js/jquery-3.4.1.min.js'></script>
 	<script type="text/javascript">
+	$(document).ready(()=>{
+		$('#Formulario_infor').submit(()=>{
+			
+			$.ajax({
+				url:"bean/Descargar.php",
+				type:"POST",
+				datatype:"html",
+				data:$("#Formulario_infor").serialize(),
+				success: (data)=>
+				{
+					let resp=jQuery.parseJSON(data);
+					//console.log(resp.datos);
+					window.open('bean/Generar_Graficos.php?Datos='+JSON.stringify(resp.datos), 'Generar Graficos','width=1200,height=500,scrollbars=N');
+					window.open("./informe.php","_banck");
+				}
+				
+			});
+
+			
+				
+			
+			
+		});
+		$('#Enviar').click((e)=>{
+				e.preventDefault();
+				$('#Formulario_infor').submit();
+				
+		});
+	});
+		
+
 		google.charts.load('current', {'packages':['corechart']});
      	google.charts.setOnLoadCallback(Chart);
      	google.charts.setOnLoadCallback(hidrica);
@@ -76,26 +107,8 @@ $sede=$_SESSION['sede'];
 				
            
         		var dataUrl = chart.getImageURI();	
-        		$.ajax({
-        		        url: 'bean/Guardar_grafica.php',         
-        		        type: 'POST', 
-						dataType:"html",  
-						data:{ img: dataUrl, nombre: "materiales_r" },              
-        		        success: data=>
-        		        {
-							let resp=jQuery.parseJSON(data);
-							if(!data.success)
-							{
-								console.log(data.mesaje);
-							}
-        		        }
-        		    });                
-  				
-    			 
-        		
-      /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/  					
-        		
 		}
+		/*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/  					
 
 		function hidrica(){
 				dibujar_ha();
@@ -275,7 +288,13 @@ $sede=$_SESSION['sede'];
         		
 		}
 
+		
 	</script>
+	<style>
+		#hol{
+			visibility:hidden
+		}
+	</style>
 </head>
 <body>
 <div class="arriba"><img src="../../images/Logo.png"><p>Informe y estadisticas</p><a href="https://piac.ecoblue.co/index.php?c=1/"> Cerrar sesion</a></p></div>
@@ -286,7 +305,7 @@ $sede=$_SESSION['sede'];
 <div id="centro">
 	<div id="informe">
 		<h2>Informes de emision</h2>
-		<form name="form" action="bean/Descargar.php" method='POST'>
+		<form name="form" id='Formulario_infor' action="javascript:Enviar.focus();">
 			<label>Descargar informe  </label>
 			<select name="tipo_informe" onChange="Cargar_sede()">
 				<option value="S">Seleccione</option>
@@ -295,7 +314,6 @@ $sede=$_SESSION['sede'];
 			</select>
 			<select name="sede" hidden="" >
 				<option value="s">Seleccione</option>
-				<option value="a">ALL</option>
 				<?php
 					$resp=$consultas->BuscarEmpresa_sede($sede);
 					if ($fila=mysqli_fetch_array($resp)) {
@@ -330,7 +348,7 @@ $sede=$_SESSION['sede'];
 				?>
 			</select><br>
 			<input type="text" name="Empresa" value='<?=$_SESSION['empresa']?>' hidden=''>
-			<input type="submit" name="Enviar" value="Enviar">
+			<input type="submit" name="Enviar" id="Enviar" value="Enviar">
 		</form>
 		
 	</div>
@@ -351,6 +369,9 @@ $sede=$_SESSION['sede'];
 		<div id="chg" style="width: 40%; float: left; margin-left:8%; ">
 
 		</div>	
+	</div>
+	<div id="hol">
+		
 	</div>
 
 	

@@ -20,6 +20,7 @@ if ($_POST['nombre_usuario'] && $_POST['contraseña'])
 			$resp=$consulta->BuscarEmpresa_sede($fila[5]);
 			if ($f=mysqli_fetch_array($resp)) {
 				$_SESSION['empresa']=$f[0];
+				$_SESSION['empresa_n']=$f[1];
 			}
 
 		}

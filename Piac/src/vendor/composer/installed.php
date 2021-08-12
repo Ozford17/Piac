@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '2816839d0284b9ba0040a1c5b89ca561a3852358',
+    'reference' => '4d76a1b56f0278dec1e4437bed3c069d03e87038',
     'name' => '__root__',
   ),
   'versions' => 
@@ -18,7 +18,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '2816839d0284b9ba0040a1c5b89ca561a3852358',
+      'reference' => '4d76a1b56f0278dec1e4437bed3c069d03e87038',
     ),
     'dompdf/dompdf' => 
     array (

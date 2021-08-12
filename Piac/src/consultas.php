@@ -139,7 +139,7 @@ require_once "Conexion.php";
       buscar codigo Empresa por codigo de sede
      ===============================================================================================================*/
      public function BuscarEmpresa_sede($sede){
-      $sql="SELECT Empresa from Sede where Codigo=".$sede.";";
+      $sql="SELECT e.Codigo,e.Nombre from Sede s, Empresa e where s.Codigo=e.Codigo and s.Codigo=".$sede.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -686,10 +686,44 @@ require_once "Conexion.php";
             //echo $sql."<br>";
           $resultado=$this->consultar($sql);  
           return $resultado;
-        }
+      }
+
+    /*===============================================================================================================
+       Listar fuentes fijas por empresa 
+    =================================================================================================================*/
+     public function consultar_fuente_fijas_empresa($empresa){
+      $sql="SELECT f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre as combustible,f.horas_dias,f.dias_semana,f.fecha_i_funcion,f.Fecha, r.nombre, s.nombre as sede 
+            FROM fuentes_fijas f, elemento e, refrigerante r , sede s, empresa em
+            WHERE f.Elemento=e.Codigo and f.Sede=s.codigo and s.Empresa=em.codigo and f.estado=0 and f.refrigerante=r.codigo and em.Codigo=$empresa;";
+      //echo $sql."<br>";
+      $resultado=$this->consultar($sql);  
+      return $resultado;
+  }
+      /*===============================================================================================================
+        Listar fuentes fijas por empresa filtrados por año de ingreso
+      =================================================================================================================*/
+      public function consultar_fuente_fijas_empresa_año($empresa,$año){
+        $sql="SELECT f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre as combustible,f.horas_dias,f.dias_semana,f.fecha_i_funcion,f.Fecha, r.nombre, s.nombre as sede 
+              FROM fuentes_fijas f, elemento e, refrigerante r , sede s, empresa em
+              WHERE f.Elemento=e.Codigo and f.Sede=s.codigo and s.Empresa=em.codigo and f.estado=0 and f.refrigerante=r.codigo and em.Codigo=$empresa and Year(f.fecha_i_funcion)=$año;";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
         /*===============================================================================================================
-       Listar fuentes fijas por codigo
-     =================================================================================================================*/
+          Listar fuentes fijas por sede filtrados por año de ingreso
+        =================================================================================================================*/
+      public function consultar_fuente_fijas_sede_año($sede,$año){
+        $sql="SELECT f.Codigo, s.Nombre as Sede, f.Fuente, f.Cantidad, e.Nombre as combustible, f.horas_dias, f.dias_semana, f.fecha_i_funcion, f.Fecha, r.nombre, s.nombre as sede 
+              FROM fuentes_fijas f, elemento e, refrigerante r , sede s
+              WHERE f.Elemento=e.Codigo and f.Sede=s.codigo and s.Codigo=$sede and f.estado=0 and f.refrigerante=r.codigo and Year(f.fecha_i_funcion)=$año;";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      /*===============================================================================================================
+        Listar fuentes fijas por codigo
+      =================================================================================================================*/
       public function consultar_fuente_fijas_codigo($codigo){
           $sql="select f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre,f.Fecha, f.Estado, f.Observacion  from fuentes_fijas f, elemento e where f.Elemento=e.Codigo and f.Codigo=$codigo and estado=0;";
           //echo $sql;
@@ -697,33 +731,140 @@ require_once "Conexion.php";
           return $resultado;
         }
 
-        /*===============================================================================================================
-       Listar fuentes fijas electricas por sede
-     =================================================================================================================*/
+      /*===============================================================================================================
+         Listar fuentes fijas electricas por sede
+      =================================================================================================================*/
       public function consultar_fuente_fijas_electricas_sede($sede){
-          $sql="select ee.Codigo,ee.Sede,ee.Nombre,ee.Cantidad_equipos,ee.Horas,ee.Dias,r.nombre,ee.estado,ee.observacion from Equipo_electronico ee, refrigerante r where Sede=".$sede." and ee.Refrigerante=r.codigo and estado=0";
+          $sql="SELECT ee.Codigo,s.Nombre as sede, ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion 
+                FROM Equipo_electronico ee, refrigerante r, Sede s
+                WHERE  ee.Refrigerante=r.codigo and ee.estado=0 and ee.Sede=s.Codigo and s.Codigo=$sede";
           //echo $sql."<br> ";
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
-
-        /*===============================================================================================================
-       Listar fuentes moviles  por sede
+      /*===============================================================================================================
+       Listar fuentes fijas electricas por empresa
      =================================================================================================================*/
-      public function consultar_fuente_movil_sede($sede){
-          $sql="SELECT f.Codigo,f.Sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre,f.Fecha, r.nombre FROM fuentes_moviles f, elemento e, refrigerante r where f.Combustible=e.Codigo and Sede=$sede and estado=0 and r.codigo=f.Refrigerante;";
+     public function consultar_fuente_fijas_electricas_empresa($empresa){
+      $sql="SELECT ee.Codigo,ee.Sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede 
+            from Equipo_electronico ee, refrigerante r , sede s
+            where ee.Sede=s.codigo and s.Empresa=$empresa and ee.Refrigerante=r.codigo and ee.estado=0";
+      //echo $sql."<br> ";
+      $resultado=$this->consultar($sql);  
+      return $resultado;
+    }
+      /*===============================================================================================================
+      Listar fuentes fijas electricas por empresa 
+      =================================================================================================================*/
+      public function consultar_fuente_fijas_electricas_empresa_año($empresa,$año){
+        $sql="SELECT ee.Codigo,ee.Sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede,  ee.Fecha as Fecha
+              FROM Equipo_electronico ee, refrigerante r , sede s
+              WHERE ee.Sede=s.codigo and s.Empresa=$empresa and ee.Refrigerante=r.codigo and ee.estado=0  and Year(ee.Fecha)=$año ";
+          //echo $sql."<br> ";
+          $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      /*===============================================================================================================
+        Listar fuentes fijas electricas por sede por año  
+      =================================================================================================================*/
+      public function consultar_fuente_fijas_electricas_sede_año($sede,$año){
+        $sql="SELECT ee.Codigo,ee.Sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede,  ee.Fecha as Fecha
+              FROM Equipo_electronico ee, refrigerante r , sede s
+              WHERE ee.Sede=s.codigo and s.Codigo=$sede and ee.Refrigerante=r.codigo and ee.estado=0  and Year(ee.Fecha)=$año ";
+          //echo $sql."<br> ";
+          $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
 
+      /*===============================================================================================================
+         Listar fuentes moviles  por sede
+      =================================================================================================================*/
+      public function consultar_fuente_movil_sede($sede){
+          $sql="SELECT f.Codigo,s.Nombre as sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre 
+                FROM fuentes_moviles f, elemento e, refrigerante r, Sede s
+                WHERE f.Combustible=e.Codigo and f.Sede=s.Codigo and s.Codigo=$sede and f.estado=0 and r.codigo=f.Refrigerante;";
+          //echo $sql."<br>"; 
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
       /*===============================================================================================================
+        Listar fuentes moviles  por empresa
+      =================================================================================================================*/
+      public function consultar_fuente_movil_empresa($empresa){
+        $sql="SELECT f.Codigo,f.Sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede
+              FROM fuentes_moviles f, elemento e, refrigerante r, sede s, empresa em 
+              where f.Combustible=e.Codigo and f.Sede=s.codigo and s.empresa=em.codigo and em.codigo=$empresa and f.estado=0 and r.codigo=f.Refrigerante;";
+        //echo $sql."<br>"; 
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      /*===============================================================================================================
+        Listar fuentes moviles  por empresa filtrado por año
+      =================================================================================================================*/
+      public function consultar_fuente_movil_empresa_año($empresa,$año){
+        $sql="SELECT f.Codigo,f.Sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede, f.Fecha as Fecha
+              FROM fuentes_moviles f, elemento e, refrigerante r, sede s, empresa em 
+              where f.Combustible=e.Codigo and f.Sede=s.codigo and s.empresa=em.codigo and em.codigo=$empresa and f.estado=0 and r.codigo=f.Refrigerante and Year(f.Fecha)=$año;";
+        //echo $sql."<br>"; 
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      /*===============================================================================================================
+        Listar fuentes moviles  por sede filtrado por año
+      =================================================================================================================*/
+      public function consultar_fuente_movil_sede_año($sede,$año){
+        $sql="SELECT f.Codigo,f.Sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede, f.Fecha as Fecha
+              FROM fuentes_moviles f, elemento e, refrigerante r, sede s 
+              where f.Combustible=e.Codigo and f.Sede=s.codigo and s.Codigo=$sede and f.estado=0 and r.codigo=f.Refrigerante and Year(f.Fecha)=$año;";
+        //echo $sql."<br>"; 
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      
+      /*===============================================================================================================
           Listar fuentes fijas electricas por sede
       =================================================================================================================*/
       public function consultar_fuente_movil_electricas_sede($sede){
-          $sql="select v.Codigo, v.Sede, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre from Vehiculo_electrico v, refrigerante r where Sede=$sede and estado=0 and v.Refrigerante=r.codigo";
+          $sql="SELECT v.Codigo, s.Nombre as sede, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, v.Fecha
+                FROM Vehiculo_electrico v, refrigerante r, Sede s
+                WHERE v.Sede=s.Codigo and s.Codigo=$sede and v.estado=0 and v.Refrigerante=r.codigo";
+          //echo $sql."<br>"; 
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
+
+      /*===============================================================================================================
+          Listar fuentes fijas electricas por empresa
+      =================================================================================================================*/
+      public function consultar_fuente_movil_electricas_empresa($empresa){
+        $sql="SELECT v.Codigo, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, s.Nombre as sede, v.Fecha
+              FROM Vehiculo_electrico v, refrigerante r , sede s, empresa e
+              WHERE v.Sede=s.codigo and s.empresa=e.codigo and v.estado=0 and v.Refrigerante=r.codigo and e.codigo=$empresa";
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      /*===============================================================================================================
+          Listar fuentes fijas electricas por empresa filtrado por año
+      =================================================================================================================*/
+      public function consultar_fuente_movil_electricas_empresa_año($empresa,$año){
+        $sql="SELECT v.Codigo, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, s.Nombre as sede, v.Fecha as Fecha
+              FROM Vehiculo_electrico v, refrigerante r , sede s, empresa e
+              WHERE v.Sede=s.codigo and s.empresa=e.codigo and v.estado=0 and v.Refrigerante=r.codigo and e.codigo=$empresa and Year(v.Fecha)=$año";
+        //echo $sql."</br>";              
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      /*===============================================================================================================
+          Listar fuentes fijas electricas por sede filtrado por año
+      =================================================================================================================*/
+      public function consultar_fuente_movil_electricas_sede_año($sede,$año){
+        $sql="SELECT v.Codigo, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, s.Nombre as sede, v.Fecha as Fecha
+              FROM Vehiculo_electrico v, refrigerante r , sede s
+              WHERE v.Sede=s.codigo and s.Codigo=$sede and v.estado=0 and v.Refrigerante=r.codigo and Year(v.Fecha)=$año";
+        //echo $sql."</br>";              
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
       /*===============================================================================================================
           Consultar fuente moviles por placa
       =================================================================================================================*/
@@ -738,10 +879,28 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function consultar_fuente_luminaria_sede($sede){
           $sql="select * from Luminarias  where Sede=$sede;";
-
+          //echo $sql."<br>";
           $resultado=$this->consultar($sql);  
           return $resultado;
-        }
+      }
+      /*===============================================================================================================
+           Listar fuentes iluminarias por empresa descriminados por sedes
+      =================================================================================================================*/
+      public function consultar_fuente_luminaria_empresa($empresa){
+        $sql="select l.*, s.Nombre from Luminarias l, sede s  where Sede=s.codigo and s.Empresa=$empresa;";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
+      /*===============================================================================================================
+           Listar fuentes iluminarias por empresa descriminados por sedes
+      =================================================================================================================*/
+      public function consultar_fuente_sede_empresa($sede){
+        $sql="select l.*, s.Nombre from Luminarias l, sede s  where Sede=s.codigo and s.Codigo=$sede;";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);  
+        return $resultado;
+      }
 
         /*===============================================================================================================
        actualizar estado maquinaria en fuentes fijas
@@ -808,7 +967,11 @@ require_once "Conexion.php";
        consulta para la huella de carbono
       =================================================================================================================*/
       public function fuentes_fijas_consulta($sede){
-          $sql="select f.Fuente, f.Cantidad,f.Elemento,e.Nombre, count(e.Nombre),e.Unidad from fuentes_fijas f, elemento e where f.Elemento=e.Codigo and f.Sede=$sede and estado=0 GROUP by e.Nombre DESC";
+          $sql="SELECT f.*,e.Nombre, e.Nombre as combustible ,e.Unidad , s.Nombre as sede_n
+                FROM fuentes_fijas f, elemento e , Sede s
+                WHERE f.Elemento=e.Codigo and f.Sede=$sede and f.Sede=s.Codigo and f.estado=0 
+                Order by f.Fuente ASC";
+          //echo $sql."<br>";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
@@ -838,23 +1001,119 @@ require_once "Conexion.php";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
-        /*===============================================================================================================
+      /*===============================================================================================================
        consulta de todos extintores registrados por sede
       =================================================================================================================*/
       public function fuentes__total_extintores_sede($sede){
-          $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede, sum(se.cantidad) from 
-          ( SELECT es.codigo, es.sede, es.cantidad from extintor_sede es where sede=$sede 
+          $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.Sede as Sede,  sum(se.cantidad) as cantidad from 
+          ( 
+            SELECT es.codigo, s.Codigo as sede_c, s.Nombre as Sede,  es.cantidad 
+            FROM extintor_sede es, Sede s
+            Where es.Sede=s.Codigo and s.Codigo=$sede 
                               UNION 
-            SELECT ev.extintor, v.sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v WHERE v.Sede=$sede 
+            SELECT ev.extintor, s.Codigo as sede_c, s.Nombre as Sede, ev.extintor 
+            FROM extintor_vehiculo ev, fuentes_moviles v , Sede s
+            WHERE ev.Vehiculo=v.Codigo and v.Sede=s.Codigo and s.Codigo=$sede
                                 UNION 
-            SELECT ev.extintor, v.sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v WHERE v.Sede=$sede ) 
+            SELECT ev.extintor, s.Codigo as sede_c, s.Nombre as Sede, COUNT(ev.extintor) 
+            FROM extintor_vehiculo_elec ev, vehiculo_electrico ve , Sede s
+            WHERE ev.Vehiculo=ve.Codigo and ve.Sede=s.Codigo and s.Codigo=$sede
+            ) 
 
             as se , extintores e where e.codigo=se.codigo GROUP by codigo";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
-        /*===============================================================================================================
+      /*===============================================================================================================
+        consulta de extintores de los automoviles por empresa
+      =================================================================================================================*/
+      public function Listado_extintores_moviles_empresa($empresa){
+        $sql="SELECT se.* from 
+        ( 
+          SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, ve.Placa, s.Nombre as sede 
+          FROM vehiculo_electrico ve, extintor_vehiculo_elec ev , extintores ex, sede s 
+          WHERE ve.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and ve.Sede=s.Codigo and ve.estado=0 and s.Empresa=$empresa
+                              UNION 
+          SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, fm.Placa, s.Nombre as sede
+          FROM fuentes_moviles fm, extintor_vehiculo ev , extintores ex, sede s 
+          WHERE fm.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and fm.Sede=s.Codigo and fm.estado=0  and s.Empresa=$empresa
+          
+          )as se Order by Placa ASC";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      /*===============================================================================================================
+        consulta de extintores de los automoviles por sede
+      =================================================================================================================*/
+      public function Listado_extintores_moviles_sede($sede){
+        $sql="SELECT se.* from 
+        ( 
+          SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, ve.Placa, s.Nombre as sede 
+          FROM vehiculo_electrico ve, extintor_vehiculo_elec ev , extintores ex, sede s 
+          WHERE ve.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and ve.Sede=s.Codigo and ve.estado=0 and s.Codigo=$sede
+                              UNION 
+          SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, fm.Placa, s.Nombre as sede
+          FROM fuentes_moviles fm, extintor_vehiculo ev , extintores ex, sede s 
+          WHERE fm.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and fm.Sede=s.Codigo and fm.estado=0  and s.Codigo=$sede
+          
+          )as se Order by Placa ASC";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      /*===============================================================================================================
+        consulta de todos extintores registrados por sede
+      =================================================================================================================*/
+      public function fuentes__total_extintores_empresa($empresa){
+        $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede, sum(se.cantidad) as cantidad from 
+        ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s, empresa e where es.sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa  
+                            UNION 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa 
+                              UNION 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa ) 
+
+          as se , extintores e where e.codigo=se.codigo GROUP by codigo";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      /*===============================================================================================================
+        consulta de todos extintores registrados en las empresas por sede filtrado por año
+      =================================================================================================================*/
+      public function fuentes__total_extintores_empresa_año($empresa,$año){
+        $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede, sum(se.cantidad) as cantidad from 
+        ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s, empresa e where es.sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa and Year(es.Fecha)=$año
+                            UNION 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa and Year(ev.Fecha_subida)=$año
+                              UNION 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa and Year(ev.Fecha_subida)=$año ) 
+
+          as se , extintores e where e.codigo=se.codigo GROUP by codigo";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*===============================================================================================================
+        consulta de todos extintores registrados por sede filtrado por año
+      =================================================================================================================*/
+      public function fuentes__total_extintores_sede_año($sede,$año){
+        $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede, sum(se.cantidad) as cantidad from 
+        ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s where es.sede=s.codigo and s.Codigo=$sede and Year(es.Fecha)=$año
+                            UNION 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s WHERE v.Sede=s.codigo and s.Codigo=$sede and Year(ev.Fecha_subida)=$año
+                              UNION 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s WHERE v.Sede=s.codigo and s.Codigo=$sede and Year(ev.Fecha_subida)=$año ) 
+
+          as se , extintores e where e.codigo=se.codigo GROUP by codigo";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*===============================================================================================================
        consulta de refrigerantes de las fuentes fijas
       =================================================================================================================*/
       public function listado_refigerante_fuentes_fijas(){
@@ -862,15 +1121,56 @@ require_once "Conexion.php";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
-        /*===============================================================================================================
-       consulta de refrigerantes de las fuentes fijas
+      
+      /*===============================================================================================================
+       consulta de refrigerantes de las fuentes fijas empresa
+      =================================================================================================================*/
+      public function listado_refigerante_fuentes_fijas_empresa($empresa){
+        $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo) as cantidad, s.Nombre as sede
+              FROM fuentes_fijas f, refrigerante r, sede s, empresa e 
+              where f.refrigerante=r.codigo and f.sede=s.codigo and s.empresa=e.codigo and e.Codigo=$empresa and r.codigo<>0
+              GROUP by r.nombre";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      /*===============================================================================================================
+        consulta de refrigerantes de las fuentes fijas por sede
       =================================================================================================================*/
       public function listado_refigerante_fuentes_fijas_sede($sede){
-          $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)FROM fuentes_fijas f, refrigerante r where f.refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre";
+        $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo) as cantidad, s.Nombre as sede
+              FROM fuentes_fijas f, refrigerante r, sede s 
+              where f.refrigerante=r.codigo and f.sede=s.codigo and s.Codigo=$sede and r.codigo<>0
+              GROUP by r.nombre";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      /*===============================================================================================================
+       consulta de refrigerantes de las fuentes fijas empresa filtradas por año
+      =================================================================================================================*/
+      public function listado_refigerante_fuentes_fijas_empresa_año($empresa, $año){
+        $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo) as cantidad, s.Nombre as sede
+              FROM fuentes_fijas f, refrigerante r, sede s, empresa e 
+              where f.refrigerante=r.codigo and f.sede=s.codigo and s.empresa=e.codigo and e.Codigo=$empresa and r.codigo<>0 and year(f.fecha_i_funcion)=$año
+              GROUP by r.nombre";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
 
-          $resultado=$this->consultar($sql);
-          return $resultado;
-        }
+      /*===============================================================================================================
+        consulta de refrigerantes de las fuentes fijas sede filtradas por año
+      =================================================================================================================*/
+      public function listado_refigerante_fuentes_fijas_sede_año($sede, $año){
+        $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo) as cantidad, s.Nombre as sede
+              FROM fuentes_fijas f, refrigerante r, sede s 
+              where f.refrigerante=r.codigo and f.sede=s.codigo and s.Codigo=$sede and r.codigo<>0 and year(f.fecha_i_funcion)=$año
+              GROUP by r.nombre";
+        //echo $sql."<br>";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
         /*===============================================================================================================
        consulta de refrigerantes de las fuentes fijas
       =================================================================================================================*/
@@ -897,6 +1197,18 @@ require_once "Conexion.php";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
+      /*===============================================================================================================
+        consulta de refrigerantes de la empresa para las fuentes moviles(combustion y electricos)
+      =================================================================================================================*/
+      public function listado_refigerante_fuentes_mobiles_empresa($empresa){
+        $sql="SELECT * from (
+              SELECT r.codigo, r.nombre, r.unidades, FROM Vehiculo_electrico  f, refrigerante r, sede s where f.Refrigerante=r.codigo and f.sede=s.codigo and s.empresa=$empresa 
+                  UNION
+              SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)FROM fuentes_moviles  f, refrigerante r where f.Refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre
+              )as lre " ;
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
       /*===============================================================================================================
        consulta de refrigerantes de las fuentes fijas por nombre 
        =================================================================================================================*/
@@ -1200,14 +1512,97 @@ require_once "Conexion.php";
                 UNION
                       SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
                       from huella_carbono_energia hce, sede s
-                      where hce.Sede=s.Codigo and s.Empresa=1 GROUP by año
+                      where hce.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
               ) 
               as ft GROUP by ft.año ";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
-      
+      /*=============================================================================================================
+         Consultas para hacer las graficas por empresa de total de CO2 emitido
+      ===============================================================================================================*/
+      public function Consultar_grafica_GEI_empresa_sede($sede){
+        $sql="SELECT ft.año ,sum(ft.Total_carbono ) as total_carbono FROM 
+              ( 
+                      SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
+                      from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                      where fr.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                UNION 
+                      Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                      from ( 
+                          SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                          from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                          where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                      ) as hffc
+                UNION 
+                      Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                        from (
+                          SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                          from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                          where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                        ) as hfm
+                UNION 
+                      Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                      from huella_carbono_extintores fe, extintor_sede es, sede s
+                      where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede 
+                      GROUP by año
+                UNION 
+                      Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                      from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                      where  l.sede=s.Codigo and s.Codigo=$sede GROUP by año
+                UNION
+                      SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
+                      from huella_carbono_energia hce, sede s
+                      where hce.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+              ) 
+              as ft GROUP by ft.año ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      /*=============================================================================================================
+         Consultas para hacer las graficas por sede de total de CO2 emitido
+      ===============================================================================================================*/
+      public function Consultar_grafica_GEI_sede($sede){
+        $sql="SELECT ft.año ,sum(ft.Total_carbono ) as total_carbono FROM 
+              ( 
+                      SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
+                      from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                      where fr.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                UNION 
+                      Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                      from ( 
+                          SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                          from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                          where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                      ) as hffc
+                UNION 
+                      Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                        from (
+                          SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                          from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                          where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                        ) as hfm
+                UNION 
+                      Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                      from huella_carbono_extintores fe, extintor_sede es, sede s
+                      where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede 
+                      GROUP by año
+                UNION 
+                      Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                      from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                      where  l.sede=s.Codigo and s.Codigo=$sede GROUP by año
+                UNION
+                      SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
+                      from huella_carbono_energia hce, sede s
+                      where hce.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+              ) 
+              as ft GROUP by ft.año ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
       /*=============================================================================================================
          Consultas para hacer las graficas por empresa de las sedes registradas
       ===============================================================================================================*/
@@ -1243,13 +1638,15 @@ require_once "Conexion.php";
           UNION
                 SELECT s.Codigo as sede, s.Nombre , sum(hce.Total_CO2) as Total_carbono 
                 from huella_carbono_energia hce, sede s
-                where hce.Sede=s.Codigo and s.Empresa=1 GROUP by sede
+                where hce.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
         ) 
         as ft GROUP by ft.sede";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
+
+      
 
       /*=============================================================================================================
          Consultas para hacer las graficas de empresa en general de alcance 1
@@ -1292,6 +1689,46 @@ require_once "Conexion.php";
       }
 
       /*=============================================================================================================
+         Consultas para hacer las graficas de la sede en general de alcance 1
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance1_sede($sede){
+        $sql="SELECT ft.año ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+          UNION 
+                Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                ) as hffc
+          UNION 
+                Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                  ) as hfm
+          UNION 
+                Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede 
+                GROUP by año
+          UNION 
+                Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Codigo=$sede GROUP by año
+        
+        ) 
+        as ft GROUP by ft.año ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
          Consultas para hacer las graficas de empresa en general de alcance 2
       ===============================================================================================================*/
       public function Consultar_grafica_co2_alcance2_empresa_general($empresa){
@@ -1305,16 +1742,48 @@ require_once "Conexion.php";
       }
 
       /*=============================================================================================================
+         Consultas para hacer las graficas de sede especifica de alcance 2
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance2_sede($sede){
+        $sql="SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
+              from huella_carbono_energia hce, sede s
+              where hce.Sede=s.Codigo and s.Codigo=$sede
+              GROUP by año";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
          Consultas para hacer las graficas de empresa en general de Dioxido Carbono CO2
       ===============================================================================================================*/
       public function Consultar_grafica_CO2_empresa_general($empresa){
-        $sql="  SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2 
+        $sql="SELECT Co2.año as Año, Co2.Co2  from (
+                SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2 
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
                 where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año";
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+              ) as Co2 GROUP by Año"; 
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+      /*=============================================================================================================
+         Consultas para hacer las graficas de sede especifica de Dioxido Carbono CO2
+      ===============================================================================================================*/
+      public function Consultar_grafica_CO2_sede($sede){
+        $sql="SELECT Co2.año as Año, Co2.Co2  from (
+                SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2 
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+              UNION 
+                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+              ) as Co2 GROUP by Año"; 
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
@@ -1324,29 +1793,51 @@ require_once "Conexion.php";
          Consultas para hacer las graficas de empresa en general de Oxido Nitroso N2O
       ===============================================================================================================*/
       public function Consultar_grafica_N2O_empresa_general($empresa){
-        $sql="  SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_NO2) as N2o
+        $sql="SELECT N2O.año as Año, N2O.N2o as total from (
+                SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_NO2) as N2o
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
                 where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
               UNION 
-                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_NO2) as N2o
+                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_N2O) as N2o
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año";
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+              ) as N2O GROUP by Año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
 
       /*=============================================================================================================
-         Consultas para hacer las graficas de empresa en general de Metano CH4
+         Consultas para hacer las graficas de sede especifica de Oxido Nitroso N2O
       ===============================================================================================================*/
-      public function Consultar_grafica_CH4_empresa_general($empresa){
-        $sql="  SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_CH4) as Ch4
+      public function Consultar_grafica_N2O_sede($sede){
+        $sql="SELECT N2O.año as Año, N2O.N2o as total from (
+                SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_NO2) as N2o
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+              UNION 
+                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_N2O) as N2o
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+              ) as N2O GROUP by Año";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de una sede especifica de Metano CH4
+      ===============================================================================================================*/
+      public function Consultar_grafica_CH4_sede($sede){
+        $sql="SELECT CH4.año as Año, CH4.ch4  from (
+                SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_CH4) as Ch4
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CH4) as Ch4
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año";
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                ) as CH4 GROUP By Año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
@@ -1396,7 +1887,55 @@ require_once "Conexion.php";
             UNION
                 SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
                 from huella_carbono_energia hce, sede s
-                where hce.Sede=s.Codigo and s.Empresa=1 and YEAR(hce.Fecha_registro)=$ano
+                where hce.Sede=s.Codigo and s.Empresa=$empresa and YEAR(hce.Fecha_registro)=$ano
+                GROUP by mes
+          ) 
+          as ft GROUP by ft.mes ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas para una sede en especifico del total de CO2 emitido en un año predeterminado
+      ===============================================================================================================*/
+      public function Consultar_grafica_GEI_sede_año($sede,$ano){
+        $sql="SELECT ft.mes ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Codigo=$sede and YEAR(fr.Fecha_registro)=$ano 
+                GROUP by mes
+            UNION 
+                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano 
+                    GROUP by mes
+                ) as hffc
+            UNION 
+                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano  
+                    GROUP by mes
+                  ) as hfm
+            UNION 
+                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede and YEAR(fe.Fecha_registro)=$ano
+                GROUP by mes
+            UNION 
+                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Codigo=$sede and YEAR(l.Fecha_registro)=$ano
+                GROUP by mes
+            UNION
+                SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
+                from huella_carbono_energia hce, sede s
+                where hce.Sede=s.Codigo and s.Codigo=$sede and YEAR(hce.Fecha_registro)=$ano
                 GROUP by mes
           ) 
           as ft GROUP by ft.mes ";
@@ -1444,7 +1983,7 @@ require_once "Conexion.php";
           UNION
                 SELECT s.Codigo as sede, s.Nombre , sum(hce.Total_CO2) as Total_carbono 
                 from huella_carbono_energia hce, sede s
-                where hce.Sede=s.Codigo and s.Empresa=1 and YEAR(hce.Fecha_registro)=$ano 
+                where hce.Sede=s.Codigo and s.Empresa=$empresa and YEAR(hce.Fecha_registro)=$ano 
                 GROUP by sede
         ) 
         as ft GROUP by ft.sede ";
@@ -1452,6 +1991,8 @@ require_once "Conexion.php";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
+
+      
 
       /*=============================================================================================================
          Consultas para hacer las graficas de empresa en general de alcance 1
@@ -1498,6 +2039,50 @@ require_once "Conexion.php";
       }
 
       /*=============================================================================================================
+         Consultas para hacer las graficas de la sede en especifico de alcance 1 por año determinado
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance1_sede_año($sede,$ano){
+        $sql="SELECT ft.mes ,sum(ft.Total_carbono ) as total_carbono FROM 
+        ( 
+                SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
+                from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
+                where fr.Sede=s.Codigo and s.Codigo=$sede and Year(fr.Fecha_registro)=$ano
+                GROUP by mes
+          UNION 
+                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                from ( 
+                    SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
+                    from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                    where fc.Sede=s.Codigo and s.Codigo=$sede and Year(fc.Fecha_registro)=$ano
+                    GROUP by mes
+                ) as hffc
+          UNION 
+                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                  from (
+                    SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
+                    from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and Year(fm.Fecha_registro)=$ano
+                    GROUP by mes
+                  ) as hfm
+          UNION 
+                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                from huella_carbono_extintores fe, extintor_sede es, sede s
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede and Year(fe.Fecha_registro)=$ano
+                GROUP by mes
+          UNION 
+                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                from huella_carbono_lubricantes l , extintor_sede es, sede s 
+                where  l.sede=s.Codigo and s.Codigo=$sede and Year(l.Fecha_registro)=$ano
+                GROUP by mes
+        
+        ) 
+        as ft GROUP by ft.mes ";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
          Consultas para hacer las graficas de empresa en general de alcance 2
       ===============================================================================================================*/
       public function Consultar_grafica_co2_alcance2_empresa_año($empresa,$ano){
@@ -1510,13 +2095,27 @@ require_once "Conexion.php";
         return $resultado;
       }
 
+      /*=============================================================================================================
+         Consultas para hacer las graficas de sede en especifica de alcance 2 por un año determinado
+      ===============================================================================================================*/
+      public function Consultar_grafica_co2_alcance2_sede_año($sede,$ano){
+        $sql="SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
+              from huella_carbono_energia hce, sede s
+              where hce.Sede=s.Codigo and s.Codigo=$sede and  YEAR(hce.Fecha_registro)=$ano
+              GROUP by mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
      
 
       /*=============================================================================================================
          Consultas para hacer las graficas de empresa en general de Dioxido Carbono CO2
       ===============================================================================================================*/
       public function Consultar_grafica_CO2_empresa_año($empresa,$ano){
-        $sql="  SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2 
+        $sql="SELECT CO2.mes, sum(CO2.Co2) FROM(  
+              SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2 
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
                 where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
@@ -1524,7 +2123,28 @@ require_once "Conexion.php";
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
                 where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
-                GROUP by mes";
+                GROUP by mes
+              )as CO2 GROUP BY CO2.mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de una sede en especifico de Dioxido Carbono CO2 por año especifico
+      ===============================================================================================================*/
+      public function Consultar_grafica_CO2_sede_año($sede,$ano){
+        $sql="SELECT CO2.mes, sum(CO2.Co2) FROM(  
+              SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2 
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano
+                GROUP by mes
+              UNION 
+                SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
+                GROUP by mes
+              )as CO2 GROUP BY CO2.mes";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
@@ -1534,7 +2154,8 @@ require_once "Conexion.php";
          Consultas para hacer las graficas de empresa en general de Oxido Nitroso N2O
       ===============================================================================================================*/
       public function Consultar_grafica_N2O_empresa_año($empresa,$ano){
-        $sql="  SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_NO2) as N2o
+        $sql="SELECT N2O.mes, sum(N2O.N2o) from (
+                SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_NO2) as N2o
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
                 where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
@@ -1542,7 +2163,28 @@ require_once "Conexion.php";
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_N2O) as N2o
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
                 where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
-                GROUP by mes";
+                GROUP by mes
+              )as N2O GROUP By N2O.mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de la sede en epecifico de Oxido Nitroso N2O por año especifico
+      ===============================================================================================================*/
+      public function Consultar_grafica_N2O_sede_año($sede,$ano){
+        $sql="SELECT N2O.mes, sum(N2O.N2o) from (
+                SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_NO2) as N2o
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano
+                GROUP by mes
+              UNION 
+                SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_N2O) as N2o
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
+                GROUP by mes
+              )as N2O GROUP By N2O.mes";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
@@ -1552,7 +2194,8 @@ require_once "Conexion.php";
          Consultas para hacer las graficas de empresa en general de Metano CH4
       ===============================================================================================================*/
       public function Consultar_grafica_CH4_empresa_año($empresa,$ano){
-        $sql="  SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_CH4) as Ch4
+        $sql="SELECT CH4.mes, sum(CH4.Ch4) from ( 
+              SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_CH4) as Ch4
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
                 where fc.Sede=s.Codigo and s.Empresa=$empresa and  YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
@@ -1560,12 +2203,32 @@ require_once "Conexion.php";
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CH4) as Ch4
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
                 where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
-                GROUP by mes";
+                GROUP by mes
+              ) as CH4 GROUP BY CH4.mes";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
-      
+
+      /*=============================================================================================================
+         Consultas para hacer las graficas de una sede en especifico de Metano CH4 por año especifico
+      ===============================================================================================================*/
+      public function Consultar_grafica_CH4_sede_año($sede,$ano){
+        $sql="SELECT CH4.mes, sum(CH4.Ch4) from ( 
+              SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_CH4) as Ch4
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Codigo=$sede and  YEAR(fc.Fecha_registro)=$ano
+                GROUP by mes
+              UNION 
+                SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CH4) as Ch4
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
+                GROUP by mes
+              ) as CH4 GROUP BY CH4.mes";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
       
 
 

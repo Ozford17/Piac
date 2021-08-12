@@ -2,12 +2,23 @@
     require './../../src/vendor/autoload.php';
     use Dompdf\Dompdf;
     
-    $html=file_get_contents('./Informeyestaisticas.php');
+    
+    
     $pdf= new DOMPDF();
+    ob_start();
+    include "./bean/informe.php";
+    $html=ob_get_clean();
     $pdf->set_paper("letter","portrait");
-    $pdf->load_html(utf8_decode($html));
+    $pdf->load_html(($html));
     $pdf->render();
-    $pdf->stream("descarga_reporte.pdf");
+    if($pdf->stream("descarga_reporte.pdf"))
+    {
+        echo "se Genero";
+    }
+    else
+    {
+        echo "no se genero";
+    }
 
 
 ?>
