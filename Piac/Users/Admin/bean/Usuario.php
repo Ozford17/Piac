@@ -173,16 +173,18 @@ session_start();
 								url:'bean/Registro.php',
 								method:'POST',
 								dataType:'html',
-								data:$('#formulario-crear-us').serialize,
+								data:$('#formulario-crear-us').serialize(),
 								success:dato=>{
 									let res= jQuery.parseJSON(dato);
 									if(res.success=='true')
 									{
+										
 										$('#mostrar').html('Creación Completada');
 										$('#mostrar').modal();
 									}
 									else
 									{
+										console.log($('#formulario-crear-us').serialize());
 										$('#mostrar').html(res.mensaje);
 										$('#mostrar').modal();
 										console.log(dato);

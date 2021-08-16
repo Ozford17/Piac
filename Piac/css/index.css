@@ -67,7 +67,24 @@ label{
 	position: relative;
 	border-radius: 25px;
 }
-
+.Error{
+	display: none;
+	position:absolute;
+	width:90%;
+	height:2vw;
+	border:red solid 1px;
+	border-radius:10px;
+	background: #ffa8b8;
+	opacity:0.8;
+	margin-top:7.5vw;
+	margin-left:5%;
+	margin-bottom:1vw;
+	font-size:1.5vw;
+	color:black;
+	text-align:center;
+	padding-top:.5vw;
+	
+}
 #Logo{
 	margin-left: 33%;
 	width: 30%;

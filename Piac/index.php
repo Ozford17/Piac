@@ -6,6 +6,9 @@
 	<script type="text/javascript" src="src/js/jquery-3.4.1.min.js"></script>
 	<link rel="shortcut icon" href="images/Logo.png" />
 	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<style>
+		
+	</style>
 	<script>
 		$(document).ready(function(){
 			$('#formulario').submit(function(){
@@ -34,14 +37,17 @@
 	<div class="arriba">	</div>
 	<div class="centro">
 		<img id="Logo"src="images/Logo.png">
+		<div class="Error">
+			Usuario o contraseña incorrectos.
+		</div>
 		<form id="formulario" method="post" action="javascript:Entrar.focus();">
 			<label>Usuario</label><br>
 			<input type="text" name="nombre_usuario" required=""><br>
 			<label>Contraseña</label><br>
 			<input type="password" name="contraseña" required=""><br>
 			<br>
-			<a href="recuperar.php">¿Olvidaste la contraseña?</a><br><br>
-			<a href="https://www.ecoblue.co/#escribir">Pedir Registrarme</a><br>
+			<a href="recuperar.php">¿Olvidaste la contraseña?</a><br>
+			<a href="https://www.ecoblue.co/#escribir">Pedir Registrarme</a><br><br>
 			<input type="submit" value="Entrar" id="Entrar">
 		</form>
 	<div>
@@ -57,5 +63,9 @@ if(isset($_GET['c']) || isset($_GET['destroy']) && $_GET['cmd']=="destroy" )
 	exit();
 
 	
+}
+if(isset($_GET['Error']))
+{
+	echo "<script>$('.Error').css('display','block');</script>";
 }
 ?>

@@ -42,7 +42,7 @@ if ($_POST['nombre_usuario'] && $_POST['contraseña'])
 		$mensaje["direc"]="Users/Empresa/home.php";
 	}else if ($_SESSION['tipo']==3) {
 		$mesaje["error"]="false";
-		$mensaje["direc"]="Users/Sede/home.php";
+		$mensaje["direc"]="Users/Sede/home.php?s=".base64_encode($_SESSION["codigo"]);
 	}
 }	
 else{

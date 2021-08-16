@@ -1,5 +1,6 @@
 <?php
 $mensaje= array();
+//echo $_POST['Sede']; echo $_POST['nombre']; echo $_POST['correo']; echo $_POST['constrasena']; echo $_POST['tipo'];
 if( isset($_POST['Sede']) && isset($_POST['nombre']) && isset($_POST['correo']) && isset($_POST['constrasena']) && isset($_POST['tipo']))
 {
     echo $Sede=$_POST['Sede'];
@@ -15,7 +16,7 @@ if( isset($_POST['Sede']) && isset($_POST['nombre']) && isset($_POST['correo']) 
     $resp=$consultas->Maximo_cod_usu();
     if($fil=mysqli_fetch_array($resp))
     {
-        $codigo=$fila[0]+1;
+        $codigo=$fil[0]+1;
     }
     $consultas->Insert_usuario($codigo,$nombre,$correo,$constrasena,$tipo,$Sede );
     $resp=$consultas->BuscarUsuario_codigo($codigo);

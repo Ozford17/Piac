@@ -50,7 +50,7 @@ require_once "Conexion.php";
     ===============================================================================================================*/
     public function BuscarUsuario_codigo($codigo){
       $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña FROM usuario u, Sede s where u.codigo='".$codigo."' and u.Sede=s.Codigo";
-      echo $sql;
+      //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
     }
@@ -67,7 +67,7 @@ require_once "Conexion.php";
     ===============================================================================================================*/
     public function Insert_usuario($codigo,$nombre,$correo,$contraseña,$tipo,$sede){
       $sql="INSERT into usuario values(".$codigo.",'".$nombre."','".$correo."','".$contraseña."', ".$tipo.", ".$sede.",0);";
-      echo $sql;
+      //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
     }
