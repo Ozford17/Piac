@@ -8,10 +8,11 @@ if (
 		is_array($_POST['Placa']) &&  
 		is_array($_POST['Potencia']) &&  
 		is_array($_POST['horas_carga']) &&  
-		is_array($_POST['Dias'])) {
+		is_array($_POST['Dias']) &&
+		is_array($_POST['fecha_funcion'])) {
 
 	$sede=base64_decode($_POST['sede']);
-	$cant=count($_POST['sede']);
+	$cant=count($_POST['Placa']);
 	$ok="false";
 	$bandera="false";
 	
@@ -38,6 +39,7 @@ if (
  			$Placa=$_POST['Placa'][$i];
  			$Potencia=$_POST['Potencia'][$i];
 			$horas_carga=$_POST['horas_carga'][$i];
+			$Fecha_funcion=$_POST['fecha_funcion'][$i];
 			$Dias=$_POST['Dias'][$i];
 			$extintor=$_POST['extintor'][$i];
 			$peso=$_POST['peso'][$i];
@@ -74,7 +76,7 @@ if (
   				}
   				$codigo++;
   				$codigos[]=$codigo;
- 				$consultas->Insert_fuentes_moviles_electricas($codigo,$sede,$Placa, $Potencia, $horas_carga, $Dias,$refrigerante);
+ 				$consultas->Insert_fuentes_moviles_electricas($codigo,$sede,$Placa, $Potencia, $horas_carga, $Dias,$refrigerante,$Fecha_funcion);
  				/*------------------------ Se agrega dependiendo del extintor------------------- */
  				if ($extintor=="0") {
  					$consultas->Insert_fuentes_moviles_extintor_elec($codigo,"1001",$peso,date('y')."-".date('m')."-".date('d'));	

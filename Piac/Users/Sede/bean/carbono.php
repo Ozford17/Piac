@@ -165,7 +165,11 @@
 					<h3 style="color:black;"><center>Fuentes Fijas</center></h3>
 					<br>	
 						<?php
-
+						$elementos=array();
+						$nombre=array();
+						$cantidad=array();
+						$unidades=array();
+						$nom="";
 						echo '<input type="date" value="'.$fecha_total.'" name="fecha_registro" hidden>';
 
 						$nom="fuentes fijas";

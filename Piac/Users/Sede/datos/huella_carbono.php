@@ -249,6 +249,8 @@
 
 				var Dias_uso=$("<div><label for='Dias_uso_i"+cant+"'> Dias de uso </label><br> <input  type='number' min='0' max='7' name='Dias_uso_i[]' id='Dias_uso_i"+cant+"'></div>");
 
+				var Fecha_funcion=$('<div> <label for="fecha_funcion'+cant+'">Fecha de puesta <br />en funcionamiento</label><br> <input required="" type="date" name="fecha_funcion[]" id="fecha_funcion'+cant+'" max="<?=(date('d')."-".date('m')."-".date('Y'))?>" />			 </div>');
+
 				var boton_eliminar=$("<div style='width:10%;'><button value='"+cant+"' class='Elimin' id='Eliminar_f_f_e"+cant+"'>Eliminar</button></div>");
 
 				var uso_refrigerante=$("<div><label for='f_f_e_us_refrigerante"+cant+"'>¿Usa Refrigerante?</label> <input  type='checkbox' name='refrigerante[]' id='f_f_e_us_refrigerante"+cant+"' onChange='ca("+cant+",\"f_f_e\");' /></div>");
@@ -264,8 +266,9 @@
 				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(Cantidad_e);
 				//$('#agregar_f_f_e #holitas_f_f_e'+cant).append(Potencia);
 				//$('#agregar_f_f_e #holitas_f_f_e'+cant).append(consumo);
-				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(Horas_dia);
+				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(Horas_dia);				
 				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(Dias_uso);
+				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(Fecha_funcion);
 				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(uso_refrigerante);
 				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(div_refri);
 				$('#agregar_f_f_e #holitas_f_f_e'+cant).append(uso_Lubri);
@@ -309,6 +312,7 @@
 						"<option value='1'>Combustion Interna</option>"+
 						"<option value='2'>Hibrido</option> "+
 					"</select></div>");
+				var Fecha_funcion=$('<div> <label for="fecha_funcion'+cant+'">Fecha incorporación</label><br> <input required="" type="date" name="fecha_funcion[]" id="fecha_funcion'+cant+'" max="<?=(date('d')."-".date('m')."-".date('Y'))?>" /></div>');
 				var combustible=$("<div><label for='Combustible'>Combustible</label><br><select name='Combustible[]' id='Combustible"+cant+"' '><option value='select'>Seleccione</option> "+
 				<?php
 					require_once'../../../src/consultas.php'; 
@@ -347,6 +351,7 @@
 				$('#agregar_f_m #holitas_f_m'+cant+' #holitas_a'+cant).append(Vehiculo);
 				$('#agregar_f_m #holitas_f_m'+cant+' #holitas_a'+cant).append(Placa);
 				$('#agregar_f_m #holitas_f_m'+cant+' #holitas_a'+cant).append(tipo_carro);
+				$('#agregar_f_m #holitas_f_m'+cant+' #holitas_a'+cant).append(Fecha_funcion);
 				$('#agregar_f_m #holitas_f_m'+cant+' #holitas_ab'+cant).append(combustible);
 				$('#agregar_f_m #holitas_f_m'+cant+' #holitas_ab'+cant).append(div_extintor);
 				$('#agregar_f_m #holitas_f_m'+cant+' #holitas_ab'+cant).append(usa_refigerante);
@@ -389,6 +394,7 @@
 				var Potencia=$("<div><label for='Potencia"+cant+"'> Potencia (HP) </label><br> <input type='number' min='0' step='0' name='Potencia[]' id='Potencia"+cant+"'></div>");
 				var Horas_carga=$("<div><label for='horas_carga'> Carga diaria(h) </label><br><input type='number' min='0' step='0.1' max='24'  name='horas_carga[]' id='horas_carga"+cant+"' /></div>");
 				var Dias_uso=$("<div><label for='Dias'>Dias de uso</label><br><input type='number' min='0' max='7' name='Dias[]' id='Dias"+cant+"' min='0'/></div>");
+				var Fecha_funcion=$('<div> <label for="fecha_funcion'+cant+'">Fecha de puesta <br/>en funcionamiento</label><br> <input required="" type="date" name="fecha_funcion[]" id="fecha_funcion'+cant+'" max="<?=(date('d')."-".date('m')."-".date('Y'))?>" /></div>');
 				var extintores=$('<div id="ext'+cant+'"> <label for="extintor'+cant+'">Extintores</label> <br>'+
 					' <select name="extintor[]" id="extintor'+cant+'">'+
 					     '<option value="seleccione">Seleccione</option>'+
@@ -422,6 +428,7 @@
 				$('#agregar_f_m_e #holitas_f_m_e'+cant+' #holitas_a'+cant).append(Potencia);
 				$('#agregar_f_m_e #holitas_f_m_e'+cant+' #holitas_a'+cant).append(Horas_carga);
 				$('#agregar_f_m_e #holitas_f_m_e'+cant+' #holitas_a'+cant).append(Dias_uso);
+				$('#agregar_f_m_e #holitas_f_m_e'+cant+' #holitas_a'+cant).append(Fecha_funcion);
 
 				$('#agregar_f_m_e #holitas_f_m_e'+cant+' #holitas_ab'+cant).append(extintores);
 				$('#agregar_f_m_e #holitas_f_m_e'+cant+' #holitas_ab'+cant).append(peso);

@@ -8,7 +8,8 @@ if (!empty($_POST['sede']) &&
 		is_array($_POST['Equipo']) &&   isset($_POST['Equipo']) &&
 		is_array($_POST['Cantidad_equipos']) &&  isset($_POST['Cantidad_equipos']) &&
 		is_array($_POST['Horas_dia_i']) &&  isset($_POST['Horas_dia_i']) &&
-		is_array( $_POST['Dias_uso_i']) && isset( $_POST['Dias_uso_i'])) {
+		is_array( $_POST['Dias_uso_i']) && isset( $_POST['Dias_uso_i']) &&
+		is_array( $_POST['fecha_funcion']) && isset( $_POST['fecha_funcion'])) {
 
 
 
@@ -27,6 +28,7 @@ if (!empty($_POST['sede']) &&
  			$Cantidad_equipos=$_POST['Cantidad_equipos'][$i];
 			$Horas_dia_i=$_POST['Horas_dia_i'][$i];
 			$Dias_uso_i=$_POST['Dias_uso_i'][$i];
+			$Fecha_funcion=$_POST["fecha_funcion"][$i];
 			if (isset($_POST['refrigerante'][$i]) ) {
 				if(($_POST['refrigerante'])[$i]=="on")
 				{		
@@ -79,7 +81,7 @@ if (!empty($_POST['sede']) &&
   			}
   			$codigo++;
   			$codigos[]=$codigo;
- 		 $consultas->Insert_fuentes_fijas_electricas($codigo,$sede,$Equipo, $Cantidad_equipos, $Horas_dia_i,$Dias_uso_i,$refrigerante,$lubricantes);
+ 		 $consultas->Insert_fuentes_fijas_electricas($codigo,$sede,$Equipo, $Cantidad_equipos, $Horas_dia_i,$Dias_uso_i,$refrigerante,$lubricantes,$Fecha_funcion);
 
 
  		}

@@ -7,6 +7,7 @@
 		<th>Horas de uso</th>
 		<th>Dias de uso</th>
 		
+		
 
 
 	</tr>
@@ -23,6 +24,7 @@
 						<th>".$fila[4]."</th>
 						<th>".$fila[5]."</th>
 						<th>".$fila[6]."</th>";
+						
 						
 						
 						

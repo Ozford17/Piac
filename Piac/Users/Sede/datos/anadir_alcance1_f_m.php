@@ -7,7 +7,8 @@ if (
 		is_array($_POST['Vehiculo']) &&  
 		is_array($_POST['Placa']) &&  
 		is_array($_POST['Tipo']) &&  
-		is_array($_POST['Combustible']) ) {
+		is_array($_POST['Combustible']) &&
+		is_array($_POST['fecha_funcion']) ) {
 
 	$sede=base64_decode($_POST['sede']);
 	$cant=2;
@@ -33,11 +34,12 @@ if (
 			$Placa=$_POST['Placa'][$i];
 			$Tipo=$_POST['Tipo'][$i];
 			$Combustible=$_POST['Combustible'][$i];
+			$Fecha_funcion=$_POST['fecha_funcion'][$i];
 			if ($Tipo=="1") {
 				$extintor=$_POST['extintor'][$count_extintor];
 				$peso_extintor=$_POST['peso'][$count_extintor];
-				echo $extintor."<br>";
-				echo $peso_extintor."<br>";
+				//echo $extintor."<br>";
+				//echo $peso_extintor."<br>";
 				$count_extintor++;
 			}
 			else
@@ -64,7 +66,7 @@ if (
   			}
   			$codigo++;
   			$codigos[]=$codigo;
- 		 $consultas->Insert_fuentes_moviles($codigo,$sede,$Vehiculo, $Tipo, $Placa, $Combustible,$refrigerante,date('y')."-".date('m')."-".date('d'));
+ 		 $consultas->Insert_fuentes_moviles($codigo,$sede,$Vehiculo, $Tipo, $Placa, $Combustible,$refrigerante,$Fecha_funcion);
  		 if ($extintor=="0") {
  		 	$consultas->Insert_fuentes_moviles_extintor($codigo,"1001",$peso_extintor,date('y')."-".date('m')."-".date('d'));	
  		 	$consultas->Insert_fuentes_moviles_extintor($codigo,"1002",$peso_extintor,date('y')."-".date('m')."-".date('d'));

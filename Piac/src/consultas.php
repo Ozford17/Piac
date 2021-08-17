@@ -599,8 +599,9 @@ require_once "Conexion.php";
       /*===============================================================================================================
       ingresar fuentes moviles
      =================================================================================================================*/
-      public function Insert_fuentes_fijas_electricas($codigo,$sede,$nombre, $cantidad, $horas,$dias,$refrigerante, $lubricante ){
-          $sql="Insert into Equipo_electronico values ($codigo, $sede, '$nombre',$cantidad, $horas, $dias, $refrigerante,$lubricante, 0 ,null)";
+      public function Insert_fuentes_fijas_electricas($codigo,$sede,$nombre, $cantidad, $horas,$dias,$refrigerante, $lubricante,$fecha ){
+          $sql="INSERT into Equipo_electronico values ($codigo, $sede, '$nombre',$cantidad, $horas, $dias, $refrigerante,$lubricante, 0 ,null, '$fecha')";
+          //echo $sql."<br>";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -608,7 +609,9 @@ require_once "Conexion.php";
       ingresar fuentes fijas
      =================================================================================================================*/
       public function consultar_fuente_fija_electrico_codigo($codigo){
-          $sql="select count(Codigo) from Equipo_electronico where Codigo=$codigo;";
+          $sql="SELECT count(Codigo) 
+                FROM Equipo_electronico 
+                WHERE Codigo=$codigo;";
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
@@ -616,7 +619,9 @@ require_once "Conexion.php";
       buscar fuente fija electrica por codigo
      =================================================================================================================*/
       public function consultar_fuente_fija_electrico_codigo_s($codigo){
-          $sql="select * from Equipo_electronico where Codigo=$codigo;";
+          $sql="SELECT * 
+                FROM Equipo_electronico 
+                WHERE Codigo=$codigo;";
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
@@ -631,8 +636,8 @@ require_once "Conexion.php";
       /*===============================================================================================================
       ingresar fuentes moviles
      =================================================================================================================*/
-      public function Insert_fuentes_moviles_electricas($codigo,$sede,$Placa, $Potencia, $horas_carga, $dias, $refrigerante){
-          $sql="Insert into Vehiculo_electrico values ($codigo, $sede, '$Placa',$Potencia, $horas_carga, $dias,$refrigerante,0,null)";
+      public function Insert_fuentes_moviles_electricas($codigo,$sede,$Placa, $Potencia, $horas_carga, $dias, $refrigerante,$fecha){
+          $sql="Insert into Vehiculo_electrico values ($codigo, $sede, '$Placa',$Potencia, $horas_carga, $dias,$refrigerante,0,null,'$fecha')";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -735,7 +740,7 @@ require_once "Conexion.php";
          Listar fuentes fijas electricas por sede
       =================================================================================================================*/
       public function consultar_fuente_fijas_electricas_sede($sede){
-          $sql="SELECT ee.Codigo,s.Nombre as sede, ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion 
+          $sql="SELECT ee.Codigo as Cod,s.Nombre as sede, ee.Nombre as Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas as Horas,ee.Dias as Dias,r.nombre as Refrigerante,ee.estado,ee.observacion, ee.Fecha as Fecha
                 FROM Equipo_electronico ee, refrigerante r, Sede s
                 WHERE  ee.Refrigerante=r.codigo and ee.estado=0 and ee.Sede=s.Codigo and s.Codigo=$sede";
           //echo $sql."<br> ";
@@ -825,7 +830,7 @@ require_once "Conexion.php";
           Listar fuentes fijas electricas por sede
       =================================================================================================================*/
       public function consultar_fuente_movil_electricas_sede($sede){
-          $sql="SELECT v.Codigo, s.Nombre as sede, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, v.Fecha
+          $sql="SELECT v.Codigo, s.Nombre as sede, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, v.Fecha  
                 FROM Vehiculo_electrico v, refrigerante r, Sede s
                 WHERE v.Sede=s.Codigo and s.Codigo=$sede and v.estado=0 and v.Refrigerante=r.codigo";
           //echo $sql."<br>"; 
@@ -979,7 +984,9 @@ require_once "Conexion.php";
        consulta de las fuentes fijas por codigo de elemento
       =================================================================================================================*/
       public function fuentes_fijas_consulta_elemento($codigo_ele,$sede){
-          $sql="select f.Fuente, f.Cantidad,f.Elemento,e.Nombre,e.Codigo from fuentes_fijas f, elemento e where f.Elemento=e.Codigo and f.elemento=$codigo_ele and estado=0 and f.Sede=$sede";
+          $sql="SELECT f.Fuente, f.Cantidad,f.Elemento,e.Nombre,e.Codigo 
+                FROM fuentes_fijas f, elemento e 
+                WHERE f.Elemento=e.Codigo and f.elemento=$codigo_ele and estado=0 and f.Sede=$sede";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
@@ -987,7 +994,9 @@ require_once "Conexion.php";
        consulta de las automoviles registrados por sede
       =================================================================================================================*/
       public function fuentes_automoviles_sede($sede){
-          $sql="SELECT f.Vehiculo,f.Placa, f.Tipo, c.Nombre,c.Unidad, f.Codigo FROM fuentes_moviles f, elemento c where sede =$sede and f.Combustible=c.Codigo";
+          $sql="SELECT f.Vehiculo,f.Placa, f.Tipo, c.Nombre,c.Unidad, f.Codigo 
+                FROM fuentes_moviles f, elemento c 
+                where sede =$sede and f.Combustible=c.Codigo";
           $resultado=$this->consultar($sql);
           return $resultado;
         }

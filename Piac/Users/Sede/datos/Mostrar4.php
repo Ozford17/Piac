@@ -7,6 +7,7 @@
 		<th>Horas de carga</th>
 		<th>Dias de uso</th>
 		<th>Refrigerante</th>
+		<th>Fecha de incorporación <br>a la flota</th>
 
 	</tr>
 	
@@ -25,6 +26,8 @@
 						<th>".$fila[4]."</th>
 						<th>".$fila[5]."</th>
 						<th>".$fila[6]."</th>
+						<th>".$fila[7]."</th>
+
 
 						
 				</tr>";
