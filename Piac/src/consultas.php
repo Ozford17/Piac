@@ -987,6 +987,7 @@ require_once "Conexion.php";
           $sql="SELECT f.Fuente, f.Cantidad,f.Elemento,e.Nombre,e.Codigo 
                 FROM fuentes_fijas f, elemento e 
                 WHERE f.Elemento=e.Codigo and f.elemento=$codigo_ele and estado=0 and f.Sede=$sede";
+          //echo $sql."<br>";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
@@ -1266,8 +1267,9 @@ require_once "Conexion.php";
       Maximo de codigo en huella de carbono fuentes fijas combustible
       ===============================================================================================================*/
       public function insertar_huella_carbono_fuentes_fijas_combustible($codigo,$ele,$valor_compustible_fuente_fija,$total_co2,$total_ch4,$total_n2o,$fecha,$fecha1,$sede){
-        $sql="Insert into huella_carbono_fuentes_fijas_combustible values($codigo,$ele,$valor_compustible_fuente_fija,$total_co2 ,$total_ch4,$total_n2o,'$fecha','$fecha1',$sede) ;";
-        echo $sql."<br>";
+        $sql="INSERT into huella_carbono_fuentes_fijas_combustible 
+              VALUES($codigo,$ele,$valor_compustible_fuente_fija,$total_co2 ,$total_ch4,$total_n2o,'$fecha','$fecha1',$sede) ;";
+        //echo $sql."<br>";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
@@ -1275,7 +1277,8 @@ require_once "Conexion.php";
       Maximo de codigo en huella de carbono fuentes fijas combustible
       ===============================================================================================================*/
       public function insertar_huella_carbono_extintores($codigo, $extintor,$Cantidad,$Total,$Fecha_re,$Fecha_subida){
-        $sql="INSERT INTO huella_carbono_extintores values ($codigo, $extintor,$Cantidad,$Total,'$Fecha_re','$Fecha_subida' );";
+        $sql="INSERT INTO huella_carbono_extintores 
+              VALUES ($codigo, $extintor,$Cantidad,$Total,'$Fecha_re','$Fecha_subida' );";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
@@ -1284,7 +1287,9 @@ require_once "Conexion.php";
       Maximo de codigo en huella de carbono fuentes fijas combustible
       ===============================================================================================================*/
       public function buscar_extintor_codigo_sede($sede,$extintor){
-        $sql="SELECT es.codigo, es.sede, e.Nombre,e.Co2,e.Unidad_reporte,e.Buscar from extintor_sede es, extintores e where es.codigo=e.codigo and es.sede=$sede and e.Buscar='$extintor' ORDER by sede asc";
+        $sql="SELECT es.codigo, es.sede, e.Nombre,e.Co2,e.Unidad_reporte,e.Buscar 
+              FROM extintor_sede es, extintores e 
+              WHERE es.codigo=e.codigo and es.sede=$sede and e.Buscar='$extintor' ORDER by sede asc";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
@@ -1375,7 +1380,9 @@ require_once "Conexion.php";
          listar todos los lubricantes
       ===============================================================================================================*/
       public function listar_tipo_lubricante($codigo){
-        $sql="SELECT * from tipo_lubricante where codigo=$codigo";
+        $sql="SELECT * 
+              FROM tipo_lubricante 
+              WHERE codigo=$codigo";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
@@ -1411,8 +1418,11 @@ require_once "Conexion.php";
       /*=============================================================================================================
          Listar años de insersion de los datos al sistema
       ===============================================================================================================*/
-      public function Listar_ano_informe(){
-        $sql="SELECT DISTINCT YEAR(Fecha_subida) FROM `huella_carbono_fuentes_fijas_combustible` GROUP by Fecha_subida";
+      public function Listar_ano_informe($sede){
+        $sql="SELECT DISTINCT YEAR(Fecha_subida) 
+              FROM `huella_carbono_fuentes_fijas_combustible` 
+              WHERE Sede=$sede
+              GROUP by Fecha_subida";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
@@ -1436,7 +1446,7 @@ require_once "Conexion.php";
          Consultas para hacer las graficas por sede de total de los otros gases
       ===============================================================================================================*/
       public function consultar_grafica_co2_tipos($sede,$ano){
-        $sql="SELECT ff.mes, sum(ff.ch4), sum(ff.N2O) from (
+        $sql="SELECT ff.mes, sum(ff.ch4) as ch4, sum(ff.N2O) as n2o from (
               SELECT month(hc.Fecha_registro) as mes,sum(hc.Total_CH4) as ch4,sum(hc.Total_NO2) as N2O  FROM huella_carbono_fuentes_fijas_combustible hc where hc.Sede=$sede and year(hc.Fecha_registro)=$ano GROUP BY mes
 
               UNION
@@ -1460,7 +1470,9 @@ require_once "Conexion.php";
          Consultas para hacer las graficas de los automoviles por sede (tipo de combustible)
       ===============================================================================================================*/
       public function consultar_grafica_co2_automovil_combustible($sede){
-        $sql="SELECT e.codigo, e.Nombre from fuentes_moviles fm , elemento e where fm.Combustible=e.Codigo and fm.Sede=$sede GROUP by e.Codigo";
+        $sql="SELECT e.codigo, e.Nombre 
+              FROM fuentes_moviles fm , elemento e 
+              WHERE fm.Combustible=e.Codigo and fm.Sede=$sede GROUP by e.Codigo";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;

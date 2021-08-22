@@ -1,6 +1,6 @@
 <?php 
 	function mostrar_datos($s,$fecha,$data){
-		require_once'../../../src/consultas.php';
+		require_once '../../../src/consultas.php';
 		$consultas= new consultas();
 		$mensaje=array();
 		
@@ -85,7 +85,7 @@
 					
 				}
 				$mensaje[]=$vehiculos;
-				echo json_encode($mensaje);
+				echo ($vehiculos);
 			}
 			else if($data=="Moviles"){
 				$total_co_moviles= "";
@@ -95,16 +95,17 @@
 				{
 					$cont++;
 					if ($cont==1) {
-						$total_co_moviles="".$fila[2]."";	
+						$total_co_moviles=number_format($fila[2]/1000,3,'.','');	
 					}
 					else
 					{
-						$total_co_moviles=$total_co_moviles.",".number_format($fila[2]/1000,2,'.','')."";
+						$total_co_moviles=$total_co_moviles.",";
+						$total_co_moviles=$total_co_moviles.number_format($fila[2]/1000,3,'.','');
 					}
 					
 				}
 				$mensaje=$total_co_moviles;
-				echo json_encode($mensaje);
+				echo $mensaje;
 			}
 	}
  ?>

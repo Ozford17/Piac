@@ -1,9 +1,9 @@
 <?php
 
-if (is_array($_POST['fuentes_fijas']) &&  is_array($_POST['refrigerante']) && is_array($_POST['automovil']) && isset($_POST['Extintor_co']) && isset($_POST['Extintor_HCFC'])) {
+if (is_array($_POST['fuentes_fijas'])  && is_array($_POST['automovil']) || isset($_POST['Extintor_co']) || isset($_POST['Extintor_HCFC'])) {
 require_once'../../../../src/consultas.php';
 $consultas= new consultas();
-
+	/*
 	for ($i=0; $i <count($_POST['fuentes_fijas']); $i++) { 
 			//echo  $_POST['fuentes_fijas'][$i]."<br>	";
 		}
@@ -15,7 +15,7 @@ $consultas= new consultas();
 		}
 	//echo "Extintores ".$_POST['Extintor_co']."<br>";
 	//echo "Extintor dos ".$_POST['Extintor_HCFC']."<br>";
-
+*/
 
 if (isset($_POST['nombres']) && !empty($_POST['nombres'])) {
 	$nombre=$_POST['nombres'];
@@ -69,7 +69,7 @@ if (isset($_POST['nombres']) && !empty($_POST['nombres'])) {
 		for ($i=0; $i < count($_POST['fuentes_fijas']) ; $i++) { 
 			$nombre_combustible_fuente_fija=$fuentes[$i+1];
 			$valor_compustible_fuente_fija=$_POST['fuentes_fijas'][$i];
-			//echo $nombre_combustible_fuente_fija." = ".$valor_compustible_fuente_fija."<br>	";
+			 $nombre_combustible_fuente_fija." = ".$valor_compustible_fuente_fija."<br>	";
 
 			$res= $consultas->Listado_t_elementos();
 			while($fila=mysqli_fetch_array($res))
@@ -170,7 +170,7 @@ if (isset($_POST['nombres']) && !empty($_POST['nombres'])) {
 			
 		}
 		//-----------------------------------------------  Refrigerantes ----------------------------------------------///////
-
+		if(isset($_POST['refrigerante']) && is_array($_POST['refrigerante'])){
 		for ($i=0; $i < count($_POST['refrigerante']) ; $i++) { 
 			$nombre_combustible_fuente_fija=$refrigerante[$i+1];
 			$valor_compustible_fuente_fija=$_POST['refrigerante'][$i];
@@ -179,30 +179,30 @@ if (isset($_POST['nombres']) && !empty($_POST['nombres'])) {
 			$res= $consultas->Listado_refrigerantes();
 			while($fila=mysqli_fetch_array($res))
 			{
-				if ($nombre_combustible_fuente_fija==$fila[1]) {
-					$refri=$fila[0];
-					$CO2=$fila[3];					
-					$total_calculo=$CO2*$valor_compustible_fuente_fija;				
-					$fecha=date('Y')."-".date('m')."-".date('d');
-					$r=$consultas->Maximo_cod_huella_carbono_refrigerante();
-					if ($f=mysqli_fetch_array($r)) {
-						$codigo=$f[0];
+					if ($nombre_combustible_fuente_fija==$fila[1]) {
+						$refri=$fila[0];
+						$CO2=$fila[3];					
+						$total_calculo=$CO2*$valor_compustible_fuente_fija;				
+						$fecha=date('Y')."-".date('m')."-".date('d');
+						$r=$consultas->Maximo_cod_huella_carbono_refrigerante();
+						if ($f=mysqli_fetch_array($r)) {
+							$codigo=$f[0];
+						}
+						$codigo++;
+						//echo "Codigo ". $codigo."<br>	";
+						//echo "REfrigerante".$refri."<br>	";
+						//echo "CO2 del elemento ".$CO2."<br>	";
+						//echo "Valor ".$valor_compustible_fuente_fija."<br>	";
+						//echo "total calculo ".$total_calculo."<br>	";
+						//echo "fecha".$fecha."<br>	";					
+						//echo "Sede". $sede."<br>	";
+						//echo '**--------------------------------------------------- <br>	**';
+						$consultas->insertar_huella_carbono_fuentes_fijas_refrigerante($codigo,$refri,$valor_compustible_fuente_fija,$total_calculo,$fecha_registro,$fecha,$sede);
+
 					}
-					$codigo++;
-					//echo "Codigo ". $codigo."<br>	";
-					//echo "REfrigerante".$refri."<br>	";
-					//echo "CO2 del elemento ".$CO2."<br>	";
-					//echo "Valor ".$valor_compustible_fuente_fija."<br>	";
-					//echo "total calculo ".$total_calculo."<br>	";
-					//echo "fecha".$fecha."<br>	";					
-					//echo "Sede". $sede."<br>	";
-					//echo '**--------------------------------------------------- <br>	**';
-
-					$consultas->insertar_huella_carbono_fuentes_fijas_refrigerante($codigo,$refri,$valor_compustible_fuente_fija,$total_calculo,$fecha_registro,$fecha,$sede);
-
 				}
+
 			}
-			
 		}
 		//------------------------------------------- Extintores --------------------------------------------------------/////////////
 
@@ -274,8 +274,8 @@ if (isset($_POST['nombres']) && !empty($_POST['nombres'])) {
 			$consultas->insertar_huella_energia($codigo,$sede,$factor_emision,$cantidad_energia,$cantidad,$fecha,$fecha);
 		}
 
-		echo '<script> alert("Se cargaron todos los datos de huella de carbono"); window.location="../carbono.php?s='.base64_encode($sede).'";</script>';
-
+		echo '<script> alert("Se cargaron todos los datos de huella de carbono");</script>';
+		//window.location="../carbono.php?s='.base64_encode($sede).'";
 	}
 
 	

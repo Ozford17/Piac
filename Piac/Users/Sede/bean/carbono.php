@@ -42,7 +42,7 @@
 	</div>
 	<div id="centro_huella">
 		<center><p style="color:black;">Reporte de consumos.</p></center><br>	
-		<p style="color: black; text-align:justify; font-size: 1.0vw; width: 90%; margin-left: 5%;">En esta sección debemos registrar mensualmente los consumos teniendo en cuenta los alcances uno y dos. <br>	
+		<p style="color: black; text-align:justify; font-size: 1.0vw; width: 90%; margin-left: 5%;">En esta sección debemos registrar mensualmente los consumos teniendo en cuenta los alcances uno y dos para el año <b><?=date("Y")?></b>. <br>	
 		A continuación, puedes escoger el mes en el cual vas a realizar el cargue de la información correspondiente, teniendo en cuenta los principios establecidos para la cuantificación de gases de efecto invernadero GEI: 
 		Integridad, transparencia, precisión, consistencia y relevancia para garantizar un inventario coherente con las actividades realizadas.</p>
 		<table width="100%" style="">
@@ -51,7 +51,7 @@
 			$datos=array();
 			$mes=array();
 			$subido=false;
-				$resp=$consultas->consultar_grafica_co2_alcance1(base64_decode($s),"2019");
+				$resp=$consultas->consultar_grafica_co2_alcance1(base64_decode($s),date("Y"));
 				while ($fila=mysqli_fetch_array($resp)) {
 					$mes[]=$fila[0];
 					$datos[]=$fila[1];
@@ -175,11 +175,11 @@
 						$nom="fuentes fijas";
 						$resp=$consultas->fuentes_fijas_consulta(base64_decode($_GET['s']));
 						while($fila=mysqli_fetch_array($resp)){
-							$elementos[]=$fila[2];
-							$nombre[]=$fila[3];
-							$cantidad[]=$fila[4];
-							$unidades[]=$fila[5];
-							$nom =$nom.",".$fila[3];
+							$elementos[]=$fila[4];
+							$nombre[]=$fila[13];
+							$cantidad[]=$fila[3];
+							$unidades[]=$fila[15];
+							$nom =$nom.",".$fila[13];
 						}
 						for ($i=0; $i < count($elementos) ; $i++) { 
 							if($i%2 ==0){
@@ -551,7 +551,7 @@
 				 ?>
 				</div>
 			</div>
-			<input type='text' value='<?=strval($nom)?>' name='nombres' hidden=''>
+			<input type='text' width="100%" value='<?=strval($nom)?>' name='nombres' hidden='' >
 			<input type='text' value='<?=base64_decode($_GET["s"])?>' name='sede' hidden=''>
 			
 			

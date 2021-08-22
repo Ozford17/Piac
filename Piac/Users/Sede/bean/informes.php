@@ -1,15 +1,22 @@
 
 <?php 
-	require_once'../../../src/consultas.php';
+	require_once '../../../src/consultas.php';
 	$consultas= new consultas();
 	$s=$_GET['s'];
+
 
 	function MostrarDatos_auto($datos, $d){
 		$consultas= new consultas();
 		$s=$_GET['s'];
+		$año=date("Y");
+		if(isset($_GET['fecha']))
+		{
+			$año=$_GET['fecha'];
+		}
+		
 		 if($datos=="label_Gasolina"){
 				$total_co_moviles_gasolina= "";
-				$resp=$consultas->consultar_grafica_co2_automovil(base64_decode($s),"2019");
+				$resp=$consultas->consultar_grafica_co2_automovil(base64_decode($s),$año);
 				$cont=0;
 				while($fila=mysqli_fetch_array($resp))
 				{
@@ -29,7 +36,7 @@
 			}
 			else if($datos=="vehiculos_Gasolina"){
 				$total_co_moviles_gasolina="";
-				$resp=$consultas->consultar_grafica_co2_automovil(base64_decode($s),"2019");
+				$resp=$consultas->consultar_grafica_co2_automovil(base64_decode($s),$año);
 				$cont=0;
 				while($fila=mysqli_fetch_array($resp))
 				{
@@ -57,43 +64,46 @@
 
 		function MostrarDatos_tipo($data)
 		{
-		require_once'../../../src/consultas.php';
+			require_once '../../../src/consultas.php';
 			$consultas= new consultas();
-		$s=$_GET['s'];
-
-		if ($data=="Alcance1") {
-				$calcance1 = 0;
-				$mes= array();
-				$dato=  array();
-				$resp=$consultas->consultar_grafica_co2_alcance1(base64_decode($s),date('Y'));
-				while ($fila=mysqli_fetch_array($resp)) {
-						$mes[]=$fila[0];
-						$dato[]=number_format($fila[1]/1000, 2, '.', '');
-				}
-				for ($i=1; $i <=12 ; $i++) { 
-					$bandera=false;
-							for ($a=0; $a <count($mes) ; $a++) { 
-								if ($i==$mes[$a]) {
-									echo $dato[$a];
-									$bandera=true;
-									break;
-								}
-							}
-							if (!$bandera) {
-								echo "0";
-							}
-							if ($i!=12) {
-								echo ",";
-							}
-						
-					}
+			$s=$_GET['s'];
+			$año=date("Y");
+			if(isset($_GET['fecha']))
+			{
+				$año=$_GET['fecha'];
 			}
-		
-		if ($data=="Alcance2") {
+			if ($data=="Alcance1") {
+					$calcance1 = 0;
+					$mes= array();
+					$dato=  array();
+					$resp=$consultas->consultar_grafica_co2_alcance1(base64_decode($s),$año);
+					while ($fila=mysqli_fetch_array($resp)) {
+							$mes[]=$fila[0];
+							$dato[]=number_format($fila[1]/1000, 2, '.', '');
+					}
+					for ($i=1; $i <=12 ; $i++) { 
+						$bandera=false;
+								for ($a=0; $a <count($mes) ; $a++) { 
+									if ($i==$mes[$a]) {
+										echo $dato[$a];
+										$bandera=true;
+										break;
+									}
+								}
+								if (!$bandera) {
+									echo "0";
+								}
+								if ($i!=12) {
+									echo ",";
+								}
+							
+						}
+			}
+			else if ($data=="Alcance2") {
 				$calcance1 = 0;
 				$mes= array();
 				$dato=  array();
-				$resp=$consultas->consultar_grafica_co2_tipos(base64_decode($s),date('Y'));
+				$resp=$consultas->consultar_grafica_co2_tipos(base64_decode($s),$año);
 				while ($fila=mysqli_fetch_array($resp)) {
 						$mes[]=$fila[0];
 						$dato[]=number_format(($fila[1]*28)/1000, 2, '.', '');
@@ -117,11 +127,11 @@
 					}
 			}
 		
-		if ($data=="Alcance3") {
+			else if ($data=="Alcance3") {
 				$calcance1 = 0;
 				$mes= array();
 				$dato=  array();
-				$resp=$consultas->consultar_grafica_co2_tipos(base64_decode($s),date('Y'));
+				$resp=$consultas->consultar_grafica_co2_tipos(base64_decode($s),$año);
 				while ($fila=mysqli_fetch_array($resp)) {
 						$mes[]=$fila[0];
 						$dato[]=number_format(($fila[2]*265)/1000, 2, '.', '');
@@ -166,7 +176,6 @@
 		$(document).ready(function(){
 
 				$("#ano_informe").change(function(e){
-					alert("entro");
 					window.location=("informes.php?s=<?php echo $s;?>&fecha="+$(this).val());
 				});
 
@@ -186,42 +195,8 @@
 
 				/*###################################### PRIMER DIAGRAMA DE BARRAS ###########################################*/
         		var color=Chart.helpers.color; 
-        		//###################### NO FUNCIONA MUY BIEN CON JQUERY, NO MUESTRA AL PRINCIPIO LAS BARRAS, LA UNICA FORMA ES DARLqE CLICK A LA ETIQUETA O CAMBIAR DE TAMAÑO LA PANTALLA
-        		/*var data_A1;
-        		var data_A2;
-        		$.ajax({
-        						url:'../datos/mostrar_datos.php',
-        						type:'POST',
-        						dataType:'HTML',
-        						data:{"s":'<?php //echo $_GET['s']?>',"fecha":"<?php //echo $fecha?>","data":"Alcance1"},
-        						success:function(dato){
-        							var para = jQuery.parseJSON(dato);
-        							var aux=para[1]
-        							data_A1="["
-        							data_A1=data_A1+aux.toString()+"]";
-        							
-        							console.log(data_A1);
-        							
-
-        						}
-        					});
-        		$.ajax({
-        						url:'../datos/mostrar_datos.php',
-        						type:'POST',
-        						dataType:'HTML',
-        						data:{"s":'<?php //echo $_GET['s']?>',"fecha":"<?php //echo $fecha?>","data":"Alcance2"},
-        						success:function(dato){
-        							var para = jQuery.parseJSON(dato);
-        							var aux=para[1]
-        							data_A2="["
-        							data_A2=data_A2+aux.toString()+"]";
-        							
-        							console.log(data_A2);
-        							
-        						}
-        					});
-        		*/
-        		<?php include'../datos/mostrar_datos2.php'  ?>
+        		
+        		<?php include '../datos/mostrar_datos2.php'  ?>
         		var ctx = document.getElementById('diseño1').getContext('2d');
         		var BarChartData={
         			labels: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
@@ -239,7 +214,6 @@
         				data:[<?php mostrar_datos($s,$fecha,"Alcance2")?>]
         			}]
         		};
-        		console.log(BarChartData);
         		var myBar = new Chart(ctx, {
 					type: 'bar',
 					data: BarChartData,
@@ -283,11 +257,12 @@
 				/*################################################################################################################*/
 			
 			
-			//********************************************************************************************************************//								Mostrar los valores de los tipos de factores de emision                                          
-			//********************************************************************************************************************//
+			/*************************************************************************************************************************
+								Mostrar los valores de los tipos de factores de emision co2 CH4 N2O 
+		********************************************************************************************************************/
 
 
-			var color=Chart.helpers.color; 
+		var color=Chart.helpers.color; 
         		var BarChartData_tipo={
         			labels: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
         			datasets:[{
@@ -295,20 +270,20 @@
         				backgroundColor: '#FF9EB3',
         				borderColor: "red",
         				borderWidth:1,
-        				data:[/*
+        				data:[
         					<?php 	
-        					//MostrarDatos_tipo("Alcance1");
-        					 ?>*/
+        					MostrarDatos_tipo("Alcance1");
+        					 ?>
         				]
         			},{
         				label:"Alcance 1 CH4",
         				backgroundColor: '#82CDFF',
         				borderColor: "blue",
         				borderWidth:1,
-        				data:[/*
+        				data:[
         					<?php 	
-        					//MostrarDatos_tipo("Alcance2");
-        					 ?>*/
+        					MostrarDatos_tipo("Alcance2");
+        					 ?>
         				]
 
 
@@ -317,10 +292,10 @@
         				backgroundColor: '#E2FF51',
         				borderColor: "green",
         				borderWidth:1,
-        				data:[/*
+        				data:[
         					<?php 	
-        					//MostrarDatos_tipo("Alcance3",$fecha);
-        					 ?>*/
+        					MostrarDatos_tipo("Alcance3");
+        					 ?>
         				]
 
 
@@ -331,9 +306,11 @@
 
         	
         	
-			var ctx = document.getElementById('tipo_e').getContext('2d');
-			ctx.height="90%";
-			window.myBar = new Chart(ctx, {
+			var ctx1 = document.getElementById('tipo_e').getContext('2d');
+			
+			ctx1.height="90%";
+			console.log(BarChartData_tipo);
+			window.myBar = new Chart(ctx1, {
 				type: 'bar',
 				data: BarChartData_tipo,
 				options: {
@@ -355,28 +332,28 @@
 					},
 					onAnimationComplete: function() {
 
-  						var ctx = this.chart.ctx;
-  						ctx.font = this.scale.font;
-  						ctx.fillStyle = this.scale.textColor
-  						ctx.textAlign = "center";
-  						ctx.textBaseline = "bottom";
+  						var ctxs = this.chart.ctx;
+  						ctxs.font = this.scale.font;
+  						ctxs.fillStyle = this.scale.textColor
+  						ctxs.textAlign = "center";
+  						ctxs.textBaseline = "bottom";
 
   						this.datasets.forEach(function(dataset) {
   						  dataset.bars.forEach(function(bar) {
-  						        ctx.fillText(bar.value, bar.x, bar.y - 5);
+  						        ctx1.fillText(bar.value, bar.x, bar.y - 5);
   						  		});
   						})
   						
 					}	
 				}
-			});
+			});	
 		
 
 			//**************************************************** VEHICULOS *******************************************************//	
 
 
 			var barChartData={
-        			labels: [/*<?php 	//MostrarDatos('label_'); ?>*/],
+        			labels: [<?php 	mostrar_datos($s,$fecha,'label_'); ?>],
         			datasets:[{
         				label:" CO2",
         				backgroundColor: '#82CDFF',
@@ -384,7 +361,7 @@
         				borderWidth:1,
         				data:[
         					<?php 	
-        					//MostrarDatos("Moviles",$fecha);
+        						mostrar_datos($s,$fecha,"Moviles");
         					 ?>
         				]
         			}]
@@ -443,13 +420,7 @@
 			});
 			
 		
-	});
-
-
-
-
-
-		
+		});
 
 		function Cargar_vehiculo(value){
 			<?php
@@ -469,15 +440,15 @@
 
 			if (radio.checked) {
 				var barChartData={
-        			labels: [<?php //	MostrarDatos('label_'); ?>],
+        			labels: [<?php 	mostrar_datos($s,$fecha,'label_'); ?>],
         			datasets:[{
-        				label:"",
+        				label:" CO2",
         				backgroundColor: '#82CDFF',
         				borderColor: "blue",
         				borderWidth:1,
         				data:[
         					<?php 	
-        					//MostrarDatos("Moviles");
+        						mostrar_datos($s,$fecha,"Moviles");
         					 ?>
         				]
         			}]
@@ -550,8 +521,6 @@
 			 	 
 				
 			 ?>
-			
-
 				var barChartData={
         			labels: [<?php 	MostrarDatos_auto('label_Gasolina',$codigos_combu[$i]); ?>],
         			datasets:[{
@@ -567,7 +536,7 @@
         			}]
         		};
 
-				
+				console.log(barChartData);
 				var ctx = document.getElementById('vehiculos');
 				ctx.remove();
 				var ct= document.createElement('Canvas');
@@ -633,6 +602,8 @@
 			
 		}
 
+		
+
 	
 		
 	</script>
@@ -660,7 +631,7 @@
 	<div id="centro_huella" style="">
 		<div style="width: 95%;">	
 			<p style="color:black;">Seleccione el año en el que quiere que se le muestre los informes <select name="ano_informe" id="ano_informe"><option value="Selecc">Año</option><?php 
-					$resp=$consultas->Listar_ano_informe();
+					$resp=$consultas->Listar_ano_informe(base64_decode($s));
 					while($Fila=mysqli_fetch_array($resp))
 					{
 						echo '<option value="'.$Fila[0].'">'.$Fila[0].'</option>';
@@ -683,49 +654,12 @@
 				}
 					?>
 			<div id='vehi'style="width: 95%;">	
-			<canvas id="vehiculos"></canvas>	
+				<canvas id="vehiculos"></canvas>	
 			</div>
 			<div id="tipo">
 				<canvas id="tipo_e"></canvas>
 			</div>
-		</div>
-
-		
-		<canvas id="myChart" width="400" height="400"></canvas>
-		<script>
-				
-        		
-        		
-        		
-        		var BarChartData={
-        			labels: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-        			datasets:[{
-        				label:"Alcance 1-Combustibles",
-        				backgroundColor: '#FF9EB3',
-        				borderColor: "red",
-        				borderWidth:1,
-        				data:[1,2,3,4,5,6,7,8,9,1,10]
-        			 }]
-        			}
-				var ctx = document.getElementById('myChart').getContext('2d');
-				var myChart = new Chart(ctx, {
-				    type: 'bar',
-				    data: BarChartData,
-				    options: {
-				        scales: {
-				            yAxes: [{
-				                ticks: {
-				                    beginAtZero: true
-				                }
-				            }]
-				        }
-				    }
-				});
-		</script>
-
-
-
-
+			</div>
 
 	</div>
 	
