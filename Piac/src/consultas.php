@@ -8,7 +8,9 @@ require_once "Conexion.php";
                 Busqueda de usuario  (inicio de session)
     ===============================================================================================================*/
     public function verificarUsuario($email,$password){
-      $sql="SELECT * FROM  usuario WHERE correo='".$email."' AND contraseña='".$password."';";
+      $sql="SELECT * 
+            FROM  usuario 
+            WHERE correo='".$email."' AND contraseña='".$password."' and estado=0;";
       //echo $sql."<br>";
       $resultado=$this->consultar($sql);
       return $resultado;
@@ -945,7 +947,8 @@ require_once "Conexion.php";
        insertar extintores
       =================================================================================================================*/
       public function insert_extintor($codigo,$sede,$cantidad,$Peso,$fecha){
-          $sql="INSERT into extintor_sede values($codigo, $sede,$cantidad,$Peso,'$fecha')";
+          $sql="INSERT into extintor_sede 
+                values($codigo, $sede,$cantidad,$Peso,'$fecha')";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -954,7 +957,9 @@ require_once "Conexion.php";
        insertar extintores
       =================================================================================================================*/
       public function consultar_extintor($codigo,$sede,$peso){
-          $sql="SELECT * from extintor_sede where codigo=$codigo and sede=$sede and Peso=$peso";
+          $sql="SELECT * 
+                FROM extintor_sede 
+                WHERE codigo=$codigo and sede=$sede and Peso=$peso";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);
           return $resultado;
@@ -963,7 +968,9 @@ require_once "Conexion.php";
        Actualizar extintores 
       =================================================================================================================*/
       public function actualizar_extintor($codigo,$sede,$cantidad,$peso,$fecha){
-          $sql="UPDATE extintor_sede set Cantidad=$cantidad , Fecha='$fecha' where codigo=$codigo and sede=$sede and Peso=$peso";
+          $sql="UPDATE extintor_sede 
+                set Cantidad=$cantidad , Fecha='$fecha' 
+                where codigo=$codigo and sede=$sede and Peso=$peso";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);
           return $resultado;
@@ -1006,7 +1013,9 @@ require_once "Conexion.php";
        consulta de extintores registrados en las sedes
       =================================================================================================================*/
       public function fuentes_extintores_sede($sede){
-          $sql="SELECT e.codigo,e.Nombre,es.cantidad, e.ruta,e.Buscar,es.peso, es.Fecha FROM extintor_sede es, extintores e where es.codigo=e.codigo and es.sede=$sede GROUP by e.Nombre";
+          $sql="SELECT e.codigo,e.Nombre,es.cantidad, e.ruta,e.Buscar,es.peso, es.Fecha 
+                FROM extintor_sede es, extintores e 
+                WHERE es.codigo=e.codigo and es.sede=$sede ";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);
           return $resultado;

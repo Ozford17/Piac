@@ -512,7 +512,7 @@
 	     				 dataType:"html",
 	     				 data:$("#formulario_huella_fuentes_fijas").serialize(),
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#informaciones_f_f').html(data);
 	        				$('#tabla_fuente_fija').load("../datos/Mostrar1.php",{s:"<?=$_POST['s'];?>"});	        				
 	        				$('#agregar_f_f').empty();
@@ -529,7 +529,7 @@
 	     				 dataType:"html",
 	     				 data: {s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#tabla_fuente_fija').html(data);
 	      				}
 	    				});
@@ -541,7 +541,7 @@
 	     				 dataType:"html",
 	     				 data:$("#fuentes_fijas_electricas").serialize(),
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#informaciones_f_f_e').html(data);
 	        				$('#tabla_fuente_fija_electrica').load("../datos/Mostrar2.php",{s:"<?=$_POST['s'];?>"});
 	      				}
@@ -553,7 +553,7 @@
 	     				 dataType:"html",
 	     				 data:{s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#tabla_fuente_fija_electrica').html(data);
 	      				}
 	    				});
@@ -566,7 +566,7 @@
 	     				 dataType:"html",
 	     				 data:$("#formulario_huella_fuentes_moviles").serialize(),
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#informaciones_f_m').html(data);
 	        				$('#tabla_fuente_movil').load("../datos/Mostrar3.php",{s:"<?=$_POST['s'];?>"});
 	      				}
@@ -578,7 +578,7 @@
 	     				 dataType:"html",
 	     				 data:{s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#tabla_fuente_movil').html(data);
 	      				}
 	    				});
@@ -590,7 +590,7 @@
 	     				 dataType:"html",
 	     				 data:$("#formulario_huella_fuentes_moviles_electricos").serialize(),
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#informaciones_f_m_e').html(data);
 	        				$('#tabla_fuente_movil_electrico').load("../datos/Mostrar4.php",{s:"<?=$_POST['s'];?>"});
 	      				}
@@ -602,7 +602,7 @@
 	     				 dataType:"html",
 	     				 data:{s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#tabla_fuente_movil_electrico').html(data);
 	      				}
 	    				});
@@ -614,7 +614,7 @@
 	     				 dataType:"html",
 	     				 data:$("#formulario_huella_iluminarias").serialize(),
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#informaciones_i').html(data);
 	        				$('#tabla_fuente_luminaria').load("../datos/Mostrar5.php",{s:"<?=$_POST['s'];?>"});
 	      				}
@@ -627,7 +627,7 @@
 	     				 dataType:"html",
 	     				 data:{s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#tabla_fuente_luminaria').html(data);
 	      				}
 	    				});
@@ -639,7 +639,7 @@
 	     				 dataType:"html",
 	     				 data:$("#formulario_huella_extintor").serialize(),
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#informaciones_extintor').html(data);
 	        				$('#tabla_fuente_extintor').load("../datos/Mostrar6.php",{s:"<?=$_POST['s'];?>"});
 	        				//$('#extintor_CO2').val("");
@@ -654,7 +654,7 @@
 	     				 dataType:"html",
 	     				 data:{s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#tabla_fuente_extintor').html(data);
 	      				}
 	    				});
@@ -669,7 +669,7 @@
 			var contar=0;
 			$('#tabla_fuente_fija input[type=checkbox]:checked').each(function() {
 				
-    			console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
+    			//console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
     			listado_codigos[contar]=$(this).val();
     			contar++;
     			
@@ -690,7 +690,7 @@
 	     				 dataType:"html",
 	     				 data: {codigo:listado_codigos,s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#div_de_eliminacion').html(data);
 	        				$('#div_de_eliminacion').modal();
 	        				
@@ -721,7 +721,7 @@
 			var contar=0;
 			$('#tabla_fuente_fija_electrica input[type=checkbox]:checked').each(function() {
 				
-    			console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
+    			//console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
     			listado_codigos[contar]=$(this).val();
     			contar++;
     			
@@ -737,7 +737,7 @@
 	     				 dataType:"html",
 	     				 data: {codigo:listado_codigos,s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#div_de_eliminacion').html(data);
 	        				$('#div_de_eliminacion').modal();
 	        				
@@ -769,7 +769,7 @@
 	     				 dataType:"html",
 	     				 data: {codigo:listado_codigos,s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#div_de_eliminacion').html(data);
 	        				$('#div_de_eliminacion').modal();
 	        				
@@ -786,7 +786,7 @@
 			var contar=0;
 			$('#tabla_fuente_movil_electrico input[type=checkbox]:checked').each(function() {
 				
-    			console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
+    			//console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
     			listado_codigos[contar]=$(this).val();
     			contar++;
     			
@@ -802,7 +802,7 @@
 	     				 dataType:"html",
 	     				 data: {codigo:listado_codigos,s:"<?=$_POST['s'];?>"},
 	      				success: function (data) {
-	      				  	console.log(data);
+	      				  	//console.log(data);
 	        				$('#div_de_eliminacion').html(data);
 	        				$('#div_de_eliminacion').modal();
 	        				

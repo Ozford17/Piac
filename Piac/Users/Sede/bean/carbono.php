@@ -33,13 +33,7 @@
 </head>
 <body>
 	<div class="arriba"><img src="../../../images/Logo.png"><p style="margin-left: 40%;">Huella de carbono</p><a href="https://piac.ecoblue.co/" > Cerrar sesion</a></p></div>
-	<div id="menu">
-		<a href="sede.php?s=<?php echo $s?>"><button><p>Datos de la Sede</p></button></a>
-		<a href="solido.php?s=<?php echo $s?>"><button><p>Corriente de residuos</p></button></a>
-		<a href="carbono.php?s=<?php echo $s?>"><button><p>Huella de Carbono</p></button></a>
-		<a href="hidirico.php?s=<?php echo $s?>"><button><p>Huella Hidrica</p></button></a>
-		<a href="informes.php?s=<?php echo $s?>"><button><p>Informes</p></button></a>
-	</div>
+	<?php require '../Coditas/Menu.php'?>
 	<div id="centro_huella">
 		<center><p style="color:black;">Reporte de consumos.</p></center><br>	
 		<p style="color: black; text-align:justify; font-size: 1.0vw; width: 90%; margin-left: 5%;">En esta sección debemos registrar mensualmente los consumos teniendo en cuenta los alcances uno y dos para el año <b><?=date("Y")?></b>. <br>	

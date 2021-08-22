@@ -7,7 +7,7 @@ $contraseña=$_POST['contraseña'];
 $_SESSION['tipo']=0;
 $response=array();
 $res=$consulta->verificarUsuario($nombre,$contraseña);
-while ($fila=mysqli_fetch_array($res)) {
+if ($fila=mysqli_fetch_array($res)) {
 	if ($nombre==$fila[2] && $contraseña==$fila[3]) {
 
 		$response["success"]=true;
@@ -21,6 +21,7 @@ while ($fila=mysqli_fetch_array($res)) {
 	else
 	{
 		$response["success"]=false;
+	}
 	}
 	echo json_encode($response);
 

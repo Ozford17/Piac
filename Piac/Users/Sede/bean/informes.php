@@ -79,7 +79,7 @@
 					$resp=$consultas->consultar_grafica_co2_alcance1(base64_decode($s),$año);
 					while ($fila=mysqli_fetch_array($resp)) {
 							$mes[]=$fila[0];
-							$dato[]=number_format($fila[1]/1000, 2, '.', '');
+							$dato[]=number_format($fila[1]/1000, 4, '.', '');
 					}
 					for ($i=1; $i <=12 ; $i++) { 
 						$bandera=false;
@@ -106,7 +106,7 @@
 				$resp=$consultas->consultar_grafica_co2_tipos(base64_decode($s),$año);
 				while ($fila=mysqli_fetch_array($resp)) {
 						$mes[]=$fila[0];
-						$dato[]=number_format(($fila[1]*28)/1000, 2, '.', '');
+						$dato[]=number_format(($fila[1]*28)/1000, 5, '.', '');
 				}
 				for ($i=1; $i <=12 ; $i++) { 
 					$bandera=false;
@@ -134,7 +134,7 @@
 				$resp=$consultas->consultar_grafica_co2_tipos(base64_decode($s),$año);
 				while ($fila=mysqli_fetch_array($resp)) {
 						$mes[]=$fila[0];
-						$dato[]=number_format(($fila[2]*265)/1000, 2, '.', '');
+						$dato[]=number_format(($fila[2]*265)/1000, 4, '.', '');
 				}
 				for ($i=1; $i <=12 ; $i++) { 
 					$bandera=false;
@@ -620,13 +620,7 @@
 <body>
 
 	<div class="arriba"><img src="../../../images/Logo.png"><p style="margin-left: 40%;">informes de carbono</p><a href="https://piac.ecoblue.co/" > Cerrar sesion</a></p></div>
-	<div id="menu">
-		<a href="sede.php?s=<?php echo $s?>"><button><p>Datos de la Sede</p></button></a>
-		<a href="solido.php?s=<?php echo $s?>"><button><p>Corriente de residuos</p></button></a>
-		<a href="carbono.php?s=<?php echo $s?>"><button><p>Huella de Carbono</p></button></a>
-		<a href="hidirico.php?s=<?php echo $s?>"><button><p>Huella Hidrica</p></button></a>
-		<a href="informes.php?s=<?php echo $s?>"><button><p>Informes</p></button></a>
-	</div>
+	<?php require '../Coditas/Menu.php'?>
 
 	<div id="centro_huella" style="">
 		<div style="width: 95%;">	
