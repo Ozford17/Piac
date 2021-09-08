@@ -88,11 +88,12 @@
 #cuadro ul{
 	display: flex;
 	width:100%;
+	
 
 }
 #cuadro ul li{
 	text-align: center;
-	width: 56%;
+	width: 100%;
 	padding: 2% 5%;
 	list-style: none;
 	background: #424242;

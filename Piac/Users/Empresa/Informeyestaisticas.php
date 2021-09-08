@@ -18,8 +18,8 @@ $sede=$_SESSION['sede'];
   	<link rel="stylesheet" type="text/css" href="../../css/arriba.css">
 	
 	<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
-	<script src='./../../src/js/jquery-3.4.1.min.js'></script>
-	<script type="text/javascript">
+	<script src='./../../src/js/jquery-3.4.1.min.js' ></script>
+	<script type="text/javascript" >
 	$(document).ready(()=>{
 		$('#Formulario_infor').submit(()=>{
 			
@@ -291,7 +291,8 @@ $sede=$_SESSION['sede'];
 		
 	</script>
 	<style>
-		#hol{
+		#hol
+		{
 			visibility:hidden
 		}
 	</style>
@@ -336,7 +337,7 @@ $sede=$_SESSION['sede'];
 				<option value="S">Seleccione</option>
 				<?php
 					/** Peticion a base de datos de los años registrados */
-					$resp=$consultas->Listar_ano_informe();
+					$resp=$consultas->Listar_ano_informe($_SESSION['sede']);
 					if(mysqli_num_rows($resp))
 					{
 						while($fila=mysqli_fetch_array($resp))

@@ -18,7 +18,7 @@ session_start();
 	<link rel="shortcut icon" href="../../images/Logo.png" />
 	<link rel="stylesheet" type="text/css" href="../../css/empresa.css">
 	<link rel="stylesheet" type="text/css" href="../../css/arriba.css">
-	<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type='text/javascript' src="../../src/js/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready( function(){
 
@@ -159,7 +159,7 @@ session_start();
 				</div>
 				<ul>
 					<li id="info_em">Informacion de la empresa</li>
-					<li id="info_p">Informacion de Produccion</li>
+					<!--<li id="info_p">Informacion de Produccion</li>-->
 
 				</ul>
 				<div id="informacion" style="width: 100%;">
@@ -174,7 +174,7 @@ session_start();
 								<th>Nombre</th>
 								<th>Ciudad</th>
 								<th>Huella <br> carbono</th>
-								<th>Huella <br> hidrica</th>
+								<!--<th>Huella <br> hidrica</th>-->
 							</tr>
 						
 						<?php
@@ -198,7 +198,7 @@ session_start();
 													<input type='checkbox' name='carbono_".$fila[0]."' value='carbono_".$fila[0]."' id='carbono_".$fila[0]."' class='toogle' onChange='cargar(value)'>
 													<label style='margin-left:25%;'for='carbono_".$fila[0]."'></label>
 												</td>";
-										}
+										}/* habilitar para la huella hidrica
 										if ($fila[10]=="1") {
 											echo "<td>
 													<input type='checkbox' name='hidrica_".$fila[0]."' id='hidrica_".$fila[0]."' class='toogle' value='hidrica_".$fila[0]."' checked='' onChange='cargar(value)'>
@@ -210,7 +210,7 @@ session_start();
 													<input type='checkbox' name='hidrica_".$fila[0]."' id='hidrica_".$fila[0]."' class='toogle' value='hidrica_".$fila[0]."' onChange='cargar(value)'>
 													<label style='margin-left:25%;'for='hidrica_".$fila[0]."'></label>
 											</td>";
-										}
+										}*/
 										
 										
 								echo "</tr>";

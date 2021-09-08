@@ -20,7 +20,7 @@ class renderMenu{
     if ($fila=mysqli_fetch_array($tipoUsuario)) {
       
       if ($fila[0]=="2") {
-          $Informe='  <a href="DatosPersonales.php"><button><p>Datos Personales</p></button></a>';
+          $Informe='  <a href="DatosPersonales.php"><button><p>Datos Empresariales</p></button></a>';
           $Sedes='<a href="home.php"><button><p>Sedes</p></button></a>';
           $Datos='  <a href="Informeyestaisticas.php"><button><p>Informe y Estadisticas</p></button></a>';
                     return $Informe.$Sedes.$Datos;
