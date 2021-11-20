@@ -31,7 +31,7 @@ $sede=$_SESSION['sede'];
 				success: (data)=>
 				{
 					let resp=jQuery.parseJSON(data);
-					//console.log(resp.datos);
+					console.log(resp.datos);
 					window.open('bean/Generar_Graficos.php?Datos='+JSON.stringify(resp.datos), 'Generar Graficos','width=1200,height=500,scrollbars=N');
 					window.open("./informe.php","_banck");
 				}

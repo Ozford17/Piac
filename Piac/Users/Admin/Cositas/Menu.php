@@ -3,8 +3,8 @@
 			<li>
 				<p class="">Empresas y Sedes</p>
 				<ul>
-				<li><p class="RegistrosEmp">Registros</p></li>
-					<li><p class="Estable sub_btn">Datos</p></li>
+					<li><p class="RegistrosEmp">Registros</p></li>
+					<li><p class="Datos sub_btn">Datos</p></li>
 				</ul>
 			</li>
 			<li><p class="Usuarios">Usuarios</p></li>

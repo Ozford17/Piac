@@ -128,7 +128,14 @@
     <header></header>
     <main>
     <h3 align="center">REPORTE CÁLCULO DE HUELLA DE CARBONO CORPORATIVA</h3>
-    <h1 style="margin-top:40%" align="center"><?php if($datos["Cara"]=="anual"){ echo $_SESSION['empresa_n'];}else{echo base64_decode($datos["Sede_n"]);}?></h1>
+    <h1 style="margin-top:40%" align="center">
+        <?php 
+            if($datos["Cara"]=="General"){ 
+                echo $_SESSION['empresa_n'];
+                }
+            else{
+                echo base64_decode($datos["Sede_n"]);
+                }?></h1>
     <?php
         if($datos['tipo']=="mensual")
         {

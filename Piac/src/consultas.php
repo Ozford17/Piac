@@ -1873,6 +1873,24 @@ require_once "Conexion.php";
         return $resultado;
       }
 
+      /*=============================================================================================================
+         Consultas para hacer las graficas de una sede especifica de Metano CH4
+      ===============================================================================================================*/
+      public function Consultar_grafica_CH4_empresa_general($empresa){
+        $sql="SELECT CH4.año as Año, CH4.ch4  from (
+                SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_CH4) as Ch4
+                from huella_carbono_fuentes_fijas_combustible fc, sede s 
+                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+              UNION 
+                SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CH4) as Ch4
+                from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
+                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                ) as CH4 GROUP By Año";
+        //echo $sql."<br> ";
+        $resultado=$this->consultar($sql);
+        return $resultado;
+      }
+
 
     /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                             GRAFICACION POR EMPRESA ------- General---- Un año en especifico

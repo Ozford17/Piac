@@ -38,6 +38,10 @@ $(document).ready(function(){
         e.preventDefault();
         $(".princ").load("/Users/Admin/bean/Usuario.php");
     });
+    $(".Datos").click(function(e)    {
+        e.preventDefault();
+        $(".princ").load("/Users/Admin/bean/Datos.php");
+    });
 
     $(".cerrar").click(e=>{
         e.preventDefault();

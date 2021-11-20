@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-01-2021 a las 18:49:55
--- Versión del servidor: 10.1.29-MariaDB
--- Versión de PHP: 7.1.12
+-- Tiempo de generación: 20-11-2021 a las 22:36:50
+-- Versión del servidor: 10.4.17-MariaDB
+-- Versión de PHP: 8.0.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -988,7 +987,12 @@ INSERT INTO `empresa` (`Codigo`, `Nit`, `Nombre`, `Representante`, `telefono`, `
 (3, '901244612-3', 'Agencia de servicios y estudios ambientales BioDat', 'Sandra Morales', '75685', 'agenciabiodata@gmail.com', 58, NULL, NULL),
 (4, '123', 'Miguel', 'mig', '12357', 'correo@correo.co', 1, 'null', 'null'),
 (5, '745236985', 'Nueva empresa', 'Miguel otra VEz', '789542332', 'miguelangel_1704@hotmail.com', 4, 'null', 'null'),
-(6, '799655', 'Esta es de prueba', 'Miguel', '8965412', 'Migueal@este.co', 603, 'null', 'null');
+(6, '799655', 'Esta es de prueba', 'Miguel', '8965412', 'Migueal@este.co', 603, 'null', 'null'),
+(7, '7845', 'werw', 'werwer', '242435', 'asd@asd.cp', 18, 'null', 'null'),
+(8, '7845', 'werw', 'werwer', '2677882', 'asd@asd.cp', 18, 'null', 'null'),
+(9, '1234', 'qweqwe', 'qweqe', '12324356', 'asdasd@es.co', 3, 'null', 'null'),
+(10, '1234567', 'waeretrhgf', 'qwerty', '23445678', 'sdfs@sghco', 2, 'null', 'null'),
+(11, '1236547', 'Macaski', 'Jessica Jimena Gaarzon', '305419251', 'jimesgarzon@gmail.com', 4, 'null', 'null');
 
 -- --------------------------------------------------------
 
@@ -1004,35 +1008,39 @@ CREATE TABLE `equipo_electronico` (
   `Horas` double NOT NULL,
   `Dias` int(11) NOT NULL,
   `Refrigerante` int(11) DEFAULT NULL,
-  `Lubricantes` int(11) NOT NULL DEFAULT '0',
+  `Lubricantes` int(11) NOT NULL DEFAULT 0,
   `estado` int(11) NOT NULL,
-  `observacion` text COLLATE utf8_unicode_ci
+  `observacion` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Fecha` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `equipo_electronico`
 --
 
-INSERT INTO `equipo_electronico` (`Codigo`, `Sede`, `Nombre`, `Cantidad_equipos`, `Horas`, `Dias`, `Refrigerante`, `Lubricantes`, `estado`, `observacion`) VALUES
-(6, 1, 'espichadora', 2, 8, 5, 0, 0, 0, NULL),
-(7, 1, 'impresora', 10, 10, 5, 0, 0, 0, NULL),
-(12, 1, 'Compactadora', 2, 12, 6, 0, 0, 0, NULL),
-(13, 2, 'asdads', 2, 2, 2, 0, 0, 0, NULL),
-(14, 5, 'aire acondicionado ', 4, 8, 6, 0, 0, 0, NULL),
-(15, 5, 'aire acondicionado ', 4, 8, 6, 0, 0, 0, NULL),
-(16, 5, 'horno', 1, 1, 6, 0, 0, 0, NULL),
-(17, 5, 'aire acondicionado ', 4, 8, 6, 20, 0, 0, NULL),
-(18, 5, 'horno', 1, 1, 6, 0, 0, 0, NULL),
-(19, 10, 'Nevera', 5, 24, 7, 0, 0, 0, NULL),
-(20, 10, 'Congelador', 2, 24, 7, 0, 0, 0, NULL),
-(21, 1, 'embalsadora', 2, 2, 2, 1, 0, 0, NULL),
-(22, 1, 'nevera', 3, 24, 7, 9, 0, 0, NULL),
-(27, 10, 'Extractor', 3, 6, 7, 0, 0, 0, NULL),
-(28, 10, 'Licuadora', 4, 3, 7, 0, 0, 0, NULL),
-(29, 5, 'Computador', 4, 9, 6, 0, 0, 0, NULL),
-(30, 5, 'patines', 0, 1, 1, 0, 1, 1, ' 2019-11-06 0 Para las pruebas'),
-(31, 5, 'Patines', 0, 10, 7, 0, 1, 1, ' 2019-11-06 0 Para pruebas de inserción'),
-(32, 1, 'computador mac', 1, 6, 6, 0, 0, 0, NULL);
+INSERT INTO `equipo_electronico` (`Codigo`, `Sede`, `Nombre`, `Cantidad_equipos`, `Horas`, `Dias`, `Refrigerante`, `Lubricantes`, `estado`, `observacion`, `Fecha`) VALUES
+(6, 1, 'espichadora', -2, 8, 5, 0, 0, 1, ' 2021-04-30 0 EStan dañadps 2021-04-30 -2 EStan dañad', '2021-08-11'),
+(7, 1, 'impresora', 10, 10, 5, 0, 0, 0, NULL, '2019-08-11'),
+(12, 1, 'Compactadora', 2, 12, 6, 0, 0, 0, NULL, '2020-08-11'),
+(13, 2, 'asdads', 2, 2, 2, 0, 0, 0, NULL, '2021-08-11'),
+(14, 5, 'aire acondicionado ', 4, 8, 6, 0, 0, 0, NULL, '2019-08-11'),
+(15, 5, 'aire acondicionado ', 4, 8, 6, 0, 0, 0, NULL, '2020-08-11'),
+(16, 5, 'horno', 1, 1, 6, 0, 0, 0, NULL, '2019-08-11'),
+(17, 5, 'aire acondicionado ', 4, 8, 6, 20, 0, 0, NULL, '2019-08-11'),
+(18, 5, 'horno', 1, 1, 6, 0, 0, 0, NULL, '2020-08-11'),
+(19, 10, 'Nevera', 5, 24, 7, 0, 0, 0, NULL, '2019-08-11'),
+(20, 10, 'Congelador', 2, 24, 7, 0, 0, 0, NULL, '2019-08-11'),
+(21, 1, 'embalsadora', 2, 2, 2, 1, 0, 0, NULL, '2020-08-11'),
+(22, 1, 'nevera', 3, 24, 7, 9, 0, 0, NULL, '2019-08-11'),
+(27, 10, 'Extractor', 3, 6, 7, 0, 0, 0, NULL, '2019-08-11'),
+(28, 10, 'Licuadora', 4, 3, 7, 0, 0, 0, NULL, '2020-08-11'),
+(29, 5, 'Computador', 4, 9, 6, 0, 0, 0, NULL, '2019-08-11'),
+(30, 5, 'patines', 0, 1, 1, 0, 1, 1, ' 2019-11-06 0 Para las pruebas', '2021-08-11'),
+(31, 5, 'Patines', 0, 10, 7, 0, 1, 1, ' 2019-11-06 0 Para pruebas de inserción', '2021-08-11'),
+(32, 1, 'computador mac', 1, 6, 6, 0, 0, 0, NULL, '2019-08-11'),
+(33, 1, 'EQuipo', 0, 20, 5, 0, 0, 1, ' 2021-04-30 0 Ya no', '2021-08-11'),
+(34, 11, 'Licuadora', 1, 3, 3, 0, 0, 0, NULL, '2020-04-08'),
+(35, 11, 'Cargador bateria', 1, 2, 6, 0, 0, 0, NULL, '2020-08-03');
 
 -- --------------------------------------------------------
 
@@ -1077,11 +1085,13 @@ CREATE TABLE `extintor_sede` (
 --
 
 INSERT INTO `extintor_sede` (`codigo`, `sede`, `Cantidad`, `Peso`, `Fecha`) VALUES
-(1001, 1, 67, 20, '2019-11-23'),
+(1001, 1, 75, 20, '2021-04-30'),
 (1001, 5, 2, 20, '2019-11-13'),
-(1001, 5, 2, 50, '2019-11-08'),
+(1001, 5, 2, 50, '2020-11-08'),
 (1001, 10, 2, 12, '2019-11-23'),
-(1001, 10, 5, 30, '2019-10-30'),
+(1001, 10, 5, 30, '2020-10-30'),
+(1001, 11, 4, 20, '2021-08-22'),
+(1001, 11, 10, 40, '2021-08-22'),
 (1002, 1, 45, 30, '2019-11-15'),
 (1002, 1, 8, 90, '2019-10-01'),
 (1002, 5, 5, 20, '2019-11-08'),
@@ -1106,9 +1116,10 @@ CREATE TABLE `extintor_vehiculo` (
 
 INSERT INTO `extintor_vehiculo` (`Vehiculo`, `extintor`, `Peso`, `Fecha_subida`) VALUES
 (20, 1002, 30, '2019-11-08'),
-(21, 1002, 20, '2019-11-08'),
+(21, 1002, 20, '2020-11-08'),
 (22, 1002, 30, '2019-11-08'),
-(23, 1001, 20, '2019-11-15');
+(23, 1001, 20, '2020-11-15'),
+(29, 1001, 10, '2021-08-17');
 
 -- --------------------------------------------------------
 
@@ -1129,15 +1140,16 @@ CREATE TABLE `extintor_vehiculo_elec` (
 
 INSERT INTO `extintor_vehiculo_elec` (`Vehiculo`, `extintor`, `Peso`, `Fecha_subida`) VALUES
 (7, 1001, 10, '2019-11-08'),
-(8, 1001, 20, '2019-11-08'),
+(8, 1001, 20, '2020-11-08'),
 (8, 1002, 30, '2019-11-08'),
 (9, 1001, 10, '2019-11-08'),
-(9, 1002, 20, '2019-11-08'),
+(9, 1002, 20, '2020-11-08'),
 (13, 1002, 30, '2019-11-15'),
 (14, 1002, 30, '2019-11-15'),
-(15, 1002, 30, '2019-11-15'),
+(15, 1002, 30, '2020-11-15'),
 (16, 1001, 20, '2019-11-23'),
-(16, 1002, 20, '2019-11-23');
+(16, 1002, 20, '2020-11-23'),
+(17, 1001, 10, '2021-08-17');
 
 -- --------------------------------------------------------
 
@@ -1158,7 +1170,7 @@ CREATE TABLE `fuentes_fijas` (
   `fecha_i_funcion` date NOT NULL,
   `Fecha` date NOT NULL,
   `Estado` int(20) DEFAULT NULL,
-  `Observacion` text COLLATE utf8_unicode_ci
+  `Observacion` text COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1166,25 +1178,28 @@ CREATE TABLE `fuentes_fijas` (
 --
 
 INSERT INTO `fuentes_fijas` (`Codigo`, `Sede`, `Fuente`, `Cantidad`, `Elemento`, `horas_dias`, `dias_semana`, `refrigerante`, `Lubricantes`, `fecha_i_funcion`, `Fecha`, `Estado`, `Observacion`) VALUES
-(1, 1, 'espichadora', 1, 1017, 5, 5, 2, 0, '2018-12-01', '2019-10-01', 0, NULL),
-(2, 1, 'caldera', 2, 1022, 3, 2, 3, 0, '2018-11-30', '2019-10-01', 0, NULL),
+(1, 1, 'Aplanadora', 1, 1017, 5, 5, 2, 0, '2019-12-01', '2019-10-01', 0, NULL),
+(2, 1, 'caldera', 2, 1022, 3, 2, 3, 0, '2018-11-30', '2020-10-01', 0, NULL),
 (3, 1, 'horno', 0, 1017, 3, 2, 4, 0, '2018-11-30', '2019-10-01', 1, ' 2019-11-23 0 '),
 (4, 5, 'Estufa', 2, 1055, 4, 6, 0, 0, '2019-06-03', '2019-10-10', 0, NULL),
-(5, 5, 'Estufa', 2, 1055, 4, 6, 0, 0, '2019-06-03', '2019-10-10', 0, NULL),
+(5, 5, 'Estufa', 2, 1055, 4, 6, 0, 0, '2019-06-03', '2020-10-10', 0, NULL),
 (6, 5, 'Estufa', 2, 1055, 4, 6, 0, 0, '2019-06-03', '2019-10-10', 0, NULL),
 (7, 10, 'estufa', 1, 1047, 12, 7, 0, 0, '2000-01-03', '2019-10-11', 0, ' 2019-11-23 3  2019-11-23 3  2019-11-23 3  2019-11-23 2 prueba 2019-11-23 1 prueba'),
-(8, 10, 'Horno', 1, 1055, 6, 7, 0, 0, '2000-02-08', '2019-10-11', 0, ' 2019-11-23 4  2019-11-23 3  2019-11-23 2  2019-11-23 1 '),
+(8, 10, 'Horno', 1, 1055, 6, 7, 0, 0, '2000-02-08', '2020-10-11', 0, ' 2019-11-23 4  2019-11-23 3  2019-11-23 2  2019-11-23 1 '),
 (9, 10, 'Caldera', 1, 1014, 24, 7, 3, 0, '2018-01-01', '2019-10-30', 0, NULL),
-(13, 5, 'monta', 0, 1006, 5, 7, 0, 0, '2019-01-01', '2019-10-30', 0, ''),
+(13, 5, 'monta', 0, 1006, 5, 7, 0, 0, '2019-01-01', '2020-10-30', 0, ''),
 (15, 10, 'as', 0, 1018, 4, 7, 0, 1, '2019-12-31', '2019-10-31', 1, ' 2019-11-23 1  2019-11-23 1  2019-11-23 1  2019-11-23 -2  2019-11-23 -3 priueba 2019-11-23 0 hols'),
 (16, 5, 'hola', 0, 1016, 2, 5, 2, 1, '2019-12-31', '2019-11-05', 1, ' 2019-11-05 0 por pruebas'),
 (17, 5, 'hola', 0, 1016, 2, 5, 2, 1, '2019-12-31', '2019-11-05', 1, ' 2019-11-05 1 maquina dañada 2019-11-05 0 maquina dañada'),
-(18, 5, 'holas', 0, 1003, 1, 8, 0, 1, '2019-01-01', '2019-11-05', 1, ' 2019-11-05 0 Pruebas'),
+(18, 5, 'holas', 0, 1003, 1, 8, 0, 1, '2019-01-01', '2020-11-05', 1, ' 2019-11-05 0 Pruebas'),
 (19, 5, 'holas', 0, 1003, 1, 7, 0, 1, '2019-01-01', '2019-11-05', 1, ' 2019-11-05 0 Pruebas'),
 (29, 5, 'nbvc', 0, 1014, 1, 1, 0, 0, '2019-12-31', '2019-11-05', 1, ' 2019-11-05 0 '),
 (30, 5, 'Monta', 0, 1015, 1, 1, 0, 0, '2019-12-31', '2019-11-05', 1, ' 2019-11-06 0 Para las pruebas'),
 (31, 5, 'hol', 0, 1014, 1, 1, 0, 0, '2019-12-31', '2019-11-05', 1, ' 2019-11-05 0 tocaba'),
-(32, 1, 'Rectificadpora de frenos ', 1, 1006, 4, 4, 0, 0, '2018-12-12', '2019-11-23', 0, NULL);
+(32, 1, 'Rectificadpora de frenos ', 0, 1006, 4, 4, 0, 0, '2018-12-12', '2019-11-23', 1, ' 2021-04-30 0 Cambio de maquinaria'),
+(33, 1, 'Horno', 2, 1006, 20, 6, 0, 0, '2020-09-28', '2021-04-30', 0, NULL),
+(34, 11, 'Regadora', 2, 1010, 4, 7, 0, 1, '2020-04-17', '2021-08-17', 0, NULL),
+(35, 11, 'Estufa', 3, 1018, 4, 3, 0, 0, '2020-04-05', '2021-08-22', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1202,7 +1217,7 @@ CREATE TABLE `fuentes_moviles` (
   `Refrigerante` int(11) NOT NULL,
   `Fecha` date NOT NULL,
   `estado` int(11) NOT NULL,
-  `observacion` text COLLATE utf8_unicode_ci
+  `observacion` text COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -1210,22 +1225,22 @@ CREATE TABLE `fuentes_moviles` (
 --
 
 INSERT INTO `fuentes_moviles` (`Codigo`, `Sede`, `Vehiculo`, `Tipo`, `Placa`, `Combustible`, `Refrigerante`, `Fecha`, `estado`, `observacion`) VALUES
-(1, 1, 'Mazda', '1', 'CUA-159', 1001, 0, '2019-08-29', 0, NULL),
-(2, 1, 'Mazda', '1', 'CUA-159', 1002, 0, '2019-08-29', 0, NULL),
-(3, 1, 'chevrolet', '2', 'GHT-789', 1010, 0, '2019-10-11', 0, NULL),
-(4, 1, 'chevrolet', '2', 'GHT-789', 1010, 0, '2019-10-11', 0, NULL),
-(5, 1, 'chevrolet', '2', 'GHT-789', 1010, 0, '2019-10-11', 0, NULL),
+(1, 1, 'Mazda', '2', 'CUA-159', 1001, 0, '2020-08-29', 0, NULL),
+(2, 1, 'Mazda', '1', 'AHY-125', 1002, 0, '2020-08-29', 0, NULL),
+(3, 1, 'Chevrolet', '1', 'GHT-789', 1010, 0, '2019-10-11', 0, NULL),
 (6, 5, 'Scoda', '1', 'VH-478', 1010, 0, '2019-10-16', 0, NULL),
 (10, 10, 'Renault', '1', 'BOD795', 1010, 0, '2019-10-30', 0, NULL),
-(20, 5, 'Pollito', '1', 'tax125', 1010, 0, '2019-11-08', 0, NULL),
-(21, 5, 'Pollito', '1', 'tax125', 1010, 3, '2019-11-08', 0, NULL),
-(22, 5, 'Pollitico', '1', 'tax125', 1010, 0, '2019-11-08', 0, NULL),
-(23, 1, 'Renoult', '1', 'ksj785', 1010, 0, '2019-11-15', 0, NULL),
-(24, 1, 'Renoult', '2', 'ksj785', 1010, 0, '2019-11-15', 0, NULL),
-(25, 1, 'Toyota', '2', 'mks781', 1010, 0, '2019-11-15', 0, NULL),
-(26, 1, 'Toyota', '2', 'mks781', 1010, 0, '2019-11-15', 0, NULL),
-(27, 1, 'Toyota', '2', 'mks781', 1010, 0, '2019-11-15', 0, NULL),
-(28, 1, 'POLLITO', '2', 'KYC 123', 1009, 0, '2019-11-23', 0, NULL);
+(20, 5, 'MACK', '1', 'tax125', 1010, 0, '2019-11-08', 0, NULL),
+(21, 5, 'MACK', '1', 'tax125', 1010, 3, '2019-11-08', 1, NULL),
+(22, 5, 'MACK', '1', 'tax125', 1010, 0, '2019-11-08', 1, NULL),
+(23, 1, 'Renault', '1', 'ksj785', 1010, 0, '2020-11-15', 0, NULL),
+(24, 1, 'Renault', '1', 'ksj785', 1010, 0, '2019-11-15', 1, NULL),
+(25, 1, 'Toyota', '1', 'mks781', 1010, 0, '2020-11-15', 0, NULL),
+(26, 1, 'Toyota', '1', 'mks781', 1010, 0, '2019-11-15', 1, NULL),
+(27, 1, 'Toyota', '1', 'mks781', 1010, 0, '2019-11-15', 1, NULL),
+(28, 1, 'MACK', '2', 'PPT-386', 1009, 0, '2019-11-23', 0, NULL),
+(29, 11, 'Scoda', '1', 'VHE-478', 1010, 0, '2021-08-17', 0, NULL),
+(30, 11, 'Mitsubishi', '2', 'VPU-122', 1006, 0, '2020-02-20', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -1261,13 +1276,17 @@ CREATE TABLE `huella_carbono_energia` (
 INSERT INTO `huella_carbono_energia` (`Codigo`, `Sede`, `Factor_CO2`, `Cantidad`, `Total_CO2`, `Fecha_registro`, `Fecha_subida`) VALUES
 (1, 5, 0.2096, 25, 5.24, '2019-10-22', '2019-10-22'),
 (2, 5, 0.2096, 678, 142.1088, '2019-10-30', '2019-10-30'),
-(3, 10, 0.2096, 458, 95.9968, '2019-11-23', '2019-11-23'),
+(3, 1, 0.2096, 458, 95.9968, '2019-11-23', '2019-11-23'),
 (4, 10, 0.2096, 152, 31.8592, '2019-11-25', '2019-11-25'),
 (5, 10, 0, 800, 0, '2019-11-28', '2019-11-28'),
 (6, 10, 0, 800, 0, '2019-11-28', '2019-11-28'),
 (7, 10, 0, 800, 0, '2019-11-28', '2019-11-28'),
 (8, 10, 0, 800, 0, '2019-11-28', '2019-11-28'),
-(9, 1, 0.2096, 1500, 314.4, '2020-05-21', '2020-05-21');
+(9, 1, 0.2096, 1500, 314.4, '2020-05-21', '2020-05-21'),
+(10, 11, 0.2096, 3500, 733.6, '2021-08-21', '2021-08-21'),
+(11, 11, 0.2096, 3500, 733.6, '2021-08-21', '2021-08-21'),
+(12, 11, 0.2096, 3500, 733.6, '2021-08-21', '2021-08-21'),
+(13, 11, 0.2096, 5300, 1110.88, '2021-08-21', '2021-08-21');
 
 -- --------------------------------------------------------
 
@@ -1323,8 +1342,6 @@ INSERT INTO `huella_carbono_extintores` (`Codigo`, `Extintor`, `Cantidad`, `Tota
 (40, 1002, 2, 474, '2019-11-23', '2019-11-23'),
 (41, 1001, 2, 4, '2019-11-23', '2019-11-23'),
 (42, 1002, 2, 316, '2019-11-23', '2019-11-23'),
-(43, 1001, 2, 4, '0000-00-00', '2019-11-23'),
-(44, 1002, 2, 316, '0000-00-00', '2019-11-23'),
 (45, 1001, 2, 4, '2019-01-01', '2019-11-23'),
 (46, 1002, 2, 316, '2019-01-01', '2019-11-23'),
 (47, 1001, 0, 0, '2019-02-01', '2019-11-28'),
@@ -1338,7 +1355,11 @@ INSERT INTO `huella_carbono_extintores` (`Codigo`, `Extintor`, `Cantidad`, `Tota
 (55, 1001, 0, 0, '2019-03-01', '2019-11-28'),
 (56, 1002, 0, 0, '2019-03-01', '2019-11-28'),
 (57, 1001, 3, 150, '2020-05-21', '2020-05-21'),
-(58, 1002, 50, 0, '2020-05-21', '2020-05-21');
+(58, 1002, 50, 0, '2020-05-21', '2020-05-21'),
+(59, 1001, 2, 40, '2021-08-21', '2021-08-21'),
+(60, 1001, 2, 40, '2021-08-21', '2021-08-21'),
+(61, 1001, 2, 40, '2021-08-21', '2021-08-21'),
+(62, 1001, 1, 20, '2021-08-21', '2021-08-21');
 
 -- --------------------------------------------------------
 
@@ -1414,7 +1435,7 @@ INSERT INTO `huella_carbono_fuentes_fijas_combustible` (`Codigo`, `Elemento`, `C
 (49, 1022, 5, 14470.295, 0, 0, '2019-10-21', '2019-10-21', 1),
 (50, 1017, 8, 18219.592, 0, 0, '2019-10-21', '2019-10-21', 1),
 (51, 1055, 60, 183.06, 0, 0, '2019-10-30', '2019-10-30', 5),
-(52, 1008, 5.7, 57.8493, 0, 0, '2019-10-30', '2019-10-30', 5),
+(52, 1006, 5.7, 57.8493, 0, 0, '2019-10-30', '2019-10-30', 5),
 (53, 1006, 6, 61.659, 0, 0, '2019-10-30', '2019-10-30', 5),
 (54, 1022, 1, 2894.059, 0, 0, '2019-11-18', '2019-11-18', 1),
 (55, 1017, 2, 4554.898, 0, 0, '2019-11-18', '2019-11-18', 1),
@@ -1477,7 +1498,8 @@ INSERT INTO `huella_carbono_fuentes_fijas_combustible` (`Codigo`, `Elemento`, `C
 (112, 1014, 0.25, 633.70325, 0.00719005, 0.0107851, '2019-03-01', '2019-11-28', 10),
 (113, 1006, 3, 30.8295, 0.0000288, 0.0000174, '2020-05-21', '2020-05-21', 1),
 (114, 1022, 1.5, 4341.0885, 0.04562535, 0.06843795, '2020-05-21', '2020-05-21', 1),
-(115, 1017, 2, 4554.898, 0.0488108, 0.0732162, '2020-05-21', '2020-05-21', 1);
+(115, 1017, 2, 4554.898, 0.0488108, 0.0732162, '2020-05-21', '2020-05-21', 1),
+(116, 1010, 5, 38.0905, 0.0001195, 0.000024, '2021-08-21', '2021-08-21', 11);
 
 -- --------------------------------------------------------
 
@@ -1693,87 +1715,52 @@ INSERT INTO `huella_carbono_fuentes_moviles` (`Codigo`, `Placa`, `Cantidad`, `To
 (9, 1, 30, 191.61, 0, 0, '2019-10-15', '2019-10-15'),
 (10, 2, 20, 0, 0, 0, '2019-10-15', '2019-10-15'),
 (11, 3, 20, 152.362, 0, 0, '2019-04-15', '2019-10-15'),
-(12, 4, 20, 152.362, 0, 0, '2019-10-15', '2019-10-15'),
-(13, 5, 20, 152.362, 0, 0, '2019-05-15', '2019-10-15'),
 (14, 6, 3, 22.8543, 0, 0, '2019-10-17', '2019-10-17'),
-(15, 7, 8, 81.192, 0, 0, '2019-10-17', '2019-10-17'),
 (16, 6, 6, 45.7086, 0, 0, '2019-10-17', '2019-10-17'),
-(17, 7, 4, 40.596, 0, 0, '2019-02-17', '2019-10-17'),
 (18, 6, 8, 60.9448, 0, 0, '2019-10-17', '2019-10-17'),
-(19, 7, 4, 40.596, 0, 0, '2019-10-17', '2019-10-17'),
 (20, 1, 7, 44.709, 0, 0, '2019-05-18', '2019-10-18'),
 (21, 2, 5, 0, 0, 0, '2019-10-18', '2019-10-18'),
 (22, 3, 3, 22.8543, 0, 0, '2019-10-18', '2019-10-18'),
-(23, 4, 3, 22.8543, 0, 0, '2019-05-18', '2019-10-18'),
-(24, 5, 2, 15.2362, 0, 0, '2019-10-18', '2019-10-18'),
 (25, 1, 8, 51.096, 0, 0, '2019-02-21', '2019-10-21'),
 (26, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (27, 3, 2, 15.2362, 0, 0, '2019-10-21', '2019-10-21'),
-(28, 4, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
-(29, 5, 4, 30.4724, 0, 0, '2019-06-21', '2019-10-21'),
 (30, 1, 8, 51.096, 0, 0, '2019-10-21', '2019-10-21'),
 (31, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (32, 3, 2, 15.2362, 0, 0, '2019-05-21', '2019-10-21'),
-(33, 4, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
-(34, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (35, 1, 8, 51.096, 0, 0, '2019-02-21', '2019-10-21'),
 (36, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (37, 3, 2, 15.2362, 0, 0, '2019-10-21', '2019-10-21'),
-(38, 4, 4, 30.4724, 0, 0, '2019-04-21', '2019-10-21'),
-(39, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (40, 1, 8, 51.096, 0, 0, '2019-10-21', '2019-10-21'),
 (41, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (42, 3, 2, 15.2362, 0, 0, '2019-02-21', '2019-10-21'),
-(43, 4, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
-(44, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (45, 1, 8, 51.096, 0, 0, '2019-10-21', '2019-10-21'),
 (46, 2, 5, 0, 0, 0, '2019-05-21', '2019-10-21'),
 (47, 3, 2, 15.2362, 0, 0, '2019-10-21', '2019-10-21'),
-(48, 4, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
-(49, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (50, 1, 8, 51.096, 0, 0, '2019-08-22', '2019-10-21'),
 (51, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (52, 3, 2, 15.2362, 0, 0, '2019-10-21', '2019-10-21'),
-(53, 4, 4, 30.4724, 0, 0, '2019-06-21', '2019-10-21'),
-(54, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (55, 1, 8, 51.096, 0, 0, '2019-10-21', '2019-10-21'),
 (56, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (57, 3, 2, 15.2362, 0, 0, '2019-10-21', '2019-10-21'),
-(58, 4, 4, 30.4724, 0, 0, '2019-02-21', '2019-10-21'),
-(59, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (60, 1, 8, 51.096, 0, 0, '2019-06-21', '2019-10-21'),
 (61, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (62, 3, 2, 15.2362, 0, 0, '2019-10-21', '2019-10-21'),
-(63, 4, 4, 30.4724, 0, 0, '2019-05-21', '2019-10-21'),
-(64, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (65, 1, 8, 51.096, 0, 0, '2019-10-21', '2019-10-21'),
 (66, 2, 5, 0, 0, 0, '2019-01-21', '2019-10-21'),
 (67, 3, 2, 15.2362, 0, 0, '2019-10-21', '2019-10-21'),
-(68, 4, 4, 30.4724, 0, 0, '2019-03-21', '2019-10-21'),
-(69, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (70, 1, 8, 51.096, 0, 0, '2019-05-21', '2019-10-21'),
 (71, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (72, 3, 2, 15.2362, 0, 0, '2019-08-21', '2019-10-21'),
-(73, 4, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
-(74, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (75, 1, 8, 51.096, 0, 0, '2019-03-21', '2019-10-21'),
 (76, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (77, 3, 2, 15.2362, 0, 0, '2019-02-21', '2019-10-21'),
-(78, 4, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
-(79, 5, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
 (80, 1, 8, 51.096, 0, 0, '2019-06-21', '2019-10-21'),
 (81, 2, 5, 0, 0, 0, '2019-10-21', '2019-10-21'),
 (82, 3, 2, 15.2362, 0, 0, '2019-07-21', '2019-10-21'),
-(83, 4, 4, 30.4724, 0, 0, '2019-10-21', '2019-10-21'),
-(84, 5, 4, 30.4724, 0, 0, '2019-04-21', '2019-10-21'),
 (85, 6, 50, 380.905, 0, 0, '2019-10-30', '2019-10-30'),
-(86, 7, 45, 456.705, 0, 0, '2019-10-30', '2019-10-30'),
-(87, 11, 48, 487.152, 0, 0, '2019-10-30', '2019-10-30'),
 (88, 1, 11, 70.257, 0, 0, '2019-11-18', '2019-11-18'),
 (89, 2, 12, 82.5876, 0, 0, '2019-11-18', '2019-11-18'),
 (90, 3, 13, 99.0353, 0, 0, '2019-11-18', '2019-11-18'),
-(91, 4, 14, 106.6534, 0, 0, '2019-11-18', '2019-11-18'),
-(92, 5, 15, 114.2715, 0, 0, '2019-11-18', '2019-11-18'),
 (93, 23, 16, 121.8896, 0, 0, '2019-11-18', '2019-11-18'),
 (94, 24, 17, 129.5077, 0, 0, '2019-11-18', '2019-11-18'),
 (95, 25, 18, 137.1258, 0, 0, '2019-11-18', '2019-11-18'),
@@ -1782,8 +1769,6 @@ INSERT INTO `huella_carbono_fuentes_moviles` (`Codigo`, `Placa`, `Cantidad`, `To
 (98, 1, 11, 70.257, 0.0002607, 0.0000517, '2019-11-18', '2019-11-18'),
 (99, 2, 12, 82.5876, 0.0003156, 0.0000636, '2019-11-18', '2019-11-18'),
 (100, 3, 13, 99.0353, 0.0003107, 0.0000624, '2019-11-18', '2019-11-18'),
-(101, 4, 14, 106.6534, 0.0003346, 0.0000672, '2019-11-18', '2019-11-18'),
-(102, 5, 15, 114.2715, 0.0003585, 0.000072, '2019-11-18', '2019-11-18'),
 (103, 23, 16, 121.8896, 0.0003824, 0.0000768, '2019-11-18', '2019-11-18'),
 (104, 24, 17, 129.5077, 0.0004063, 0.0000816, '2019-11-18', '2019-11-18'),
 (105, 25, 18, 137.1258, 0.0004302, 0.0000864, '2019-11-18', '2019-11-18'),
@@ -1792,8 +1777,6 @@ INSERT INTO `huella_carbono_fuentes_moviles` (`Codigo`, `Placa`, `Cantidad`, `To
 (108, 1, 11, 70.257, 0.0002607, 0.0000517, '2019-11-18', '2019-11-18'),
 (109, 2, 12, 82.5876, 0.0003156, 0.0000636, '2019-11-18', '2019-11-18'),
 (110, 3, 13, 99.0353, 0.0003107, 0.0000624, '2019-11-18', '2019-11-18'),
-(111, 4, 14, 106.6534, 0.0003346, 0.0000672, '2019-11-18', '2019-11-18'),
-(112, 5, 15, 114.2715, 0.0003585, 0.000072, '2019-11-18', '2019-11-18'),
 (113, 23, 16, 121.8896, 0.0003824, 0.0000768, '2019-11-18', '2019-11-18'),
 (114, 24, 17, 129.5077, 0.0004063, 0.0000816, '2019-11-18', '2019-11-18'),
 (115, 25, 18, 137.1258, 0.0004302, 0.0000864, '2019-11-18', '2019-11-18'),
@@ -1802,8 +1785,6 @@ INSERT INTO `huella_carbono_fuentes_moviles` (`Codigo`, `Placa`, `Cantidad`, `To
 (118, 1, 11, 70.257, 0.0002607, 0.0000517, '2019-11-18', '2019-11-18'),
 (119, 2, 12, 82.5876, 0.0003156, 0.0000636, '2019-11-18', '2019-11-18'),
 (120, 3, 13, 99.0353, 0.0003107, 0.0000624, '2019-11-18', '2019-11-18'),
-(121, 4, 14, 106.6534, 0.0003346, 0.0000672, '2019-11-18', '2019-11-18'),
-(122, 5, 15, 114.2715, 0.0003585, 0.000072, '2019-11-18', '2019-11-18'),
 (123, 23, 16, 121.8896, 0.0003824, 0.0000768, '2019-11-18', '2019-11-18'),
 (124, 24, 17, 129.5077, 0.0004063, 0.0000816, '2019-11-18', '2019-11-18'),
 (125, 25, 18, 137.1258, 0.0004302, 0.0000864, '2019-11-18', '2019-11-18'),
@@ -1812,8 +1793,6 @@ INSERT INTO `huella_carbono_fuentes_moviles` (`Codigo`, `Placa`, `Cantidad`, `To
 (128, 1, 11, 70.257, 0.0002607, 0.0000517, '2019-11-18', '2019-11-18'),
 (129, 2, 12, 82.5876, 0.0003156, 0.0000636, '2019-11-18', '2019-11-18'),
 (130, 3, 13, 99.0353, 0.0003107, 0.0000624, '2019-11-18', '2019-11-18'),
-(131, 4, 14, 106.6534, 0.0003346, 0.0000672, '2019-11-18', '2019-11-18'),
-(132, 5, 15, 114.2715, 0.0003585, 0.000072, '2019-11-18', '2019-11-18'),
 (133, 23, 16, 121.8896, 0.0003824, 0.0000768, '2019-11-18', '2019-11-18'),
 (134, 24, 17, 129.5077, 0.0004063, 0.0000816, '2019-11-18', '2019-11-18'),
 (135, 25, 18, 137.1258, 0.0004302, 0.0000864, '2019-11-18', '2019-11-18'),
@@ -1822,8 +1801,6 @@ INSERT INTO `huella_carbono_fuentes_moviles` (`Codigo`, `Placa`, `Cantidad`, `To
 (138, 1, 11, 70.257, 0.0002607, 0.0000517, '2019-11-18', '2019-11-18'),
 (139, 2, 12, 82.5876, 0.0003156, 0.0000636, '2019-11-18', '2019-11-18'),
 (140, 3, 13, 99.0353, 0.0003107, 0.0000624, '2019-11-18', '2019-11-18'),
-(141, 4, 14, 106.6534, 0.0003346, 0.0000672, '2019-11-18', '2019-11-18'),
-(142, 5, 15, 114.2715, 0.0003585, 0.000072, '2019-11-18', '2019-11-18'),
 (143, 23, 16, 121.8896, 0.0003824, 0.0000768, '2019-11-18', '2019-11-18'),
 (144, 24, 17, 129.5077, 0.0004063, 0.0000816, '2019-11-18', '2019-11-18'),
 (145, 25, 18, 137.1258, 0.0004302, 0.0000864, '2019-11-18', '2019-11-18'),
@@ -1845,14 +1822,20 @@ INSERT INTO `huella_carbono_fuentes_moviles` (`Codigo`, `Placa`, `Cantidad`, `To
 (161, 1, 3, 19.161, 0.0000711, 0.0000141, '2020-05-21', '2020-05-21'),
 (162, 2, 3, 20.6469, 0.0000789, 0.0000159, '2020-05-21', '2020-05-21'),
 (163, 3, 5, 38.0905, 0.0001195, 0.000024, '2020-05-21', '2020-05-21'),
-(164, 4, 6, 45.7086, 0.0001434, 0.0000288, '2020-05-21', '2020-05-21'),
-(165, 5, 3, 22.8543, 0.0000717, 0.0000144, '2020-05-21', '2020-05-21'),
 (166, 23, 3, 22.8543, 0.0000717, 0.0000144, '2020-05-21', '2020-05-21'),
 (167, 24, 5, 38.0905, 0.0001195, 0.000024, '2020-05-21', '2020-05-21'),
 (168, 25, 3, 22.8543, 0.0000717, 0.0000144, '2020-05-21', '2020-05-21'),
 (169, 26, 5, 38.0905, 0.0001195, 0.000024, '2020-05-21', '2020-05-21'),
 (170, 27, 5, 38.0905, 0.0001195, 0.000024, '2020-05-21', '2020-05-21'),
-(171, 28, 2, 20.3562, 0.0000544, 0.0000108, '2020-05-21', '2020-05-21');
+(171, 28, 2, 20.3562, 0.0000544, 0.0000108, '2020-05-21', '2020-05-21'),
+(172, 29, 5, 38.0905, 0.0001195, 0.000024, '2021-08-21', '2021-08-21'),
+(173, 30, 3, 30.8295, 0.0000288, 0.0000174, '2021-08-21', '2021-08-21'),
+(174, 29, 5, 38.0905, 0.0001195, 0.000024, '2021-08-21', '2021-08-21'),
+(175, 30, 3, 30.8295, 0.0000288, 0.0000174, '2021-08-21', '2021-08-21'),
+(176, 29, 5, 38.0905, 0.0001195, 0.000024, '2021-08-21', '2021-08-21'),
+(177, 30, 3, 30.8295, 0.0000288, 0.0000174, '2021-08-21', '2021-08-21'),
+(178, 29, 5, 38.0905, 0.0001195, 0.000024, '2021-08-21', '2021-08-21'),
+(179, 30, 3, 30.8295, 0.0000288, 0.0000174, '2021-08-21', '2021-08-21');
 
 -- --------------------------------------------------------
 
@@ -1924,7 +1907,15 @@ INSERT INTO `huella_carbono_lubricantes` (`codigo`, `sede`, `tipo_lubricante`, `
 (47, 10, 1, 1, 0.00178295, '2019-03-01', '2019-11-28'),
 (48, 10, 2, 2, 0.0011792, '2019-03-01', '2019-11-28'),
 (49, 1, 1, 3, 0.00534885, '2020-05-21', '2020-05-21'),
-(50, 1, 2, 1, 0.0005896, '2020-05-21', '2020-05-21');
+(50, 1, 2, 1, 0.0005896, '2020-05-21', '2020-05-21'),
+(51, 11, 1, 2, 0.0035659, '2021-08-21', '2021-08-21'),
+(52, 11, 2, 5, 0.002948, '2021-08-21', '2021-08-21'),
+(53, 11, 1, 2, 0.0035659, '2021-08-21', '2021-08-21'),
+(54, 11, 2, 5, 0.002948, '2021-08-21', '2021-08-21'),
+(55, 11, 1, 2, 0.0035659, '2021-08-21', '2021-08-21'),
+(56, 11, 2, 5, 0.002948, '2021-08-21', '2021-08-21'),
+(57, 11, 1, 2, 0.0035659, '2021-08-21', '2021-08-21'),
+(58, 11, 2, 5, 0.002948, '2021-08-21', '2021-08-21');
 
 -- --------------------------------------------------------
 
@@ -1994,7 +1985,7 @@ CREATE TABLE `luminarias` (
   `Horas_uso` double NOT NULL,
   `Dias` int(11) NOT NULL,
   `est` int(11) NOT NULL,
-  `observacion` text COLLATE utf8_unicode_ci
+  `observacion` text COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -2002,17 +1993,18 @@ CREATE TABLE `luminarias` (
 --
 
 INSERT INTO `luminarias` (`Codigo`, `Sede`, `Tipo_luminaria`, `cantidad`, `Potencia`, `Horas_uso`, `Dias`, `est`, `observacion`) VALUES
-(1, 1, 'led', 5, 5, 5, 5, 0, NULL),
-(2, 1, 'led', 5, 5, 5, 5, 0, NULL),
-(3, 5, 'Bombillo Led', 5, 12, 24, 7, 0, NULL),
-(4, 10, 'Led', 100, 200, 12, 7, 0, NULL),
+(1, 1, 'LED', 5, 5, 5, 5, 0, NULL),
+(2, 1, 'LED', 5, 5, 5, 5, 0, NULL),
+(3, 5, 'LED', 5, 12, 24, 7, 0, NULL),
+(4, 10, 'LED', 100, 200, 12, 7, 0, NULL),
 (5, 10, 'Sodio', 20, 400, 8, 7, 0, NULL),
 (6, 5, 'LED', 8, 220, 6, 7, 0, NULL),
 (7, 1, 'LED', 4, 110, 4, 54, 0, NULL),
 (8, 1, 'LED', 4, 110, 4, 7, 0, NULL),
 (9, 1, 'LED', 4, 110, 4, 7, 0, NULL),
-(10, 10, 'Led', 12, 220, 12, 8, 0, NULL),
-(11, 1, 'LED', 4, 110, 4, 7, 0, NULL);
+(10, 10, 'LED', 12, 220, 12, 8, 0, NULL),
+(11, 1, 'LED', 4, 110, 4, 7, 0, NULL),
+(12, 11, 'Led', 3, 250, 7, 7, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -2051,11 +2043,11 @@ CREATE TABLE `proveedores` (
   `Nombre` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `Direccion` text COLLATE utf8_unicode_ci NOT NULL,
   `Area_residuos` text COLLATE utf8_unicode_ci NOT NULL,
-  `Camara_comercio` text COLLATE utf8_unicode_ci,
-  `Rut` text COLLATE utf8_unicode_ci,
-  `Cedula_representante` text COLLATE utf8_unicode_ci,
-  `Permisos` text COLLATE utf8_unicode_ci,
-  `Certificaciones` text COLLATE utf8_unicode_ci,
+  `Camara_comercio` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Rut` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Cedula_representante` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Permisos` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Certificaciones` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `Sede` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -2116,7 +2108,7 @@ CREATE TABLE `residuo_solido` (
   `descripcion` text COLLATE utf8_unicode_ci NOT NULL,
   `Observacion` text COLLATE utf8_unicode_ci NOT NULL,
   `Proveedor` int(11) NOT NULL,
-  `certificado` text COLLATE utf8_unicode_ci,
+  `certificado` text COLLATE utf8_unicode_ci DEFAULT NULL,
   `Precio_kilo` int(11) NOT NULL,
   `Sede` int(11) NOT NULL,
   `Fecha` date NOT NULL
@@ -2162,14 +2154,15 @@ CREATE TABLE `sede` (
 
 INSERT INTO `sede` (`Codigo`, `Nombre`, `Ciudad`, `Direccion`, `Telefono`, `Representante`, `Correo`, `Empresa`, `Coordenadas`, `carbono`, `hidrica`, `Estado`) VALUES
 (1, 'Ecoblue Bogota', 'Bogotá', 'no me la se', '76422452', 'Eduardo Ramirez', 'soporte@ecoblue.co', 1, '0', 1, 0, 0),
-(2, 'prueba', 'villa', 'Esta es me la se', '3155686708', 'miguel', 'miguel@correo.co', 1, '0', 0, 0, 0),
+(2, 'Esta Prueba SAS', 'Bogotá', 'Esta es verdadera', '3155686708', 'Miguel Martinez', 'miguel@correo.co', 1, '0', 1, 0, 0),
 (5, 'sebaste -bogota', 'Bogotá', 'maksdajdn', '7852352', 'sebastian', 'correo@correo.co', 2, '781-125', 1, 1, 0),
 (10, 'BioData-Bogotá', 'Bogotá', 'yuijhgfvbnmkuyg625', '78514652456', 'Sandris', 'agenciabiodata@gmial.com', 3, '78-52', 0, 0, 0),
-(11, 'Miguel-bogota', 'Bogota', 'nananansjdhb', '7965412', 'Miguel', 'correo@correo.co', 4, '', 1, 1, 0),
+(11, 'Miguel-bogota', 'Bogota', 'Cra 104 No 13D-48', '7965412', 'Miguel', 'correo@correo.co', 4, '', 1, 1, 0),
 (12, 'Miguel- prueba', 'Bogota', 'no me la se', '785126', 'miguel', 'm.martinez@ecoblue.co', 4, '125-8965', 1, 1, 0),
 (13, 'miguel-prueba1', 'bogota', 'asdfhbn', '41', 'asdads', 'asdasd', 4, 'weqweq', 1, 1, 0),
 (14, 'Prueba 1', 'bogotá', 'Esta direccion no me la se', '789654123', 'Miguel martints', 'miguelangel_1704@hotmail.com', 4, '78645112152', 1, 1, 0),
-(15, 'Esta sede ', 'Bogotá', 'Crasnsd anas ', '78245621', ';Miguel', 'Masdnansf@asdas.vo', 1, '78965452', 1, 1, 1);
+(15, 'Esta sede ', 'Bogotá', 'Crasnsd anas ', '78245621', ';Miguel', 'Masdnansf@asdas.vo', 1, '78965452', 1, 1, 1),
+(16, 'qwert', 'qwerty', 'qwer', '782', 'qweqwe', 'ede@de.d', 1, '8545', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2229,6 +2222,7 @@ CREATE TABLE `tipo_lubricante` (
 --
 
 INSERT INTO `tipo_lubricante` (`codigo`, `Nombre`, `Co2`, `Unidades`) VALUES
+(0, 'N-A', 0, 'N-A'),
 (1, 'Aceite', 0.00178295, 'Gal'),
 (2, 'Grasas', 0.0005896, 'Kg');
 
@@ -2272,18 +2266,20 @@ CREATE TABLE `usuario` (
   `correo` text COLLATE utf8_unicode_ci NOT NULL,
   `contraseña` text COLLATE utf8_unicode_ci NOT NULL,
   `tipo_usuario` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `Sede` int(11) NOT NULL
+  `Sede` int(11) NOT NULL,
+  `Estado` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`Codigo`, `nombre`, `correo`, `contraseña`, `tipo_usuario`, `Sede`) VALUES
-(1, 'admin', 'soporte@ecoblue.co', 'ecoblue', '1', 1),
-(2, 'Miguel', 'm.martinez@ecoblue.co', 'Dragonforce123', '2', 1),
-(3, 'sebastian', 'correo@correo.co', '1234', '2', 5),
-(10, 'Sandra Morales', 'biodata@gmail.com', '1234', '2', 10);
+INSERT INTO `usuario` (`Codigo`, `nombre`, `correo`, `contraseña`, `tipo_usuario`, `Sede`, `Estado`) VALUES
+(1, 'Admin', 'soporte@ecoblue.co', 'c3914583bd7f8dfae9cea6b0236ca54aa9366fc0a728981f8bb9b57e932b5a36', '1', 1, 0),
+(2, 'Miguel', 'm.martinez@ecoblue.co', 'fd674150e0640fab802186f9324a1d32293aff3675390b769f45497fc0e911a7', '2', 1, 0),
+(3, 'sebastian', 'correo@correo.co', '1234', '2', 5, 0),
+(10, 'Sandra Morales', 'biodata@gmail.com', '1234', '2', 10, 0),
+(11, 'Angel', 'saranhae1234@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', '3', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -2300,30 +2296,31 @@ CREATE TABLE `vehiculo_electrico` (
   `dias_uso` int(11) NOT NULL,
   `Refrigerante` int(11) NOT NULL,
   `estado` int(11) NOT NULL,
-  `observacion` text COLLATE utf8_unicode_ci
+  `observacion` text COLLATE utf8_unicode_ci DEFAULT NULL,
+  `Fecha` date DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `vehiculo_electrico`
 --
 
-INSERT INTO `vehiculo_electrico` (`Codigo`, `Sede`, `Placa`, `Potencia`, `Horas_carga`, `dias_uso`, `Refrigerante`, `estado`, `observacion`) VALUES
-(1, 1, 'CUA-159', 12.5, 4, 5, 0, 0, NULL),
-(2, 1, 'CUA-159', 12.5, 4, 5, 0, 0, NULL),
-(3, 5, 'BBP-122', 200, 6, 7, 0, 0, NULL),
-(4, 10, 'CUA159', 121, 8, 6, 0, 0, NULL),
-(5, 10, 'NTF489', 121, 8, 6, 0, 0, NULL),
-(6, 5, 'tax098', 211, 8, 6, 0, 1, '/-/ 2019-11-07// Para prueba hibryda'),
-(7, 5, 'ASR135', 121, 8, 5, 3, 0, NULL),
-(8, 5, 'API758', 121, 8, 5, 0, 0, NULL),
-(9, 5, 'QPR753', 121, 8, 5, 0, 0, NULL),
-(10, 5, 'PIR457', 200, 6, 6, 0, 0, NULL),
-(11, 5, 'PIR457', 200, 6, 6, 0, 0, NULL),
-(12, 5, 'PIR457', 200, 6, 6, 0, 0, NULL),
-(13, 1, 'CUA159', 121, 8, 5, 0, 0, NULL),
-(14, 1, 'CUA159', 121, 8, 5, 0, 0, NULL),
-(15, 1, 'CUA159', 121, 8, 5, 16, 0, NULL),
-(16, 1, 'PPT', 123, 6, 6, 11, 0, NULL);
+INSERT INTO `vehiculo_electrico` (`Codigo`, `Sede`, `Placa`, `Potencia`, `Horas_carga`, `dias_uso`, `Refrigerante`, `estado`, `observacion`, `Fecha`) VALUES
+(1, 1, 'CUA-159', 12.5, 4, 5, 0, 0, NULL, '2020-08-11'),
+(3, 5, 'BBP-122', 200, 6, 7, 0, 0, NULL, '2019-08-11'),
+(4, 10, 'CUA159', 121, 8, 6, 0, 1, NULL, '2021-08-11'),
+(5, 10, 'NTF-489', 121, 8, 6, 0, 0, NULL, '2019-08-11'),
+(6, 5, 'tax098', 211, 8, 6, 0, 1, NULL, '2021-08-11'),
+(7, 5, 'ASR-135', 121, 8, 5, 3, 0, NULL, '2019-08-11'),
+(8, 5, 'API-758', 121, 8, 5, 0, 0, NULL, '2019-08-11'),
+(9, 5, 'QPR-753', 121, 8, 5, 0, 0, NULL, '2019-08-11'),
+(10, 5, 'PIR-457', 200, 6, 6, 0, 0, NULL, '2020-08-11'),
+(11, 5, 'PIR457', 200, 6, 6, 0, 1, NULL, '2021-08-11'),
+(12, 5, 'PIR457', 200, 6, 6, 0, 1, NULL, '2021-08-11'),
+(13, 1, 'CUA159', 121, 8, 5, 0, 1, NULL, '2021-08-11'),
+(14, 1, 'CUA159', 121, 8, 5, 0, 1, NULL, '2021-08-11'),
+(15, 1, 'CUA159', 121, 8, 5, 16, 1, NULL, '2021-08-11'),
+(16, 1, 'PPT-386', 123, 6, 6, 11, 0, NULL, '2019-08-11'),
+(17, 11, 'VPU-122', 120, 3, 5, 0, 0, NULL, '2020-02-20');
 
 --
 -- Índices para tablas volcadas
@@ -2414,7 +2411,8 @@ ALTER TABLE `fuentes_fijas`
   ADD PRIMARY KEY (`Codigo`),
   ADD KEY `refrigerante` (`refrigerante`),
   ADD KEY `fuentes_fijas_ibfk_1` (`Sede`),
-  ADD KEY `fuentes_fijas_ibfk_2` (`Elemento`);
+  ADD KEY `fuentes_fijas_ibfk_2` (`Elemento`),
+  ADD KEY `Lubricantes` (`Lubricantes`);
 
 --
 -- Indices de la tabla `fuentes_moviles`
@@ -2604,7 +2602,7 @@ ALTER TABLE `vehiculo_electrico`
 -- AUTO_INCREMENT de la tabla `fuentes_fijas`
 --
 ALTER TABLE `fuentes_fijas`
-  MODIFY `Codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `Codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- Restricciones para tablas volcadas
@@ -2665,6 +2663,7 @@ ALTER TABLE `extintor_vehiculo_elec`
 -- Filtros para la tabla `fuentes_fijas`
 --
 ALTER TABLE `fuentes_fijas`
+  ADD CONSTRAINT `Lubricante-tipoLubricante` FOREIGN KEY (`Lubricantes`) REFERENCES `tipo_lubricante` (`codigo`),
   ADD CONSTRAINT `fuentes_fijas_ibfk_1` FOREIGN KEY (`Sede`) REFERENCES `sede` (`Codigo`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fuentes_fijas_ibfk_2` FOREIGN KEY (`Elemento`) REFERENCES `elemento` (`Codigo`) ON UPDATE CASCADE,
   ADD CONSTRAINT `fuentes_fijas_ibfk_3` FOREIGN KEY (`refrigerante`) REFERENCES `refrigerante` (`codigo`) ON UPDATE CASCADE;
@@ -2690,11 +2689,62 @@ ALTER TABLE `huella_carbono_extintores`
   ADD CONSTRAINT `huella_carbono_extintores_ibfk_1` FOREIGN KEY (`Extintor`) REFERENCES `extintores` (`codigo`);
 
 --
+-- Filtros para la tabla `huella_carbono_fuentes_fijas_combustible`
+--
+ALTER TABLE `huella_carbono_fuentes_fijas_combustible`
+  ADD CONSTRAINT `Elemento_f_f_combustible` FOREIGN KEY (`Elemento`) REFERENCES `elemento` (`Codigo`),
+  ADD CONSTRAINT `Sede_f_F_combustible` FOREIGN KEY (`Sede`) REFERENCES `sede` (`Codigo`);
+
+--
 -- Filtros para la tabla `huella_carbono_fuentes_fijas_refrigerante`
 --
 ALTER TABLE `huella_carbono_fuentes_fijas_refrigerante`
   ADD CONSTRAINT `huella_carbono_fuentes_fijas_refrigerante_ibfk_1` FOREIGN KEY (`Elemento`) REFERENCES `refrigerante` (`codigo`),
   ADD CONSTRAINT `huella_carbono_fuentes_fijas_refrigerante_ibfk_2` FOREIGN KEY (`Sede`) REFERENCES `sede` (`Codigo`);
+
+--
+-- Filtros para la tabla `huella_carbono_fuentes_moviles`
+--
+ALTER TABLE `huella_carbono_fuentes_moviles`
+  ADD CONSTRAINT `hfm_fuentesmoviles` FOREIGN KEY (`Placa`) REFERENCES `fuentes_moviles` (`Codigo`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `huella_carbono_lubricantes`
+--
+ALTER TABLE `huella_carbono_lubricantes`
+  ADD CONSTRAINT `HLubricante_lubricante` FOREIGN KEY (`tipo_lubricante`) REFERENCES `tipo_lubricante` (`codigo`),
+  ADD CONSTRAINT `Lubricante_sede` FOREIGN KEY (`sede`) REFERENCES `sede` (`Codigo`);
+
+--
+-- Filtros para la tabla `luminarias`
+--
+ALTER TABLE `luminarias`
+  ADD CONSTRAINT `Luminarias_sede` FOREIGN KEY (`Sede`) REFERENCES `sede` (`Codigo`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `sede`
+--
+ALTER TABLE `sede`
+  ADD CONSTRAINT `sede_ibfk_1` FOREIGN KEY (`Empresa`) REFERENCES `empresa` (`Codigo`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `subtipo_elemento`
+--
+ALTER TABLE `subtipo_elemento`
+  ADD CONSTRAINT `Tipo_subtipo` FOREIGN KEY (`Tipo`) REFERENCES `tipo_elemento` (`Codigo`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_sede` FOREIGN KEY (`Sede`) REFERENCES `sede` (`Codigo`) ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `vehiculo_electrico`
+--
+ALTER TABLE `vehiculo_electrico`
+  ADD CONSTRAINT `Vehiculo_refrigerante` FOREIGN KEY (`Refrigerante`) REFERENCES `refrigerante` (`codigo`),
+  ADD CONSTRAINT `vehiculoE_sede` FOREIGN KEY (`Sede`) REFERENCES `sede` (`Codigo`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
