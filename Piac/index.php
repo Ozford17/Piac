@@ -18,7 +18,9 @@
 					dataType:"HTML",
 					data:$('#formulario').serialize(),
 					success:function(data){
-						let men = (atob(data));
+						console.log(data);
+						console.log(atob(data));
+						let men = atob(data);
 						var para= jQuery.parseJSON(men);
 						if (para.error=="true") {
 							alert(para.mensaje);

@@ -26,7 +26,7 @@ require_once "Conexion.php";
       Listar todos los usuario
     ===============================================================================================================*/
     public function BuscarUsuario(){
-      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña, u.Estado FROM usuario u, Sede s where u.Sede=s.Codigo order by u.Sede asc";
+      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña, u.Estado FROM usuario u, sede s where u.sede=s.Codigo order by u.sede asc";
       $resultado=$this->consultar($sql);
       return $resultado;
     }
@@ -34,7 +34,7 @@ require_once "Conexion.php";
      Buscar tipo de usuario
     ===============================================================================================================*/
     public function TipoUsuario($id_usuario){
-      $sql="Select tipo_usuario from usuario where Codigo=".$id_usuario.";";
+      $sql="SELECT tipo_usuario from usuario where Codigo=".$id_usuario.";";
       $resultado=$this->consultar($sql);
       return $resultado;
     }
@@ -43,7 +43,7 @@ require_once "Conexion.php";
       buscar un usuario por correo
     ===============================================================================================================*/
     public function BuscarUsuario_correo($correo){
-      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña FROM usuario u, Sede s where u.correo='".$correo."' and u.Sede=s.Codigo";
+      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña FROM usuario u, sede s where u.correo='".$correo."' and u.sede=s.Codigo";
       $resultado=$this->consultar($sql);
       return $resultado;
     }
@@ -51,7 +51,7 @@ require_once "Conexion.php";
       buscar un usuario por codigo
     ===============================================================================================================*/
     public function BuscarUsuario_codigo($codigo){
-      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña FROM usuario u, Sede s where u.codigo='".$codigo."' and u.Sede=s.Codigo";
+      $sql="SELECT u.codigo,u.nombre, u.correo, u.tipo_usuario,s.nombre as sede, u.contraseña FROM usuario u, sede s where u.codigo='".$codigo."' and u.sede=s.Codigo";
       //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
@@ -60,7 +60,7 @@ require_once "Conexion.php";
       Maximo de codigo en usuario
     ===============================================================================================================*/
     public function Maximo_cod_usu(){
-      $sql="Select Max(codigo) from usuario;";
+      $sql="SELECT Max(codigo) from usuario;";
       $resultado=$this->consultar($sql);
       return $resultado;
     }
@@ -75,10 +75,10 @@ require_once "Conexion.php";
     }
 
    /*================================================================================================================
-      Listar las Empresas
+      Listar las empresas
      ===============================================================================================================*/
-     public function BuscarEmpresa(){
-      $sql="SELECT * from Empresa";
+     public function Buscarempresa(){
+      $sql="SELECT * from empresa";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -86,7 +86,7 @@ require_once "Conexion.php";
       Listar las sedes
      ===============================================================================================================*/
      public function Buscarsede(){
-      $sql="SELECT * from Sede";
+      $sql="SELECT * from sede";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -94,8 +94,8 @@ require_once "Conexion.php";
      /*================================================================================================================
       consultar empresa por codigo
      =============================================================================================================*/
-     public function BuscarEmpresa_codigo($codigo){
-      $sql="SELECT * from Empresa where codigo=$codigo";
+     public function Buscarempresa_codigo($codigo){
+      $sql="SELECT * from empresa where codigo=$codigo";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -112,8 +112,8 @@ require_once "Conexion.php";
      /*================================================================================================================
       Listar las sedes por empresa
      ===============================================================================================================*/
-     public function BuscarSedeEmpresa($cod){
-      $sql="SELECT * from Sede where Estado = 0 and Empresa=".$cod.";";
+     public function Buscarsedeempresa($cod){
+      $sql="SELECT * from sede where Estado = 0 and empresa=".$cod.";";
       //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
@@ -123,8 +123,8 @@ require_once "Conexion.php";
      /*================================================================================================================
       Listar las sedes con empresa
      ===============================================================================================================*/
-     public function BuscarSede_empresa(){
-      $sql="SELECT s.Codigo,s.Nombre,e.Nombre as empresa from Sede s, Empresa e WHERE e.Codigo=s.Empresa ORDER by (empresa) asc";
+     public function Buscarsede_empresa(){
+      $sql="SELECT s.Codigo,s.Nombre,e.Nombre as empresa from sede s, empresa e WHERE e.Codigo=s.empresa ORDER by (empresa) asc";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -132,17 +132,18 @@ require_once "Conexion.php";
       consultar la sede por codigo
      ===============================================================================================================*/
      public function consultar_sede_codigo($codigo){
-      $sql="SELECT s.* from Sede s WHERE s.Codigo=".$codigo.";";
+      $sql="SELECT s.* from sede s WHERE s.Codigo=".$codigo.";";
       //echo $sql."<br>";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
      /*================================================================================================================
-      buscar codigo Empresa por codigo de sede
+      buscar codigo empresa por codigo de sede
      ===============================================================================================================*/
-     public function BuscarEmpresa_sede($sede){
-      $sql="SELECT e.Codigo,e.Nombre from Sede s, Empresa e where s.Codigo=e.Codigo and s.Codigo=".$sede.";";
+     public function Buscarempresa_sede($sede){
+      $sql="SELECT e.Codigo,e.Nombre from sede s, empresa e where s.Codigo=e.Codigo and s.Codigo=".$sede.";";
       $resultado=$this->consultar($sql);
+      //echo $sql;
       return $resultado;
      }
 
@@ -150,7 +151,7 @@ require_once "Conexion.php";
       Listar todos los codigos CIIU
      ===============================================================================================================*/
      public function Listar_codigos_ciiu(){
-      $sql="SELECT * from CIIU";
+      $sql="SELECT * from ciiu";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -160,15 +161,15 @@ require_once "Conexion.php";
       insertar empresa
      ===============================================================================================================*/
      public function agregar_empresa($codigo,$nit,$nombre,$representante,$telefono,$correo,$ciiu){
-      $sql="INSERT INTO Empresa value('".$codigo."','".$nit."','".$nombre."','".$representante."','".$telefono."','".$correo."',$ciiu,'null','null');";
+      $sql="INSERT INTO empresa value('".$codigo."','".$nit."','".$nombre."','".$representante."','".$telefono."','".$correo."',$ciiu,'null','null');";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
      /*================================================================================================================
       actualizar empresa
      ===============================================================================================================*/
-     public function ActualizarEmpresa($cod, $nit, $nombre,$representante, $telefono, $correo,$ciiu){
-      $sql="UPDATE Empresa Set Nit='".$nit."',Nombre='".$nombre."',  Telefono='".$telefono."', Representante='".$representante."', Correo='".$correo."', CIIU=$ciiu where Codigo=".$cod.";";
+     public function Actualizarempresa($cod, $nit, $nombre,$representante, $telefono, $correo,$ciiu){
+      $sql="UPDATE empresa Set Nit='".$nit."',Nombre='".$nombre."',  Telefono='".$telefono."', Representante='".$representante."', Correo='".$correo."', CIIU=$ciiu where Codigo=".$cod.";";
       
       $resultado=$this->consultar($sql);
       return $resultado;
@@ -177,8 +178,8 @@ require_once "Conexion.php";
      /*================================================================================================================
       actualizar las sedes por empresa
      ===============================================================================================================*/
-     public function ActualizarSedeEmpresa($cod, $nombre, $ciudad,$direccion, $telefono, $representante ){
-      $sql="UPDATE Sede Set Nombre='".$nombre."', Ciudad='".$ciudad."', Direccion='".$direccion."', Telefono='".$telefono."', Representante='".$representante."'where Codigo=".$cod.";";
+     public function Actualizarsedeempresa($cod, $nombre, $ciudad,$direccion, $telefono, $representante ){
+      $sql="UPDATE sede Set Nombre='".$nombre."', Ciudad='".$ciudad."', Direccion='".$direccion."', Telefono='".$telefono."', Representante='".$representante."'where Codigo=".$cod.";";
       //echo $sql."<br>";
       $resultado=$this->consultar($sql);
       return $resultado;
@@ -186,16 +187,16 @@ require_once "Conexion.php";
      /*================================================================================================================
       actualizar las sedes
      ===============================================================================================================*/
-     public function ActualizarDatosSedeEmpresa($Codigo,$actua){
-      $sql="UPDATE Sede Set $actua where Codigo=".$Codigo.";";
+     public function ActualizarDatossedeempresa($Codigo,$actua){
+      $sql="UPDATE sede Set $actua where Codigo=".$Codigo.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
      /*================================================================================================================
       actualizar las sedes por empresa de servicio
      ===============================================================================================================*/
-     public function ActualizarSedeEmpresa_servicio($cod, $servicio, $valor){
-      $sql="UPDATE Sede Set ".$servicio."=".$valor." where Codigo=".$cod.";";
+     public function Actualizarsedeempresa_servicio($cod, $servicio, $valor){
+      $sql="UPDATE sede Set ".$servicio."=".$valor." where Codigo=".$cod.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -203,7 +204,7 @@ require_once "Conexion.php";
       consultar listado de empresas por nombre
      ===============================================================================================================*/
      public function Consultar_empresa_nombre(){
-      $sql="SELECT Codigo, nombre ,Nit from Empresa";
+      $sql="SELECT Codigo, nombre ,Nit from empresa";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -211,7 +212,7 @@ require_once "Conexion.php";
       consultar empresa por el nombre
      ===============================================================================================================*/
      public function Consultar_empresa_por_nombre($nombre){
-      $sql="SELECT * from Empresa where Nombre='".$nombre."';";
+      $sql="SELECT * from empresa where Nombre='".$nombre."';";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -219,15 +220,15 @@ require_once "Conexion.php";
       consultar numero maximo del codigo de empresa
      ===============================================================================================================*/
      public function Consultar_max_empresa(){
-      $sql="SELECT MAX(codigo) from Empresa";
+      $sql="SELECT MAX(codigo) from empresa";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
      /*================================================================================================================
-      consultar numero maximo del codigo de Sede
+      consultar numero maximo del codigo de sede
      ===============================================================================================================*/
      public function Consultar_max_sede(){
-      $sql="SELECT MAX(Codigo) from Sede";
+      $sql="SELECT MAX(Codigo) from sede";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -235,7 +236,7 @@ require_once "Conexion.php";
       consultar numero maximo del codigo de proveedor
      ===============================================================================================================*/
      public function Consultar_max_proveedor(){
-      $sql="SELECT MAX(codigo) from Proveedores";
+      $sql="SELECT MAX(codigo) from proveedores";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -243,7 +244,7 @@ require_once "Conexion.php";
       insertar sede
      ===============================================================================================================*/
      public function agregar_sede($codigo,$nombre,$ciudad,$direccion,$telefono,$representante,$correo,$empresa,$coordenadas){
-      $sql="INSERT INTO Sede value('".$codigo."','".$nombre."','".$ciudad."','".$direccion."','".$telefono."','".$representante."','".$correo."','".$empresa."','".$coordenadas."', 1, 1,0);";
+      $sql="INSERT INTO sede value('".$codigo."','".$nombre."','".$ciudad."','".$direccion."','".$telefono."','".$representante."','".$correo."','".$empresa."','".$coordenadas."', 1, 1,0);";
       $resultado=$this->consultar($sql);
       return $resultado;
      
@@ -253,7 +254,7 @@ require_once "Conexion.php";
       insertar proveedores
      ===============================================================================================================*/
      public function agregar_proveedor($codigo,$nit,$nombre,$direccion,$area,$sede){
-      $sql="INSERT INTO Proveedores (Codigo,Nit, Nombre,Direccion,Area_residuos,Sede) value('".$codigo."','".$nit."','".$nombre."','".$direccion."','".$area."','".$sede."');";
+      $sql="INSERT INTO proveedores (Codigo,Nit, Nombre,Direccion,Area_residuos,sede) value('".$codigo."','".$nit."','".$nombre."','".$direccion."','".$area."','".$sede."');";
       //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
@@ -262,7 +263,7 @@ require_once "Conexion.php";
       insertar documentacion de proveedores
      ===============================================================================================================*/
      public function agregar_documentacion_proveedor($campo,$archivo, $id){
-      $sql="UPDATE Proveedores set  ".$campo."='".$archivo."' where Codigo=".$id;
+      $sql="UPDATE proveedores set  ".$campo."='".$archivo."' where Codigo=".$id;
       //echo $sql;
       $resultado=$this->consultar($sql);
       return $resultado;
@@ -271,7 +272,7 @@ require_once "Conexion.php";
       consultar proveedores
      ===============================================================================================================*/
      public function consultar_exi_proveedor($nit,$area){
-      $sql="SELECT count(Codigo) FROM Proveedores where Nit=".$nit." and Area_residuos='".$area."'";
+      $sql="SELECT count(Codigo) FROM proveedores where Nit=".$nit." and Area_residuos='".$area."'";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -279,7 +280,7 @@ require_once "Conexion.php";
       consultar proveedores
      ===============================================================================================================*/
      public function consultar_proveedor(){
-      $sql="SELECT * FROM Proveedores;";
+      $sql="SELECT * FROM proveedores;";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -287,7 +288,7 @@ require_once "Conexion.php";
       consultar proveedores por sede
      ===============================================================================================================*/
      public function consultar_proveedor_sede($sede){
-      $sql="SELECT * FROM Proveedores where Sede=".$sede.";";
+      $sql="SELECT * FROM proveedores where sede=".$sede.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -329,7 +330,7 @@ require_once "Conexion.php";
       Eliminar empresa por nombre
      ===============================================================================================================*/
      public function Eliminar_empresa($nombre){
-      $sql="DELETE from Empresa where Nombre='".$nombre."';";
+      $sql="DELETE from empresa where Nombre='".$nombre."';";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -337,7 +338,7 @@ require_once "Conexion.php";
       Listar proveedores por sede
      ===============================================================================================================*/
      public function Listar_proveedores($sede){
-      $sql="SELECT * FROM `Proveedores` where Sede =".$sede.";";
+      $sql="SELECT * FROM `proveedores` where sede =".$sede.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -429,8 +430,8 @@ require_once "Conexion.php";
      ===============================================================================================================*/
      public function consultar_huella($alcance){
       $sql="SELECT h.Codigo,se.Nombre,t.Alcance,s.Nombre as Tipo,e.Nombre as Elemento,h.Fuente,h.Fecha,h.Total_huella,e.Unidad,e.Unidad_emision 
-            FROM huella_carbono h,elemento e, subtipo s, tipo t ,Sede se 
-            WHERE h.Elemento=e.Codigo and e.Subtipo=s.Codigo and s.Tipo=t.Codigo and h.Sede=se.Codigo and t.Alcance=".$alcance.";";
+            FROM huella_carbono h,elemento e, subtipo s, tipo t ,sede se 
+            WHERE h.Elemento=e.Codigo and e.Subtipo=s.Codigo and s.Tipo=t.Codigo and h.sede=se.Codigo and t.Alcance=".$alcance.";";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -438,7 +439,7 @@ require_once "Conexion.php";
       listar todos los materiales
      ===============================================================================================================*/
      public function listar_material(){
-      $sql="SELECT * FROM Material";
+      $sql="SELECT * FROM material";
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -472,7 +473,9 @@ require_once "Conexion.php";
       Consulta para hacer la graficas de huella hidrica por colores
      ===============================================================================================================*/
      public function Grafica_residuo_solidos_2019($color, $empresa){
-      $sql="SELECT h.Mes,h.Fecha,h.".$color.", h.Sede FROM `huella_hidrica` h, Empresa e, Sede s where YEAR(Fecha)='2019' and e.Codigo=s.Empresa and s.Codigo=h.Sede and Empresa=".$empresa;
+      $sql="SELECT h.Mes,h.Fecha,h.$color, h.sede 
+            FROM `huella_hidrica` h, empresa e, sede s 
+            where YEAR(Fecha)='2019' and e.Codigo=s.empresa and s.Codigo=h.sede and empresa=".$empresa;
       $resultado=$this->consultar($sql);
       return $resultado;
      }
@@ -483,7 +486,7 @@ require_once "Conexion.php";
         Listar los residuos solidos
      =================================================================================================================*/
       public function consultar_solidos($sede){
-          $sql="SELECT * FROM residuo_solido where Sede=".$sede.";";
+          $sql="SELECT * FROM residuo_solido where sede=".$sede.";";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -492,7 +495,9 @@ require_once "Conexion.php";
         Listar huella de carbono
      =================================================================================================================*/
       public function consultar_huella_carbono($sede){
-          $sql="SELECT e.Nombre as Elemento, f.Nombre as Fuente, h.Cantidad as Cantidad,e.Unidad as Unidad, h.Total_huella as Total_huella FROM huella_carbono h , elemento e , fuente_emision f WHERE h.Elemento=e.Codigo and h.Fuente=f.codigo and h.sede=".$sede.";";
+          $sql="SELECT e.Nombre as Elemento, f.Nombre as Fuente, h.Cantidad as Cantidad,e.Unidad as Unidad, h.Total_huella as Total_huella 
+          FROM huella_carbono h , elemento e , fuente_emision f 
+          WHERE h.Elemento=e.Codigo and h.Fuente=f.codigo and h.sede=".$sede.";";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -508,7 +513,7 @@ require_once "Conexion.php";
       ingresar fuentes fijas
      =================================================================================================================*/
       public function Insert_fuentes_fijas($codigo,$sede,$maquina, $cantidad, $elemento,$horas_dia,$dias_semana,$refrigerante,$lubricante,$fecha_funcion, $fecha){
-          $sql="Insert into fuentes_fijas values ($codigo, $sede, '$maquina', $cantidad, $elemento,'$horas_dia','$dias_semana',$refrigerante,$lubricante,'$fecha_funcion', '$fecha',0,null)";
+          $sql="INSERT into fuentes_fijas values ($codigo, $sede, '$maquina', $cantidad, $elemento,'$horas_dia','$dias_semana',$refrigerante,$lubricante,'$fecha_funcion', '$fecha',0,null)";
          //echo $sql."<br>  ";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -517,7 +522,7 @@ require_once "Conexion.php";
       ingresar fuentes fijas
      =================================================================================================================*/
       public function consultar_fuente_fija_codigo($codigo){
-          $sql="select count(Codigo) from fuentes_fijas where Codigo=$codigo;";
+          $sql="SELECT count(Codigo) from fuentes_fijas where Codigo=$codigo;";
 
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -561,7 +566,7 @@ require_once "Conexion.php";
       consultar fuente moviles por codigo
      =================================================================================================================*/
       public function consultar_fuente_moviles_codigo($codigo){
-          $sql1="select count(Codigo) from fuentes_moviles where Codigo=".$codigo.";";
+          $sql1="SELECT count(Codigo) from fuentes_moviles where Codigo=".$codigo.";";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -569,7 +574,7 @@ require_once "Conexion.php";
           Contar fuente moviles por Placa
       =================================================================================================================*/
       public function consultar_fuente_moviles_placa($placa){
-          $sql1="select count(Codigo) from fuentes_moviles where Placa='".$placa."';";
+          $sql1="SELECT count(Codigo) from fuentes_moviles where Placa='".$placa."';";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -577,7 +582,7 @@ require_once "Conexion.php";
           consultar fuente moviles por codigo
       =================================================================================================================*/
       public function consultar_fuente_moviles_placa_c($codigo){
-          $sql1="select * from fuentes_moviles where codigo='".$codigo."';";
+          $sql1="SELECT * from fuentes_moviles where codigo='".$codigo."';";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -586,7 +591,7 @@ require_once "Conexion.php";
       consultar fuente moviles por Placa
      =================================================================================================================*/
       public function consultar_fuente_moviles_hibrido_placa($placa){
-          $sql1="select count(Codigo) from fuentes_moviles where Placa='".$placa."' and Tipo=1;";
+          $sql1="SELECT count(Codigo) from fuentes_moviles where Placa='".$placa."' and Tipo=1;";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -594,7 +599,7 @@ require_once "Conexion.php";
       maximo de fuentes fijas electricas
      =================================================================================================================*/
       public function max_fuentes_fijas_electricas(){
-          $sql="SELECT max(Codigo) from Equipo_electronico";
+          $sql="SELECT max(Codigo) from equipo_electronico";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -602,7 +607,7 @@ require_once "Conexion.php";
       ingresar fuentes moviles
      =================================================================================================================*/
       public function Insert_fuentes_fijas_electricas($codigo,$sede,$nombre, $cantidad, $horas,$dias,$refrigerante, $lubricante,$fecha ){
-          $sql="INSERT into Equipo_electronico values ($codigo, $sede, '$nombre',$cantidad, $horas, $dias, $refrigerante,$lubricante, 0 ,null, '$fecha')";
+          $sql="INSERT into equipo_electronico values ($codigo, $sede, '$nombre',$cantidad, $horas, $dias, $refrigerante,$lubricante, 0 ,null, '$fecha')";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -612,7 +617,7 @@ require_once "Conexion.php";
      =================================================================================================================*/
       public function consultar_fuente_fija_electrico_codigo($codigo){
           $sql="SELECT count(Codigo) 
-                FROM Equipo_electronico 
+                FROM equipo_electronico 
                 WHERE Codigo=$codigo;";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -622,7 +627,7 @@ require_once "Conexion.php";
      =================================================================================================================*/
       public function consultar_fuente_fija_electrico_codigo_s($codigo){
           $sql="SELECT * 
-                FROM Equipo_electronico 
+                FROM equipo_electronico 
                 WHERE Codigo=$codigo;";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -631,7 +636,7 @@ require_once "Conexion.php";
       maximo de fuentes moviles electricas
      =================================================================================================================*/
       public function max_fuentes_moviles_electricas(){
-          $sql="SELECT max(Codigo) from Vehiculo_electrico";
+          $sql="SELECT max(Codigo) from vehiculo_electrico";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -639,7 +644,7 @@ require_once "Conexion.php";
       ingresar fuentes moviles
      =================================================================================================================*/
       public function Insert_fuentes_moviles_electricas($codigo,$sede,$Placa, $Potencia, $horas_carga, $dias, $refrigerante,$fecha){
-          $sql="Insert into Vehiculo_electrico values ($codigo, $sede, '$Placa',$Potencia, $horas_carga, $dias,$refrigerante,0,null,'$fecha')";
+          $sql="Insert into vehiculo_electrico values ($codigo, $sede, '$Placa',$Potencia, $horas_carga, $dias,$refrigerante,0,null,'$fecha')";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -647,7 +652,7 @@ require_once "Conexion.php";
           consultar fuente movil electrico por codigo
      =================================================================================================================*/
       public function consultar_fuente_movil_electrico_codigo($codigo){
-          $sql="select count(Codigo) from Vehiculo_electrico where Codigo=$codigo;";
+          $sql="SELECT count(Codigo) from vehiculo_electrico where Codigo=$codigo;";
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
@@ -655,7 +660,7 @@ require_once "Conexion.php";
           consultar fuente movil electrico por Placa
      =================================================================================================================*/
       public function consultar_fuente_movil_electrico_placa($placa){
-          $sql="select * from Vehiculo_electrico where Placa='$placa';";
+          $sql="SELECT * from vehiculo_electrico where Placa='$placa';";
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
@@ -664,7 +669,7 @@ require_once "Conexion.php";
       maximo de fuentes moviles electricas
      =================================================================================================================*/
       public function max_fuentes_iluminarias(){
-          $sql="SELECT max(Codigo) from Luminarias";
+          $sql="SELECT max(Codigo) from luminarias";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -672,7 +677,7 @@ require_once "Conexion.php";
       ingresar fuentes moviles
      =================================================================================================================*/
       public function Insert_fuentes_iluminarias($codigo,$sede,$Tipo, $cantidad, $potencia, $horas_uso,$dias){
-          $sql="Insert into Luminarias values ($codigo, $sede, '$Tipo',$cantidad, $potencia, $horas_uso,$dias,0,null)";
+          $sql="Insert into luminarias values ($codigo, $sede, '$Tipo',$cantidad, $potencia, $horas_uso,$dias,0,null)";
           $resultado=$this->consultar($sql);  
           return $resultado;
       }
@@ -680,7 +685,7 @@ require_once "Conexion.php";
       ingresar fuentes fijas
      =================================================================================================================*/
       public function consultar_fuente_iluminarias($codigo){
-          $sql="select count(Codigo) from Luminarias where Codigo=$codigo;";
+          $sql="SELECT count(Codigo) from luminarias where Codigo=$codigo;";
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
@@ -689,7 +694,9 @@ require_once "Conexion.php";
        Listar fuentes fijas por sede
      =================================================================================================================*/
       public function consultar_fuente_fijas_sede($sede){
-          $sql="select f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre,f.fecha_i_funcion,f.Fecha, r.nombre from fuentes_fijas f, elemento e, refrigerante r where f.Elemento=e.Codigo and f.Sede=".$sede." and estado=0 and f.refrigerante=r.codigo;";
+          $sql="SELECT f.Codigo, f.sede, f.Fuente, f.Cantidad,e.Nombre,f.fecha_i_funcion,f.Fecha, r.nombre 
+          from fuentes_fijas f, elemento e, refrigerante r
+           where f.Elemento=e.Codigo and f.sede=".$sede." and estado=0 and f.refrigerante=r.codigo;";
             //echo $sql."<br>";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -699,9 +706,9 @@ require_once "Conexion.php";
        Listar fuentes fijas por empresa 
     =================================================================================================================*/
      public function consultar_fuente_fijas_empresa($empresa){
-      $sql="SELECT f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre as combustible,f.horas_dias,f.dias_semana,f.fecha_i_funcion,f.Fecha, r.nombre, s.nombre as sede 
+      $sql="SELECT f.Codigo, f.sede, f.Fuente, f.Cantidad,e.Nombre as combustible,f.horas_dias,f.dias_semana,f.fecha_i_funcion,f.Fecha, r.nombre, s.nombre as sede 
             FROM fuentes_fijas f, elemento e, refrigerante r , sede s, empresa em
-            WHERE f.Elemento=e.Codigo and f.Sede=s.codigo and s.Empresa=em.codigo and f.estado=0 and f.refrigerante=r.codigo and em.Codigo=$empresa;";
+            WHERE f.Elemento=e.Codigo and f.sede=s.codigo and s.empresa=em.codigo and f.estado=0 and f.refrigerante=r.codigo and em.Codigo=$empresa;";
       //echo $sql."<br>";
       $resultado=$this->consultar($sql);  
       return $resultado;
@@ -710,9 +717,9 @@ require_once "Conexion.php";
         Listar fuentes fijas por empresa filtrados por año de ingreso
       =================================================================================================================*/
       public function consultar_fuente_fijas_empresa_año($empresa,$año){
-        $sql="SELECT f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre as combustible,f.horas_dias,f.dias_semana,f.fecha_i_funcion,f.Fecha, r.nombre, s.nombre as sede 
+        $sql="SELECT f.Codigo, f.sede, f.Fuente, f.Cantidad,e.Nombre as combustible,f.horas_dias,f.dias_semana,f.fecha_i_funcion,f.Fecha, r.nombre, s.nombre as sede 
               FROM fuentes_fijas f, elemento e, refrigerante r , sede s, empresa em
-              WHERE f.Elemento=e.Codigo and f.Sede=s.codigo and s.Empresa=em.codigo and f.estado=0 and f.refrigerante=r.codigo and em.Codigo=$empresa and Year(f.fecha_i_funcion)=$año;";
+              WHERE f.Elemento=e.Codigo and f.sede=s.codigo and s.empresa=em.codigo and f.estado=0 and f.refrigerante=r.codigo and em.Codigo=$empresa and Year(f.fecha_i_funcion)=$año;";
         //echo $sql."<br>";
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -721,9 +728,9 @@ require_once "Conexion.php";
           Listar fuentes fijas por sede filtrados por año de ingreso
         =================================================================================================================*/
       public function consultar_fuente_fijas_sede_año($sede,$año){
-        $sql="SELECT f.Codigo, s.Nombre as Sede, f.Fuente, f.Cantidad, e.Nombre as combustible, f.horas_dias, f.dias_semana, f.fecha_i_funcion, f.Fecha, r.nombre, s.nombre as sede 
+        $sql="SELECT f.Codigo, s.Nombre as sede, f.Fuente, f.Cantidad, e.Nombre as combustible, f.horas_dias, f.dias_semana, f.fecha_i_funcion, f.Fecha, r.nombre, s.nombre as sede 
               FROM fuentes_fijas f, elemento e, refrigerante r , sede s
-              WHERE f.Elemento=e.Codigo and f.Sede=s.codigo and s.Codigo=$sede and f.estado=0 and f.refrigerante=r.codigo and Year(f.fecha_i_funcion)=$año;";
+              WHERE f.Elemento=e.Codigo and f.sede=s.codigo and s.Codigo=$sede and f.estado=0 and f.refrigerante=r.codigo and Year(f.fecha_i_funcion)=$año;";
         //echo $sql."<br>";
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -732,7 +739,9 @@ require_once "Conexion.php";
         Listar fuentes fijas por codigo
       =================================================================================================================*/
       public function consultar_fuente_fijas_codigo($codigo){
-          $sql="select f.Codigo, f.Sede, f.Fuente, f.Cantidad,e.Nombre,f.Fecha, f.Estado, f.Observacion  from fuentes_fijas f, elemento e where f.Elemento=e.Codigo and f.Codigo=$codigo and estado=0;";
+          $sql="SELECT f.Codigo, f.sede, f.Fuente, f.Cantidad,e.Nombre,f.Fecha, f.Estado, f.Observacion  
+          from fuentes_fijas f, elemento e 
+          where f.Elemento=e.Codigo and f.Codigo=$codigo and estado=0;";
           //echo $sql;
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -743,8 +752,8 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function consultar_fuente_fijas_electricas_sede($sede){
           $sql="SELECT ee.Codigo as Cod,s.Nombre as sede, ee.Nombre as Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas as Horas,ee.Dias as Dias,r.nombre as Refrigerante,ee.estado,ee.observacion, ee.Fecha as Fecha
-                FROM Equipo_electronico ee, refrigerante r, Sede s
-                WHERE  ee.Refrigerante=r.codigo and ee.estado=0 and ee.Sede=s.Codigo and s.Codigo=$sede";
+                FROM equipo_electronico ee, refrigerante r, sede s
+                WHERE  ee.Refrigerante=r.codigo and ee.estado=0 and ee.sede=s.Codigo and s.Codigo=$sede";
           //echo $sql."<br> ";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -753,9 +762,9 @@ require_once "Conexion.php";
        Listar fuentes fijas electricas por empresa
      =================================================================================================================*/
      public function consultar_fuente_fijas_electricas_empresa($empresa){
-      $sql="SELECT ee.Codigo,ee.Sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede 
-            from Equipo_electronico ee, refrigerante r , sede s
-            where ee.Sede=s.codigo and s.Empresa=$empresa and ee.Refrigerante=r.codigo and ee.estado=0";
+      $sql="SELECT ee.Codigo,ee.sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede 
+            from equipo_electronico ee, refrigerante r , sede s
+            where ee.sede=s.codigo and s.empresa=$empresa and ee.Refrigerante=r.codigo and ee.estado=0";
       //echo $sql."<br> ";
       $resultado=$this->consultar($sql);  
       return $resultado;
@@ -764,9 +773,9 @@ require_once "Conexion.php";
       Listar fuentes fijas electricas por empresa 
       =================================================================================================================*/
       public function consultar_fuente_fijas_electricas_empresa_año($empresa,$año){
-        $sql="SELECT ee.Codigo,ee.Sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede,  ee.Fecha as Fecha
-              FROM Equipo_electronico ee, refrigerante r , sede s
-              WHERE ee.Sede=s.codigo and s.Empresa=$empresa and ee.Refrigerante=r.codigo and ee.estado=0  and Year(ee.Fecha)=$año ";
+        $sql="SELECT ee.Codigo,ee.sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede,  ee.Fecha as Fecha
+              FROM equipo_electronico ee, refrigerante r , sede s
+              WHERE ee.sede=s.codigo and s.empresa=$empresa and ee.Refrigerante=r.codigo and ee.estado=0  and Year(ee.Fecha)=$año ";
           //echo $sql."<br> ";
           $resultado=$this->consultar($sql);  
         return $resultado;
@@ -775,9 +784,9 @@ require_once "Conexion.php";
         Listar fuentes fijas electricas por sede por año  
       =================================================================================================================*/
       public function consultar_fuente_fijas_electricas_sede_año($sede,$año){
-        $sql="SELECT ee.Codigo,ee.Sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede,  ee.Fecha as Fecha
-              FROM Equipo_electronico ee, refrigerante r , sede s
-              WHERE ee.Sede=s.codigo and s.Codigo=$sede and ee.Refrigerante=r.codigo and ee.estado=0  and Year(ee.Fecha)=$año ";
+        $sql="SELECT ee.Codigo,ee.sede,ee.Nombre,ee.Cantidad_equipos as Cantidad,ee.Horas,ee.Dias,r.nombre as refrigerante,ee.estado,ee.observacion, s.Nombre as sede,  ee.Fecha as Fecha
+              FROM equipo_electronico ee, refrigerante r , sede s
+              WHERE ee.sede=s.codigo and s.Codigo=$sede and ee.Refrigerante=r.codigo and ee.estado=0  and Year(ee.Fecha)=$año ";
           //echo $sql."<br> ";
           $resultado=$this->consultar($sql);  
         return $resultado;
@@ -788,8 +797,8 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function consultar_fuente_movil_sede($sede){
           $sql="SELECT f.Codigo,s.Nombre as sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre 
-                FROM fuentes_moviles f, elemento e, refrigerante r, Sede s
-                WHERE f.Combustible=e.Codigo and f.Sede=s.Codigo and s.Codigo=$sede and f.estado=0 and r.codigo=f.Refrigerante;";
+                FROM fuentes_moviles f, elemento e, refrigerante r, sede s
+                WHERE f.Combustible=e.Codigo and f.sede=s.Codigo and s.Codigo=$sede and f.estado=0 and r.codigo=f.Refrigerante;";
           //echo $sql."<br>"; 
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -798,9 +807,9 @@ require_once "Conexion.php";
         Listar fuentes moviles  por empresa
       =================================================================================================================*/
       public function consultar_fuente_movil_empresa($empresa){
-        $sql="SELECT f.Codigo,f.Sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede
+        $sql="SELECT f.Codigo,f.sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede
               FROM fuentes_moviles f, elemento e, refrigerante r, sede s, empresa em 
-              where f.Combustible=e.Codigo and f.Sede=s.codigo and s.empresa=em.codigo and em.codigo=$empresa and f.estado=0 and r.codigo=f.Refrigerante;";
+              where f.Combustible=e.Codigo and f.sede=s.codigo and s.empresa=em.codigo and em.codigo=$empresa and f.estado=0 and r.codigo=f.Refrigerante;";
         //echo $sql."<br>"; 
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -809,9 +818,9 @@ require_once "Conexion.php";
         Listar fuentes moviles  por empresa filtrado por año
       =================================================================================================================*/
       public function consultar_fuente_movil_empresa_año($empresa,$año){
-        $sql="SELECT f.Codigo,f.Sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede, f.Fecha as Fecha
+        $sql="SELECT f.Codigo,f.sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede, f.Fecha as Fecha
               FROM fuentes_moviles f, elemento e, refrigerante r, sede s, empresa em 
-              where f.Combustible=e.Codigo and f.Sede=s.codigo and s.empresa=em.codigo and em.codigo=$empresa and f.estado=0 and r.codigo=f.Refrigerante and Year(f.Fecha)=$año;";
+              where f.Combustible=e.Codigo and f.sede=s.codigo and s.empresa=em.codigo and em.codigo=$empresa and f.estado=0 and r.codigo=f.Refrigerante and Year(f.Fecha)=$año;";
         //echo $sql."<br>"; 
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -820,9 +829,9 @@ require_once "Conexion.php";
         Listar fuentes moviles  por sede filtrado por año
       =================================================================================================================*/
       public function consultar_fuente_movil_sede_año($sede,$año){
-        $sql="SELECT f.Codigo,f.Sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede, f.Fecha as Fecha
+        $sql="SELECT f.Codigo,f.sede,f.Vehiculo,f.Tipo,f.Placa,e.Nombre as combustible,f.Fecha, r.nombre as Refrigerante , s.nombre as sede, f.Fecha as Fecha
               FROM fuentes_moviles f, elemento e, refrigerante r, sede s 
-              where f.Combustible=e.Codigo and f.Sede=s.codigo and s.Codigo=$sede and f.estado=0 and r.codigo=f.Refrigerante and Year(f.Fecha)=$año;";
+              where f.Combustible=e.Codigo and f.sede=s.codigo and s.Codigo=$sede and f.estado=0 and r.codigo=f.Refrigerante and Year(f.Fecha)=$año;";
         //echo $sql."<br>"; 
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -833,8 +842,8 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function consultar_fuente_movil_electricas_sede($sede){
           $sql="SELECT v.Codigo, s.Nombre as sede, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, v.Fecha  
-                FROM Vehiculo_electrico v, refrigerante r, Sede s
-                WHERE v.Sede=s.Codigo and s.Codigo=$sede and v.estado=0 and v.Refrigerante=r.codigo";
+                FROM vehiculo_electrico v, refrigerante r, sede s
+                WHERE v.sede=s.Codigo and s.Codigo=$sede and v.estado=0 and v.Refrigerante=r.codigo";
           //echo $sql."<br>"; 
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -845,8 +854,8 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function consultar_fuente_movil_electricas_empresa($empresa){
         $sql="SELECT v.Codigo, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, s.Nombre as sede, v.Fecha
-              FROM Vehiculo_electrico v, refrigerante r , sede s, empresa e
-              WHERE v.Sede=s.codigo and s.empresa=e.codigo and v.estado=0 and v.Refrigerante=r.codigo and e.codigo=$empresa";
+              FROM vehiculo_electrico v, refrigerante r , sede s, empresa e
+              WHERE v.sede=s.codigo and s.empresa=e.codigo and v.estado=0 and v.Refrigerante=r.codigo and e.codigo=$empresa";
         $resultado=$this->consultar($sql);  
         return $resultado;
       }
@@ -855,8 +864,8 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function consultar_fuente_movil_electricas_empresa_año($empresa,$año){
         $sql="SELECT v.Codigo, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, s.Nombre as sede, v.Fecha as Fecha
-              FROM Vehiculo_electrico v, refrigerante r , sede s, empresa e
-              WHERE v.Sede=s.codigo and s.empresa=e.codigo and v.estado=0 and v.Refrigerante=r.codigo and e.codigo=$empresa and Year(v.Fecha)=$año";
+              FROM vehiculo_electrico v, refrigerante r , sede s, empresa e
+              WHERE v.sede=s.codigo and s.empresa=e.codigo and v.estado=0 and v.Refrigerante=r.codigo and e.codigo=$empresa and Year(v.Fecha)=$año";
         //echo $sql."</br>";              
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -866,8 +875,8 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function consultar_fuente_movil_electricas_sede_año($sede,$año){
         $sql="SELECT v.Codigo, v.Placa,v.Potencia,v.Horas_carga,v.dias_uso,r.nombre, s.Nombre as sede, v.Fecha as Fecha
-              FROM Vehiculo_electrico v, refrigerante r , sede s
-              WHERE v.Sede=s.codigo and s.Codigo=$sede and v.estado=0 and v.Refrigerante=r.codigo and Year(v.Fecha)=$año";
+              FROM vehiculo_electrico v, refrigerante r , sede s
+              WHERE v.sede=s.codigo and s.Codigo=$sede and v.estado=0 and v.Refrigerante=r.codigo and Year(v.Fecha)=$año";
         //echo $sql."</br>";              
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -876,7 +885,7 @@ require_once "Conexion.php";
           Consultar fuente moviles por placa
       =================================================================================================================*/
       public function consultar_fuente_movil_electricas_placa($placa){
-          $sql1="select * from Vehiculo_electrico where Placa='".$placa."';";
+          $sql1="SELECT * from vehiculo_electrico where Placa='".$placa."';";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -885,7 +894,7 @@ require_once "Conexion.php";
            Listar fuentes iluminarias por sede
       =================================================================================================================*/
       public function consultar_fuente_luminaria_sede($sede){
-          $sql="select * from Luminarias  where Sede=$sede;";
+          $sql="SELECT * from luminarias  where sede=$sede;";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);  
           return $resultado;
@@ -894,7 +903,7 @@ require_once "Conexion.php";
            Listar fuentes iluminarias por empresa descriminados por sedes
       =================================================================================================================*/
       public function consultar_fuente_luminaria_empresa($empresa){
-        $sql="select l.*, s.Nombre from Luminarias l, sede s  where Sede=s.codigo and s.Empresa=$empresa;";
+        $sql="SELECT l.*, s.Nombre from luminarias l, sede s  where sede=s.codigo and s.empresa=$empresa;";
         //echo $sql."<br>";
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -903,7 +912,7 @@ require_once "Conexion.php";
            Listar fuentes iluminarias por empresa descriminados por sedes
       =================================================================================================================*/
       public function consultar_fuente_sede_empresa($sede){
-        $sql="select l.*, s.Nombre from Luminarias l, sede s  where Sede=s.codigo and s.Codigo=$sede;";
+        $sql="SELECT l.*, s.Nombre from luminarias l, sede s  where sede=s.codigo and s.Codigo=$sede;";
         //echo $sql."<br>";
         $resultado=$this->consultar($sql);  
         return $resultado;
@@ -922,7 +931,7 @@ require_once "Conexion.php";
        actualizar estado maquinaria en fuentes fijas electricas
      =================================================================================================================*/
       public function update_estado_fuente_fijas_electricas($codigo,$cantidad,$estado,$observacion){
-          $sql="UPDATE Equipo_electronico set Cantidad_equipos=$cantidad, estado=$estado, observacion='$observacion' where codigo=$codigo;";   
+          $sql="UPDATE equipo_electronico set Cantidad_equipos=$cantidad, estado=$estado, observacion='$observacion' where codigo=$codigo;";   
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
@@ -938,7 +947,7 @@ require_once "Conexion.php";
           actualizar estado maquinaria en fuentes moviles electricas
       =================================================================================================================*/
       public function update_estado_fuente_moviles_electricos($codigo,$estado,$observacion){
-          $sql="UPDATE Vehiculo_electrico set  estado=$estado, observacion='$observacion' where codigo=$codigo;";   
+          $sql="UPDATE vehiculo_electrico set  estado=$estado, observacion='$observacion' where codigo=$codigo;";   
           $resultado=$this->consultar($sql);  
           return $resultado;
         }
@@ -980,8 +989,8 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function fuentes_fijas_consulta($sede){
           $sql="SELECT f.*,e.Nombre, e.Nombre as combustible ,e.Unidad , s.Nombre as sede_n
-                FROM fuentes_fijas f, elemento e , Sede s
-                WHERE f.Elemento=e.Codigo and f.Sede=$sede and f.Sede=s.Codigo and f.estado=0 
+                FROM fuentes_fijas f, elemento e , sede s
+                WHERE f.Elemento=e.Codigo and f.sede=$sede and f.sede=s.Codigo and f.estado=0 
                 Order by f.Fuente ASC";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);
@@ -993,7 +1002,7 @@ require_once "Conexion.php";
       public function fuentes_fijas_consulta_elemento($codigo_ele,$sede){
           $sql="SELECT f.Fuente, f.Cantidad,f.Elemento,e.Nombre,e.Codigo 
                 FROM fuentes_fijas f, elemento e 
-                WHERE f.Elemento=e.Codigo and f.elemento=$codigo_ele and estado=0 and f.Sede=$sede";
+                WHERE f.Elemento=e.Codigo and f.elemento=$codigo_ele and estado=0 and f.sede=$sede";
           //echo $sql."<br>";
           $resultado=$this->consultar($sql);
           return $resultado;
@@ -1024,19 +1033,19 @@ require_once "Conexion.php";
        consulta de todos extintores registrados por sede
       =================================================================================================================*/
       public function fuentes__total_extintores_sede($sede){
-          $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.Sede as Sede,  sum(se.cantidad) as cantidad from 
+          $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede as sede,  sum(se.cantidad) as cantidad from 
           ( 
-            SELECT es.codigo, s.Codigo as sede_c, s.Nombre as Sede,  es.cantidad 
-            FROM extintor_sede es, Sede s
-            Where es.Sede=s.Codigo and s.Codigo=$sede 
+            SELECT es.codigo, s.Codigo as sede_c, s.Nombre as sede,  es.cantidad 
+            FROM extintor_sede es, sede s
+            Where es.sede=s.Codigo and s.Codigo=$sede 
                               UNION 
-            SELECT ev.extintor, s.Codigo as sede_c, s.Nombre as Sede, ev.extintor 
-            FROM extintor_vehiculo ev, fuentes_moviles v , Sede s
-            WHERE ev.Vehiculo=v.Codigo and v.Sede=s.Codigo and s.Codigo=$sede
+            SELECT ev.extintor, s.Codigo as sede_c, s.Nombre as sede, ev.extintor 
+            FROM extintor_vehiculo ev, fuentes_moviles v , sede s
+            WHERE ev.Vehiculo=v.Codigo and v.sede=s.Codigo and s.Codigo=$sede
                                 UNION 
-            SELECT ev.extintor, s.Codigo as sede_c, s.Nombre as Sede, COUNT(ev.extintor) 
-            FROM extintor_vehiculo_elec ev, vehiculo_electrico ve , Sede s
-            WHERE ev.Vehiculo=ve.Codigo and ve.Sede=s.Codigo and s.Codigo=$sede
+            SELECT ev.extintor, s.Codigo as sede_c, s.Nombre as sede, COUNT(ev.extintor) 
+            FROM extintor_vehiculo_elec ev, vehiculo_electrico ve , sede s
+            WHERE ev.Vehiculo=ve.Codigo and ve.sede=s.Codigo and s.Codigo=$sede
             ) 
 
             as se , extintores e where e.codigo=se.codigo GROUP by codigo";
@@ -1052,11 +1061,11 @@ require_once "Conexion.php";
         ( 
           SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, ve.Placa, s.Nombre as sede 
           FROM vehiculo_electrico ve, extintor_vehiculo_elec ev , extintores ex, sede s 
-          WHERE ve.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and ve.Sede=s.Codigo and ve.estado=0 and s.Empresa=$empresa
+          WHERE ve.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and ve.sede=s.Codigo and ve.estado=0 and s.empresa=$empresa
                               UNION 
           SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, fm.Placa, s.Nombre as sede
           FROM fuentes_moviles fm, extintor_vehiculo ev , extintores ex, sede s 
-          WHERE fm.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and fm.Sede=s.Codigo and fm.estado=0  and s.Empresa=$empresa
+          WHERE fm.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and fm.sede=s.Codigo and fm.estado=0  and s.empresa=$empresa
           
           )as se Order by Placa ASC";
         //echo $sql."<br>";
@@ -1071,11 +1080,11 @@ require_once "Conexion.php";
         ( 
           SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, ve.Placa, s.Nombre as sede 
           FROM vehiculo_electrico ve, extintor_vehiculo_elec ev , extintores ex, sede s 
-          WHERE ve.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and ve.Sede=s.Codigo and ve.estado=0 and s.Codigo=$sede
+          WHERE ve.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and ve.sede=s.Codigo and ve.estado=0 and s.Codigo=$sede
                               UNION 
           SELECT ex.Nombre, ev.Fecha_subida, ev.Peso, fm.Placa, s.Nombre as sede
           FROM fuentes_moviles fm, extintor_vehiculo ev , extintores ex, sede s 
-          WHERE fm.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and fm.Sede=s.Codigo and fm.estado=0  and s.Codigo=$sede
+          WHERE fm.Codigo=ev.Vehiculo and ev.extintor=ex.codigo and fm.sede=s.Codigo and fm.estado=0  and s.Codigo=$sede
           
           )as se Order by Placa ASC";
         //echo $sql."<br>";
@@ -1087,11 +1096,11 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function fuentes__total_extintores_empresa($empresa){
         $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede, sum(se.cantidad) as cantidad from 
-        ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s, empresa e where es.sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa  
+        ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s, empresa e where es.sede=s.codigo and s.empresa=e.codigo and e.codigo=$empresa  
                             UNION 
-          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s, empresa e WHERE v.sede=s.codigo and s.empresa=e.codigo and e.codigo=$empresa 
                               UNION 
-          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa ) 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s, empresa e WHERE v.sede=s.codigo and s.empresa=e.codigo and e.codigo=$empresa ) 
 
           as se , extintores e where e.codigo=se.codigo GROUP by codigo";
         //echo $sql."<br>";
@@ -1103,11 +1112,11 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function fuentes__total_extintores_empresa_año($empresa,$año){
         $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede, sum(se.cantidad) as cantidad from 
-        ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s, empresa e where es.sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa and Year(es.Fecha)=$año
+        ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s, empresa e where es.sede=s.codigo and s.empresa=e.codigo and e.codigo=$empresa and Year(es.Fecha)=$año
                             UNION 
-          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa and Year(ev.Fecha_subida)=$año
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s, empresa e WHERE v.sede=s.codigo and s.empresa=e.codigo and e.codigo=$empresa and Year(ev.Fecha_subida)=$año
                               UNION 
-          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s, empresa e WHERE v.Sede=s.codigo and s.Empresa=e.codigo and e.codigo=$empresa and Year(ev.Fecha_subida)=$año ) 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s, empresa e WHERE v.sede=s.codigo and s.empresa=e.codigo and e.codigo=$empresa and Year(ev.Fecha_subida)=$año ) 
 
           as se , extintores e where e.codigo=se.codigo GROUP by codigo";
         //echo $sql."<br>";
@@ -1122,9 +1131,9 @@ require_once "Conexion.php";
         $sql="SELECT se.codigo,e.Nombre,e.ruta, e.Buscar, se.sede, sum(se.cantidad) as cantidad from 
         ( SELECT es.codigo, s.Nombre as sede, es.cantidad from extintor_sede es, sede s where es.sede=s.codigo and s.Codigo=$sede and Year(es.Fecha)=$año
                             UNION 
-          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s WHERE v.Sede=s.codigo and s.Codigo=$sede and Year(ev.Fecha_subida)=$año
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo ev, fuentes_moviles v, sede s WHERE v.sede=s.codigo and s.Codigo=$sede and Year(ev.Fecha_subida)=$año
                               UNION 
-          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s WHERE v.Sede=s.codigo and s.Codigo=$sede and Year(ev.Fecha_subida)=$año ) 
+          SELECT ev.extintor, s.Nombre as sede, COUNT(ev.extintor) from extintor_vehiculo_elec ev, fuentes_moviles v, sede s WHERE v.sede=s.codigo and s.Codigo=$sede and Year(ev.Fecha_subida)=$año ) 
 
           as se , extintores e where e.codigo=se.codigo GROUP by codigo";
         //echo $sql."<br>";
@@ -1136,7 +1145,9 @@ require_once "Conexion.php";
        consulta de refrigerantes de las fuentes fijas
       =================================================================================================================*/
       public function listado_refigerante_fuentes_fijas(){
-          $sql="SELECT r.nombre, r.unidades, count(f.Codigo)FROM fuentes_fijas f, refrigerante r where f.refrigerante=r.codigo GROUP by r.nombre";
+          $sql="SELECT r.nombre, r.unidades, count(f.Codigo)
+          FROM fuentes_fijas f, refrigerante r 
+          where f.refrigerante=r.codigo GROUP by r.nombre";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
@@ -1194,7 +1205,9 @@ require_once "Conexion.php";
        consulta de refrigerantes de las fuentes fijas
       =================================================================================================================*/
       public function listado_refigerante_fuentes_fijas_electricas_sede($sede){
-          $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)FROM Equipo_electronico f, refrigerante r where f.refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre";
+          $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)
+          FROM equipo_electronico f, refrigerante r 
+          where f.refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre";
           
           $resultado=$this->consultar($sql);
           return $resultado;
@@ -1203,7 +1216,9 @@ require_once "Conexion.php";
        consulta de refrigerantes de las fuentes mobiles
       =================================================================================================================*/
       public function listado_refigerante_fuentes_mobiles_sede($sede){
-          $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)FROM fuentes_moviles  f, refrigerante r where f.Refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre";
+          $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)
+          FROM fuentes_moviles  f, refrigerante r
+           where f.Refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre";
             
           $resultado=$this->consultar($sql);
           return $resultado;
@@ -1212,7 +1227,9 @@ require_once "Conexion.php";
        consulta de refrigerantes de las fuentes mobiles electricas
       =================================================================================================================*/
       public function listado_refigerante_fuentes_mobiles_electricas_sede($sede){
-          $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)FROM Vehiculo_electrico  f, refrigerante r where f.Refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre";
+          $sql="SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)
+          FROM vehiculo_electrico  f, refrigerante r 
+          where f.Refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
@@ -1221,9 +1238,13 @@ require_once "Conexion.php";
       =================================================================================================================*/
       public function listado_refigerante_fuentes_mobiles_empresa($empresa){
         $sql="SELECT * from (
-              SELECT r.codigo, r.nombre, r.unidades, FROM Vehiculo_electrico  f, refrigerante r, sede s where f.Refrigerante=r.codigo and f.sede=s.codigo and s.empresa=$empresa 
+              SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)
+              FROM vehiculo_electrico  f, refrigerante r, sede s 
+              where f.Refrigerante=r.codigo and f.sede=s.codigo and s.empresa=$empresa 
                   UNION
-              SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)FROM fuentes_moviles  f, refrigerante r where f.Refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre
+              SELECT r.codigo, r.nombre, r.unidades, count(f.Codigo)
+              FROM fuentes_moviles  f, refrigerante r
+               where f.Refrigerante=r.codigo and f.sede=$sede GROUP by r.nombre
               )as lre " ;
         $resultado=$this->consultar($sql);
         return $resultado;
@@ -1232,7 +1253,9 @@ require_once "Conexion.php";
        consulta de refrigerantes de las fuentes fijas por nombre 
        =================================================================================================================*/
       public function listado_refigerante_fuentes_fijas_nombre($nombre, $sede){
-          $sql="SELECT f.fuente FROM fuentes_fijas f, refrigerante r where f.refrigerante=r.codigo and r.nombre='$nombre' and f.Sede=$sede";
+          $sql="SELECT f.fuente 
+          FROM fuentes_fijas f, refrigerante r
+           where f.refrigerante=r.codigo and r.nombre='$nombre' and f.sede=$sede";
           $resultado=$this->consultar($sql);
           return $resultado;
         }
@@ -1240,7 +1263,7 @@ require_once "Conexion.php";
        consulta de refrigerantes de las fuentes fijas por nombre 
        =================================================================================================================*/
        public function listado_refigerante_fuentes_fijas_electricas_nombre($nombre){
-          $sql="SELECT f.Nombre FROM Equipo_electronico f, refrigerante r where f.refrigerante=r.codigo and r.nombre='$nombre'";
+          $sql="SELECT f.Nombre FROM equipo_electronico f, refrigerante r where f.refrigerante=r.codigo and r.nombre='$nombre'";
 
           $resultado=$this->consultar($sql);
           return $resultado;
@@ -1258,7 +1281,7 @@ require_once "Conexion.php";
        consulta de refrigerantes de las fuentes mobiles electricas por nombre 
       =================================================================================================================*/
       public function listado_refigerante_fuentes_mobiles_electricas_nombre($nombre){
-          $sql="SELECT f.Placa FROM Vehiculo_electrico f, refrigerante r where f.Refrigerante=r.codigo and r.nombre='$nombre'";
+          $sql="SELECT f.Placa FROM vehiculo_electrico f, refrigerante r where f.Refrigerante=r.codigo and r.nombre='$nombre'";
 
           $resultado=$this->consultar($sql);
           return $resultado;
@@ -1268,7 +1291,7 @@ require_once "Conexion.php";
       Maximo de codigo en huella de carbono fuentes fijas combustible
       ===============================================================================================================*/
       public function Maximo_cod_huella_carbono_fuentes_fijas_combustible(){
-        $sql="Select Max(codigo) from huella_carbono_fuentes_fijas_combustible;";
+        $sql="SELECT Max(codigo) from huella_carbono_fuentes_fijas_combustible;";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
@@ -1307,7 +1330,7 @@ require_once "Conexion.php";
             Consultar maximo de huella de extintores
        =================================================================================================================*/
       public function Maximo_cod_huella_carbono_extintores(){
-          $sql1="select MAX(Codigo)  from huella_carbono_extintores;";
+          $sql1="SELECT MAX(Codigo)  from huella_carbono_extintores;";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -1319,7 +1342,9 @@ require_once "Conexion.php";
       consultar fuente moviles por codigo
        =================================================================================================================*/
       public function consultar_fuente_moviles_cod($codigo){
-          $sql1="select fm.Codigo,fm.Placa,e.Codigo,e.Unidad, e.F_e_CO2,e.F_e_CH4,e.F_e_N2O  from fuentes_moviles fm, elemento e  where fm.Combustible=e.Codigo and fm.Codigo=".$codigo.";";
+          $sql1="SELECT fm.Codigo,fm.Placa,e.Codigo,e.Unidad, e.F_e_CO2,e.F_e_CH4,e.F_e_N2O  
+          from fuentes_moviles fm, elemento e  
+          where fm.Combustible=e.Codigo and fm.Codigo=".$codigo.";";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -1328,7 +1353,7 @@ require_once "Conexion.php";
       consultar fuente moviles por codigo
        =================================================================================================================*/
       public function Maximo_cod_huella_carbono_fuentes_moviles(){
-          $sql1="select MAX(Codigo)  from huella_carbono_fuentes_moviles;";
+          $sql1="SELECT MAX(Codigo)  from huella_carbono_fuentes_moviles;";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -1337,7 +1362,7 @@ require_once "Conexion.php";
       Insertar huella de carbono fuentes fijas combustible
       ===============================================================================================================*/
       public function insertar_huella_carbono_fuentes_moviles($codigo,$ele,$valor_compustible_fuente_fija,$total_calculo_CO2,$total_calculo_CH4,$total_calculo_N2O,$fecha,$fecha1){
-        $sql="Insert into huella_carbono_fuentes_moviles values($codigo,'$ele',$valor_compustible_fuente_fija,$total_calculo_CO2,$total_calculo_CH4,$total_calculo_N2O,'$fecha','$fecha1') ;";
+        $sql="INSERT into huella_carbono_fuentes_moviles values($codigo,'$ele',$valor_compustible_fuente_fija,$total_calculo_CO2,$total_calculo_CH4,$total_calculo_N2O,'$fecha','$fecha1') ;";
         $resultado=$this->consultar($sql);
         return $resultado;
       }
@@ -1346,7 +1371,7 @@ require_once "Conexion.php";
          maximo de datos en refrigerantes
        =================================================================================================================*/
       public function Maximo_cod_huella_carbono_refrigerante(){
-          $sql1="select MAX(Codigo)  from huella_carbono_fuentes_fijas_refrigerante;";
+          $sql1="SELECT MAX(Codigo)  from huella_carbono_fuentes_fijas_refrigerante;";
           $resultado=$this->consultar($sql1);  
           return $resultado;
         }
@@ -1412,7 +1437,7 @@ require_once "Conexion.php";
           SELECT fr.Codigo, MONTH(fr.Fecha_registro) as mes ,fr.Total from huella_carbono_fuentes_fijas_refrigerante fr 
           UNION SELECT fc.Codigo,MONTH(fc.Fecha_registro) as mes ,fc.Total_co2 from huella_carbono_fuentes_fijas_combustible fc
           UNION SELECT fm.Codigo,MONTH(fm.Fecha_registro) as mes ,fm.Total_CO2 from huella_carbono_fuentes_moviles fm , fuentes_moviles m 
-          union Select fe.Codigo,MONTH(fe.Fecha_registro) as mes, fe.Total from huella_carbono_extintores fe, extintor_sede es
+          union SELECT fe.Codigo,MONTH(fe.Fecha_registro) as mes, fe.Total from huella_carbono_extintores fe, extintor_sede es
           UNION SELECT l.codigo,month(l.fecha_registro) as mes , l.total_emision from huella_carbono_lubricantes l 
       ) as ft";
         $resultado=$this->consultar($sql);
@@ -1421,7 +1446,7 @@ require_once "Conexion.php";
 
       
       /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                            GRAFICACION POR SEDE 
+                                            GRAFICACION POR sede 
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
       /*=============================================================================================================
@@ -1430,7 +1455,7 @@ require_once "Conexion.php";
       public function Listar_ano_informe($sede){
         $sql="SELECT DISTINCT YEAR(Fecha_subida) 
               FROM `huella_carbono_fuentes_fijas_combustible` 
-              WHERE Sede=$sede
+              WHERE sede=$sede
               GROUP by Fecha_subida";
         $resultado=$this->consultar($sql);
         return $resultado;
@@ -1441,10 +1466,10 @@ require_once "Conexion.php";
       ===============================================================================================================*/
       public function consultar_grafica_co2_alcance1($sede,$ano){
         $sql="SELECT ft.mes ,sum(ft.Total) FROM ( 
-                  SELECT fr.Codigo, MONTH(fr.Fecha_registro) as mes ,fr.Total from huella_carbono_fuentes_fijas_refrigerante fr where YEAR(fr.Fecha_registro)=$ano and fr.Sede=$sede 
-                  UNION SELECT fc.Codigo,MONTH(fc.Fecha_registro) as mes ,fc.Total_co2 from huella_carbono_fuentes_fijas_combustible fc where YEAR(fc.Fecha_registro)=$ano and fc.Sede=$sede 
-                  UNION SELECT fm.Codigo,MONTH(fm.Fecha_registro) as mes ,fm.Total_CO2 from huella_carbono_fuentes_moviles fm , fuentes_moviles m where YEAR(fm.Fecha_registro)=$ano  and    fm.Placa=m.Codigo and m.Sede=$sede
-                  union Select fe.Codigo,MONTH(fe.Fecha_registro) as mes, fe.Total from huella_carbono_extintores fe, extintor_sede es where YEAR(fe.Fecha_registro)=$ano AND es.codigo=fe.Extintor and es.sede=$sede 
+                  SELECT fr.Codigo, MONTH(fr.Fecha_registro) as mes ,fr.Total from huella_carbono_fuentes_fijas_refrigerante fr where YEAR(fr.Fecha_registro)=$ano and fr.sede=$sede 
+                  UNION SELECT fc.Codigo,MONTH(fc.Fecha_registro) as mes ,fc.Total_co2 from huella_carbono_fuentes_fijas_combustible fc where YEAR(fc.Fecha_registro)=$ano and fc.sede=$sede 
+                  UNION SELECT fm.Codigo,MONTH(fm.Fecha_registro) as mes ,fm.Total_CO2 from huella_carbono_fuentes_moviles fm , fuentes_moviles m where YEAR(fm.Fecha_registro)=$ano  and    fm.Placa=m.Codigo and m.sede=$sede
+                  union SELECT fe.Codigo,MONTH(fe.Fecha_registro) as mes, fe.Total from huella_carbono_extintores fe, extintor_sede es where YEAR(fe.Fecha_registro)=$ano AND es.codigo=fe.Extintor and es.sede=$sede 
                   UNION SELECT l.codigo,month(l.fecha_registro) as mes , l.total_emision from huella_carbono_lubricantes l where Year(l.fecha_registro)=$ano and l.sede=$sede
               ) as ft GROUP by ft.mes ORDER by ft.mes asc";
         //echo $sql."<br> ";
@@ -1456,10 +1481,10 @@ require_once "Conexion.php";
       ===============================================================================================================*/
       public function consultar_grafica_co2_tipos($sede,$ano){
         $sql="SELECT ff.mes, sum(ff.ch4) as ch4, sum(ff.N2O) as n2o from (
-              SELECT month(hc.Fecha_registro) as mes,sum(hc.Total_CH4) as ch4,sum(hc.Total_NO2) as N2O  FROM huella_carbono_fuentes_fijas_combustible hc where hc.Sede=$sede and year(hc.Fecha_registro)=$ano GROUP BY mes
+              SELECT month(hc.Fecha_registro) as mes,sum(hc.Total_CH4) as ch4,sum(hc.Total_NO2) as N2O  FROM huella_carbono_fuentes_fijas_combustible hc where hc.sede=$sede and year(hc.Fecha_registro)=$ano GROUP BY mes
 
               UNION
-              SELECT month(hm.Fecha_registro) as mes,sum(hm.Total_CH4) as ch4,sum(hm.Total_N2O) as N2O  FROM huella_carbono_fuentes_moviles hm, fuentes_moviles fm where hm.Placa=fm.Codigo and  fm.Sede=$sede and year(hm.Fecha_registro)=$ano GROUP BY mes
+              SELECT month(hm.Fecha_registro) as mes,sum(hm.Total_CH4) as ch4,sum(hm.Total_N2O) as N2O  FROM huella_carbono_fuentes_moviles hm, fuentes_moviles fm where hm.Placa=fm.Codigo and  fm.sede=$sede and year(hm.Fecha_registro)=$ano GROUP BY mes
                 ) as ff GROUP By ff.mes asc";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1481,7 +1506,7 @@ require_once "Conexion.php";
       public function consultar_grafica_co2_automovil_combustible($sede){
         $sql="SELECT e.codigo, e.Nombre 
               FROM fuentes_moviles fm , elemento e 
-              WHERE fm.Combustible=e.Codigo and fm.Sede=$sede GROUP by e.Codigo";
+              WHERE fm.Combustible=e.Codigo and fm.sede=$sede GROUP by e.Codigo";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
         return $resultado;
@@ -1494,7 +1519,7 @@ require_once "Conexion.php";
       public function consultar_grafica_co2_automovil($sede,$ano){
         $sql="SELECT fm.Placa ,fm.Combustible,sum( hm.Total_CO2),month(hm.Fecha_registro) as mes, e.Nombre, Year(hm.Fecha_registro) as ano 
         from huella_carbono_fuentes_moviles hm , fuentes_moviles fm, elemento e 
-        where hm.Placa=fm.Codigo and fm.Combustible=e.Codigo and Year(hm.Fecha_registro)=$ano and fm.Sede=$sede
+        where hm.Placa=fm.Codigo and fm.Combustible=e.Codigo and Year(hm.Fecha_registro)=$ano and fm.sede=$sede
          GROUP by Placa, ano";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1502,7 +1527,7 @@ require_once "Conexion.php";
       }
 
   /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                            GRAFICACION POR EMPRESA ------- General---- Todos los años registrados
+                                            GRAFICACION POR empresa ------- General---- Todos los años registrados
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
       
@@ -1515,34 +1540,34 @@ require_once "Conexion.php";
               ( 
                       SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
                       from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                      where fr.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                      where fr.sede=s.Codigo and s.empresa=$empresa GROUP by año
                 UNION 
-                      Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                      SELECT  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                       from ( 
                           SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                           from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                          where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                          where fc.sede=s.Codigo and s.empresa=$empresa GROUP by año
                       ) as hffc
                 UNION 
-                      Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                      SELECT  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                         from (
                           SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                           from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                          where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                          where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa GROUP by año
                         ) as hfm
                 UNION 
-                      Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                      SELECT  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
                       from huella_carbono_extintores fe, extintor_sede es, sede s
-                      where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa 
+                      where es.codigo=fe.Extintor and es.sede=s.Codigo and s.empresa=$empresa 
                       GROUP by año
                 UNION 
-                      Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                      SELECT  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
                       from huella_carbono_lubricantes l , extintor_sede es, sede s 
-                      where  l.sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                      where  l.sede=s.Codigo and s.empresa=$empresa GROUP by año
                 UNION
                       SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
                       from huella_carbono_energia hce, sede s
-                      where hce.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                      where hce.sede=s.Codigo and s.empresa=$empresa GROUP by año
               ) 
               as ft GROUP by ft.año ";
         //echo $sql."<br> ";
@@ -1557,34 +1582,34 @@ require_once "Conexion.php";
               ( 
                       SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
                       from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                      where fr.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                      where fr.sede=s.Codigo and s.Codigo=$sede GROUP by año
                 UNION 
-                      Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                      SELECT  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                       from ( 
                           SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                           from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                          where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                          where fc.sede=s.Codigo and s.Codigo=$sede GROUP by año
                       ) as hffc
                 UNION 
-                      Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                      SELECT  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                         from (
                           SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                           from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                          where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                          where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede GROUP by año
                         ) as hfm
                 UNION 
-                      Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                      SELECT  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
                       from huella_carbono_extintores fe, extintor_sede es, sede s
                       where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede 
                       GROUP by año
                 UNION 
-                      Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                      SELECT  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
                       from huella_carbono_lubricantes l , extintor_sede es, sede s 
                       where  l.sede=s.Codigo and s.Codigo=$sede GROUP by año
                 UNION
                       SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
                       from huella_carbono_energia hce, sede s
-                      where hce.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                      where hce.sede=s.Codigo and s.Codigo=$sede GROUP by año
               ) 
               as ft GROUP by ft.año ";
         //echo $sql."<br> ";
@@ -1599,34 +1624,34 @@ require_once "Conexion.php";
               ( 
                       SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
                       from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                      where fr.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                      where fr.sede=s.Codigo and s.Codigo=$sede GROUP by año
                 UNION 
-                      Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                      SELECT  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                       from ( 
                           SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                           from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                          where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                          where fc.sede=s.Codigo and s.Codigo=$sede GROUP by año
                       ) as hffc
                 UNION 
-                      Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                      SELECT  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                         from (
                           SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                           from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                          where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                          where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede GROUP by año
                         ) as hfm
                 UNION 
-                      Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                      SELECT  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
                       from huella_carbono_extintores fe, extintor_sede es, sede s
                       where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede 
                       GROUP by año
                 UNION 
-                      Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                      SELECT  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
                       from huella_carbono_lubricantes l , extintor_sede es, sede s 
                       where  l.sede=s.Codigo and s.Codigo=$sede GROUP by año
                 UNION
                       SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
                       from huella_carbono_energia hce, sede s
-                      where hce.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                      where hce.sede=s.Codigo and s.Codigo=$sede GROUP by año
               ) 
               as ft GROUP by ft.año ";
         //echo $sql."<br> ";
@@ -1641,34 +1666,34 @@ require_once "Conexion.php";
         ( 
                 SELECT  s.Codigo as sede, s.Nombre, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+                where fr.sede=s.Codigo and s.empresa=$empresa GROUP by sede
           UNION 
-                Select  hffc.sede , hffc.Nombre, sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.sede , hffc.Nombre, sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  s.Codigo as sede , s.Nombre, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+                    where fc.sede=s.Codigo and s.empresa=$empresa GROUP by sede
                 ) as hffc
           UNION 
-                Select  hfm.sede, hfm.Nombre , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.sede, hfm.Nombre , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  s.Codigo as sede , s.Nombre, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa GROUP by sede
                   ) as hfm
           UNION 
-                Select  s.Codigo as sede, s.Nombre , sum(fe.Total) as Total_carbono  
+                SELECT  s.Codigo as sede, s.Nombre , sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
-                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa 
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.empresa=$empresa 
                 GROUP by sede
           UNION 
-                Select  s.Codigo as sede, s.Nombre , sum(l.total_emision) as Total_carbono  
+                SELECT  s.Codigo as sede, s.Nombre , sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
-                where  l.sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+                where  l.sede=s.Codigo and s.empresa=$empresa GROUP by sede
           UNION
                 SELECT s.Codigo as sede, s.Nombre , sum(hce.Total_CO2) as Total_carbono 
                 from huella_carbono_energia hce, sede s
-                where hce.Sede=s.Codigo and s.Empresa=$empresa GROUP by sede
+                where hce.sede=s.Codigo and s.empresa=$empresa GROUP by sede
         ) 
         as ft GROUP by ft.sede";
         //echo $sql."<br> ";
@@ -1686,30 +1711,30 @@ require_once "Conexion.php";
         ( 
                 SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fr.sede=s.Codigo and s.empresa=$empresa GROUP by año
           UNION 
-                Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                    where fc.sede=s.Codigo and s.empresa=$empresa GROUP by año
                 ) as hffc
           UNION 
-                Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa GROUP by año
                   ) as hfm
           UNION 
-                Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                SELECT  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
-                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa 
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.empresa=$empresa 
                 GROUP by año
           UNION 
-                Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                SELECT  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
-                where  l.sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where  l.sede=s.Codigo and s.empresa=$empresa GROUP by año
         
         ) 
         as ft GROUP by ft.año ";
@@ -1726,28 +1751,28 @@ require_once "Conexion.php";
         ( 
                 SELECT  YEAR(fr.Fecha_registro) as año, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                where fr.sede=s.Codigo and s.Codigo=$sede GROUP by año
           UNION 
-                Select  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.año , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                    where fc.sede=s.Codigo and s.Codigo=$sede GROUP by año
                 ) as hffc
           UNION 
-                Select  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.año , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede GROUP by año
                   ) as hfm
           UNION 
-                Select  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
+                SELECT  YEAR(fe.Fecha_registro) as año, sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
                 where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede 
                 GROUP by año
           UNION 
-                Select  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
+                SELECT  YEAR(l.Fecha_registro) as año, sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
                 where  l.sede=s.Codigo and s.Codigo=$sede GROUP by año
         
@@ -1764,7 +1789,7 @@ require_once "Conexion.php";
       public function Consultar_grafica_co2_alcance2_empresa_general($empresa){
         $sql="SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
               from huella_carbono_energia hce, sede s
-              where hce.Sede=s.Codigo and s.Empresa=$empresa 
+              where hce.sede=s.Codigo and s.empresa=$empresa 
               GROUP by año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1777,7 +1802,7 @@ require_once "Conexion.php";
       public function Consultar_grafica_co2_alcance2_sede($sede){
         $sql="SELECT YEAR(hce.Fecha_registro) as año, sum(hce.Total_CO2) as Total_carbono 
               from huella_carbono_energia hce, sede s
-              where hce.Sede=s.Codigo and s.Codigo=$sede
+              where hce.sede=s.Codigo and s.Codigo=$sede
               GROUP by año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1791,11 +1816,11 @@ require_once "Conexion.php";
         $sql="SELECT Co2.año as Año, Co2.Co2  from (
                 SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2 
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fc.sede=s.Codigo and s.empresa=$empresa GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa GROUP by año
               ) as Co2 GROUP by Año"; 
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1808,11 +1833,11 @@ require_once "Conexion.php";
         $sql="SELECT Co2.año as Año, Co2.Co2  from (
                 SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_co2) as Co2 
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                where fc.sede=s.Codigo and s.Codigo=$sede GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CO2) as Co2
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede GROUP by año
               ) as Co2 GROUP by Año"; 
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1826,11 +1851,11 @@ require_once "Conexion.php";
         $sql="SELECT N2O.año as Año, N2O.N2o as total from (
                 SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_NO2) as N2o
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fc.sede=s.Codigo and s.empresa=$empresa GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_N2O) as N2o
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa GROUP by año
               ) as N2O GROUP by Año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1844,11 +1869,11 @@ require_once "Conexion.php";
         $sql="SELECT N2O.año as Año, N2O.N2o as total from (
                 SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_NO2) as N2o
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                where fc.sede=s.Codigo and s.Codigo=$sede GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_N2O) as N2o
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede GROUP by año
               ) as N2O GROUP by Año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1862,11 +1887,11 @@ require_once "Conexion.php";
         $sql="SELECT CH4.año as Año, CH4.ch4  from (
                 SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_CH4) as Ch4
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                where fc.sede=s.Codigo and s.Codigo=$sede GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CH4) as Ch4
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede GROUP by año
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede GROUP by año
                 ) as CH4 GROUP By Año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1880,11 +1905,11 @@ require_once "Conexion.php";
         $sql="SELECT CH4.año as Año, CH4.ch4  from (
                 SELECT  YEAR(fc.Fecha_registro) as año, sum(fc.Total_CH4) as Ch4
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fc.sede=s.Codigo and s.empresa=$empresa GROUP by año
               UNION 
                 SELECT  YEAR(fm.Fecha_registro) as año, sum(fm.Total_CH4) as Ch4
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa GROUP by año
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa GROUP by año
                 ) as CH4 GROUP By Año";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -1893,7 +1918,7 @@ require_once "Conexion.php";
 
 
     /*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                            GRAFICACION POR EMPRESA ------- General---- Un año en especifico
+                                            GRAFICACION POR empresa ------- General---- Un año en especifico
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
 
       /*=============================================================================================================
@@ -1904,38 +1929,38 @@ require_once "Conexion.php";
         ( 
                 SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fr.Fecha_registro)=$ano 
+                where fr.sede=s.Codigo and s.empresa=$empresa and YEAR(fr.Fecha_registro)=$ano 
                 GROUP by mes
             UNION 
-                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano 
+                    where fc.sede=s.Codigo and s.empresa=$empresa and YEAR(fc.Fecha_registro)=$ano 
                     GROUP by mes
                 ) as hffc
             UNION 
-                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano  
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa and YEAR(fm.Fecha_registro)=$ano  
                     GROUP by mes
                   ) as hfm
             UNION 
-                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                SELECT  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
-                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa and YEAR(fe.Fecha_registro)=$ano
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.empresa=$empresa and YEAR(fe.Fecha_registro)=$ano
                 GROUP by mes
             UNION 
-                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                SELECT  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
-                where  l.sede=s.Codigo and s.Empresa=$empresa and YEAR(l.Fecha_registro)=$ano
+                where  l.sede=s.Codigo and s.empresa=$empresa and YEAR(l.Fecha_registro)=$ano
                 GROUP by mes
             UNION
                 SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
                 from huella_carbono_energia hce, sede s
-                where hce.Sede=s.Codigo and s.Empresa=$empresa and YEAR(hce.Fecha_registro)=$ano
+                where hce.sede=s.Codigo and s.empresa=$empresa and YEAR(hce.Fecha_registro)=$ano
                 GROUP by mes
           ) 
           as ft GROUP by ft.mes ";
@@ -1952,38 +1977,38 @@ require_once "Conexion.php";
         ( 
                 SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Codigo=$sede and YEAR(fr.Fecha_registro)=$ano 
+                where fr.sede=s.Codigo and s.Codigo=$sede and YEAR(fr.Fecha_registro)=$ano 
                 GROUP by mes
             UNION 
-                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano 
+                    where fc.sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano 
                     GROUP by mes
                 ) as hffc
             UNION 
-                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano  
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano  
                     GROUP by mes
                   ) as hfm
             UNION 
-                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                SELECT  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
                 where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede and YEAR(fe.Fecha_registro)=$ano
                 GROUP by mes
             UNION 
-                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                SELECT  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
                 where  l.sede=s.Codigo and s.Codigo=$sede and YEAR(l.Fecha_registro)=$ano
                 GROUP by mes
             UNION
                 SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
                 from huella_carbono_energia hce, sede s
-                where hce.Sede=s.Codigo and s.Codigo=$sede and YEAR(hce.Fecha_registro)=$ano
+                where hce.sede=s.Codigo and s.Codigo=$sede and YEAR(hce.Fecha_registro)=$ano
                 GROUP by mes
           ) 
           as ft GROUP by ft.mes ";
@@ -2000,38 +2025,38 @@ require_once "Conexion.php";
         ( 
                 SELECT  s.Codigo as sede, s.Nombre, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fr.Fecha_registro)=$ano 
+                where fr.sede=s.Codigo and s.empresa=$empresa and YEAR(fr.Fecha_registro)=$ano 
                 GROUP by sede
           UNION 
-                Select  hffc.sede , hffc.Nombre, sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.sede , hffc.Nombre, sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  s.Codigo as sede , s.Nombre, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano 
+                    where fc.sede=s.Codigo and s.empresa=$empresa and YEAR(fc.Fecha_registro)=$ano 
                     GROUP by sede
                 ) as hffc
           UNION 
-                Select  hfm.sede, hfm.Nombre , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.sede, hfm.Nombre , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  s.Codigo as sede , s.Nombre, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano 
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa and YEAR(fm.Fecha_registro)=$ano 
                     GROUP by sede
                   ) as hfm
           UNION 
-                Select  s.Codigo as sede, s.Nombre , sum(fe.Total) as Total_carbono  
+                SELECT  s.Codigo as sede, s.Nombre , sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
-                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa and YEAR(fe.Fecha_registro)=$ano 
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.empresa=$empresa and YEAR(fe.Fecha_registro)=$ano 
                 GROUP by sede
           UNION 
-                Select  s.Codigo as sede, s.Nombre , sum(l.total_emision) as Total_carbono  
+                SELECT  s.Codigo as sede, s.Nombre , sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
-                where  l.sede=s.Codigo and s.Empresa=$empresa and YEAR(l.fecha_registro)=$ano 
+                where  l.sede=s.Codigo and s.empresa=$empresa and YEAR(l.fecha_registro)=$ano 
                 GROUP by sede
           UNION
                 SELECT s.Codigo as sede, s.Nombre , sum(hce.Total_CO2) as Total_carbono 
                 from huella_carbono_energia hce, sede s
-                where hce.Sede=s.Codigo and s.Empresa=$empresa and YEAR(hce.Fecha_registro)=$ano 
+                where hce.sede=s.Codigo and s.empresa=$empresa and YEAR(hce.Fecha_registro)=$ano 
                 GROUP by sede
         ) 
         as ft GROUP by ft.sede ";
@@ -2050,33 +2075,33 @@ require_once "Conexion.php";
         ( 
                 SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Empresa=$empresa and Year(fr.Fecha_registro)=$ano
+                where fr.sede=s.Codigo and s.empresa=$empresa and Year(fr.Fecha_registro)=$ano
                 GROUP by mes
           UNION 
-                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Empresa=$empresa and Year(fc.Fecha_registro)=$ano
+                    where fc.sede=s.Codigo and s.empresa=$empresa and Year(fc.Fecha_registro)=$ano
                     GROUP by mes
                 ) as hffc
           UNION 
-                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and Year(fm.Fecha_registro)=$ano
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa and Year(fm.Fecha_registro)=$ano
                     GROUP by mes
                   ) as hfm
           UNION 
-                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                SELECT  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
-                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Empresa=$empresa and Year(fe.Fecha_registro)=$ano
+                where es.codigo=fe.Extintor and es.sede=s.Codigo and s.empresa=$empresa and Year(fe.Fecha_registro)=$ano
                 GROUP by mes
           UNION 
-                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                SELECT  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
-                where  l.sede=s.Codigo and s.Empresa=$empresa and Year(l.Fecha_registro)=$ano
+                where  l.sede=s.Codigo and s.empresa=$empresa and Year(l.Fecha_registro)=$ano
                 GROUP by mes
         
         ) 
@@ -2094,31 +2119,31 @@ require_once "Conexion.php";
         ( 
                 SELECT  MONTH(fr.Fecha_registro) as mes, sum(fr.Total)  as Total_carbono 
                 from huella_carbono_fuentes_fijas_refrigerante fr, sede s 
-                where fr.Sede=s.Codigo and s.Codigo=$sede and Year(fr.Fecha_registro)=$ano
+                where fr.sede=s.Codigo and s.Codigo=$sede and Year(fr.Fecha_registro)=$ano
                 GROUP by mes
           UNION 
-                Select  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
+                SELECT  hffc.mes , sum(hffc.Co2+hffc.Ch4+hffc.N2o) as Total_carbono 
                 from ( 
                     SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2, sum(fc.Total_CH4) as Ch4, sum(fc.Total_NO2) as N2o 
                     from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                    where fc.Sede=s.Codigo and s.Codigo=$sede and Year(fc.Fecha_registro)=$ano
+                    where fc.sede=s.Codigo and s.Codigo=$sede and Year(fc.Fecha_registro)=$ano
                     GROUP by mes
                 ) as hffc
           UNION 
-                Select  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
+                SELECT  hfm.mes , sum(hfm.Co2+hfm.Ch4+hfm.N2o) as Total_carbono
                   from (
                     SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2, sum(fm.Total_CH4) as Ch4, sum(fm.Total_N2O) as N2o
                     from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                    where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and Year(fm.Fecha_registro)=$ano
+                    where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede and Year(fm.Fecha_registro)=$ano
                     GROUP by mes
                   ) as hfm
           UNION 
-                Select  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
+                SELECT  MONTH(fe.Fecha_registro) as mes, sum(fe.Total) as Total_carbono  
                 from huella_carbono_extintores fe, extintor_sede es, sede s
                 where es.codigo=fe.Extintor and es.sede=s.Codigo and s.Codigo=$sede and Year(fe.Fecha_registro)=$ano
                 GROUP by mes
           UNION 
-                Select  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
+                SELECT  MONTH(l.Fecha_registro) as mes, sum(l.total_emision) as Total_carbono  
                 from huella_carbono_lubricantes l , extintor_sede es, sede s 
                 where  l.sede=s.Codigo and s.Codigo=$sede and Year(l.Fecha_registro)=$ano
                 GROUP by mes
@@ -2136,7 +2161,7 @@ require_once "Conexion.php";
       public function Consultar_grafica_co2_alcance2_empresa_año($empresa,$ano){
         $sql="SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
               from huella_carbono_energia hce, sede s
-              where hce.Sede=s.Codigo and s.Empresa=$empresa and  YEAR(hce.Fecha_registro)=$ano
+              where hce.sede=s.Codigo and s.empresa=$empresa and  YEAR(hce.Fecha_registro)=$ano
               GROUP by mes";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -2149,7 +2174,7 @@ require_once "Conexion.php";
       public function Consultar_grafica_co2_alcance2_sede_año($sede,$ano){
         $sql="SELECT MONTH(hce.Fecha_registro) as mes, sum(hce.Total_CO2) as Total_carbono 
               from huella_carbono_energia hce, sede s
-              where hce.Sede=s.Codigo and s.Codigo=$sede and  YEAR(hce.Fecha_registro)=$ano
+              where hce.sede=s.Codigo and s.Codigo=$sede and  YEAR(hce.Fecha_registro)=$ano
               GROUP by mes";
         //echo $sql."<br> ";
         $resultado=$this->consultar($sql);
@@ -2165,12 +2190,12 @@ require_once "Conexion.php";
         $sql="SELECT CO2.mes, sum(CO2.Co2) FROM(  
               SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2 
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
+                where fc.sede=s.Codigo and s.empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
               UNION 
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
                 GROUP by mes
               )as CO2 GROUP BY CO2.mes";
         //echo $sql."<br> ";
@@ -2185,12 +2210,12 @@ require_once "Conexion.php";
         $sql="SELECT CO2.mes, sum(CO2.Co2) FROM(  
               SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_co2) as Co2 
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano
+                where fc.sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
               UNION 
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CO2) as Co2
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
                 GROUP by mes
               )as CO2 GROUP BY CO2.mes";
         //echo $sql."<br> ";
@@ -2205,12 +2230,12 @@ require_once "Conexion.php";
         $sql="SELECT N2O.mes, sum(N2O.N2o) from (
                 SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_NO2) as N2o
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
+                where fc.sede=s.Codigo and s.empresa=$empresa and YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
               UNION 
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_N2O) as N2o
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
                 GROUP by mes
               )as N2O GROUP By N2O.mes";
         //echo $sql."<br> ";
@@ -2225,12 +2250,12 @@ require_once "Conexion.php";
         $sql="SELECT N2O.mes, sum(N2O.N2o) from (
                 SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_NO2) as N2o
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano
+                where fc.sede=s.Codigo and s.Codigo=$sede and YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
               UNION 
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_N2O) as N2o
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
                 GROUP by mes
               )as N2O GROUP By N2O.mes";
         //echo $sql."<br> ";
@@ -2245,12 +2270,12 @@ require_once "Conexion.php";
         $sql="SELECT CH4.mes, sum(CH4.Ch4) from ( 
               SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_CH4) as Ch4
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Empresa=$empresa and  YEAR(fc.Fecha_registro)=$ano
+                where fc.sede=s.Codigo and s.empresa=$empresa and  YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
               UNION 
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CH4) as Ch4
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.empresa=$empresa and YEAR(fm.Fecha_registro)=$ano
                 GROUP by mes
               ) as CH4 GROUP BY CH4.mes";
         //echo $sql."<br> ";
@@ -2265,12 +2290,12 @@ require_once "Conexion.php";
         $sql="SELECT CH4.mes, sum(CH4.Ch4) from ( 
               SELECT  MONTH(fc.Fecha_registro) as mes, sum(fc.Total_CH4) as Ch4
                 from huella_carbono_fuentes_fijas_combustible fc, sede s 
-                where fc.Sede=s.Codigo and s.Codigo=$sede and  YEAR(fc.Fecha_registro)=$ano
+                where fc.sede=s.Codigo and s.Codigo=$sede and  YEAR(fc.Fecha_registro)=$ano
                 GROUP by mes
               UNION 
                 SELECT  MONTH(fm.Fecha_registro) as mes, sum(fm.Total_CH4) as Ch4
                 from huella_carbono_fuentes_moviles fm , fuentes_moviles m,  sede s
-                where fm.Placa=m.Codigo and  m.Sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
+                where fm.Placa=m.Codigo and  m.sede=s.Codigo and s.Codigo=$sede and YEAR(fm.Fecha_registro)=$ano
                 GROUP by mes
               ) as CH4 GROUP BY CH4.mes";
         //echo $sql."<br> ";
