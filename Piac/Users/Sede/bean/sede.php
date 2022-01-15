@@ -1,5 +1,7 @@
 <?php	
 	$s=$_GET['s'];
+	require_once '../../bean/renderMenu.php';
+	$render= new renderMenu();
 	
 			session_start();
 			function Mostrar()
@@ -47,13 +49,14 @@
 ?>
 
 <!DOCTYPE>
-<html lang="en">
+<html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<title>Datos de la sede</title>
 	<link rel="stylesheet" type="text/css" href="../../../css/arriba.css">
 	<link rel="stylesheet" type="text/css" href="../../../css/sede.css">
 	<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../js/head.js" ></script>
 	<style type="text/css">
 		#tabla_d tr td
 		{
@@ -90,8 +93,14 @@
 	</script>
 </head>
 <body>
-	<div class="arriba"><img src="../../../images/Logo.png"><p>Datos de la sede</p><a href="https://piac.ecoblue.co/index.php?c=1/"> Cerrar sesion</a></p></div>
-	<?php require '../Coditas/Menu.php'?>
+	<div class="arriba">
+		<img src="../../../images/Logo.png">
+		<p>Datos de la sede</p>
+		<p class="Cerrar1"> Cerrar sesion</p>
+	</div>
+	<div id="menu">
+		<?=$render->render($_SESSION['tipo'],$s,2);?>
+	</div>	
 	<div id="centro">
 		<div id="datos_personales" style="background: white;padding-top: 2vw;">
 			<center><h3>Datos registrados de la sede</h3></center>

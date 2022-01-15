@@ -182,7 +182,7 @@
 		<?php cargar_m();?>
 </head>
 <body>
-	<div class="arriba"><img src="../../../images/Logo.png"><p >Corriente de residuos solidos</p><a href="https://piac.ecoblue.co/" onClick="d"> Cerrar sesion</a></div>
+	<div class="arriba"><img src="../../../images/Logo.png"><p >Corriente de residuos solidos</p><a href="https://piac.desarrollomam.com/index.php?c=1/" onClick="d"> Cerrar sesion</a></div>
 	<div id="Grande">
 	<div id="div_1" style=" width: 40%;  margin-left: 5%; ">
 		<div id="div_grande" style="">

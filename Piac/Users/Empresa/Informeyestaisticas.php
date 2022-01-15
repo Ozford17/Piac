@@ -1,6 +1,8 @@
 <?php
+require_once'../bean/renderMenu.php';
 require_once'../../src/consultas.php';
 $consultas= new consultas();
+$render= new renderMenu();
 session_start();
 
 if ($_SESSION['sede']==0) {
@@ -300,8 +302,7 @@ $sede=$_SESSION['sede'];
 <body>
 <div class="arriba"><img src="../../images/Logo.png"><p>Informe y estadisticas</p><a href="https://piac.ecoblue.co/index.php?c=1/"> Cerrar sesion</a></p></div>
 <div id="menu">
-	<a href="home.php"><button><p>Sedes</p></button></a>
-	<a href="Informeyestaisticas.php"><button><p>Informe y Estadisticas</p></button></a>
+<?=$render->render($_SESSION['tipo'],null,1);?>
 </div>
 <div id="centro">
 	<div id="informe">

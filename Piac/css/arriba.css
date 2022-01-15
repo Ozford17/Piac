@@ -56,10 +56,11 @@ a:link{
 	margin-left: 35%;
 
 }
-.arriba #Cerrar{
+.arriba .Cerrar ,.arriba .Cerrar1{
 	position: absolute;
 	margin-top: 1vw;
 	margin-left: 85%;
+	cursor: pointer;
 }
 .arriba img{
 	position: absolute;

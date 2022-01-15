@@ -19,7 +19,13 @@
     var $db='epiz_25607424_piac';
     var $conexion;
     
-    
+    /*
+    // hostinger
+    var $host='localhost';
+    var $username='u331338248_Desarrollomam';
+    var $password='Ozford17';
+    var $db='u331338248_epiz_25607424_';
+    var $conexion;*/
     //Este es para infinity free
     /*
     var $host='sql213.epizy.com';

@@ -71,8 +71,6 @@
 
     </style>
     
-    <script>
-    </script>
 </head>
 <body>
     <div class="lado">

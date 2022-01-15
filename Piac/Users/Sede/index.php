@@ -1,4 +1,6 @@
 <?php
+require_once '../bean/renderMenu.php';
+$render= new renderMenu();
 session_start();
 $s=$_GET['s'];
 
@@ -24,10 +26,19 @@ if ($_SESSION['sede']==0) {
 			text-align: center;
 		}
 	</style>
+	<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/head.js" ></script>
 </head>
 <body>
-<div class="arriba"><img src="../../images/Logo.png"><p style="position:absolute;margin-top:1.0vw;margin-left: 30%;">Plataforma de indicadores ambientales</p><a href="https://piac.ecoblue.co/index.php?c=1/" > Cerrar sesion</a></p></div>
-<?php require './Coditas/Menu.php'?>
+<div class="arriba">
+	<img src="../../images/Logo.png">
+	<p style="position:absolute;margin-top:1.0vw;margin-left: 30%;">Plataforma de indicadores ambientales</p>
+	<p class="cerrar">Cerrar sesion</p>
+</div>
+
+<div id="menu">
+<?=$render->render($_SESSION['tipo'],$s,3);?>
+</div>
 <div id="centro">
 	<img src="../../images/colibri.jpg">
 </div>

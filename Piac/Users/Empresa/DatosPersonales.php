@@ -150,7 +150,7 @@ session_start();
 	<div class="arriba"><img src="../../images/Logo.png"><p>Datos de tu empresa</p><a href="https://piac.ecoblue.co/index.php?c=1/"> Cerrar sesion</a></p></div>
 
 	<div id="menu">
-	<?=$render->render($_SESSION['tipo'],null);?>
+	<?=$render->render($_SESSION['tipo'],null,1);?>
 	</div>
 	<div id="centro">
 			<div id="cuadro">

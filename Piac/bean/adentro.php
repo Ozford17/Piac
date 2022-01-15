@@ -2,7 +2,7 @@
 header("Content-type: text/html; charset=utf8");
 if ($_POST['nombre_usuario'] && $_POST['contraseña'])
 {
-	SESSION_START();
+	session_start();
 	require_once "../src/consultas.php";
 	$consulta = new consultas();  
 	$nombre=$_POST['nombre_usuario'];
@@ -39,15 +39,19 @@ if ($_POST['nombre_usuario'] && $_POST['contraseña'])
 		$mensaje["direc"]="Users/Admin/";
 	}else if ($_SESSION['tipo']==2) {
 		$mesaje["error"]="false";
-		$mensaje["direc"]="Users/Empresa/home.php";
+		$mensaje["direc"]="Users/Empresa/";
 	}else if ($_SESSION['tipo']==3) {
 		$mesaje["error"]="false";
-		$mensaje["direc"]="Users/Sede/home.php?s=".base64_encode($_SESSION["codigo"]);
+		$mensaje["direc"]="Users/Sede/index.php?s=".base64_encode($_SESSION["codigo"]);
+	}else {
+		$mensaje["error"]="true";
+		$mensaje["direc"]="index.php?Error";
+		$mensaje["mensaje"]="error de tipo";
 	}
 }	
 else{
 	$mensaje["error"]="true";
-	$mensaje["direc"]="../index.php?Error";
+	$mensaje["direc"]="index.php?Error";
 	$mensaje["mensaje"]="No se enviaron los parametros";
 }
 

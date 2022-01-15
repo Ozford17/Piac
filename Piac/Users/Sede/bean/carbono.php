@@ -1,6 +1,8 @@
 <?php
-	require_once"../../../src/consultas.php";
+	require_once '../../bean/renderMenu.php';
+	require_once "../../../src/consultas.php";
 	$consultas= new consultas();
+	$render= new renderMenu();
 	session_start();
 	$s=$_GET['s'];
 	$cod=base64_decode($s);
@@ -17,8 +19,7 @@
 	<link rel="shortcut icon" href="../../../images/Logo.png" />
 	<link rel="stylesheet" type="text/css" href="../../../css/sede.css">
 	<link rel="stylesheet" type="text/css" href="../../../css/arriba.css">
-	<script type="text/javascript">
-	</script>
+	<script type="text/javascript" src="../../../js/head.js" ></script>
 	<style>	
 		a:link{
 			text-decoration: none;
@@ -32,8 +33,14 @@
 	</style>
 </head>
 <body>
-	<div class="arriba"><img src="../../../images/Logo.png"><p style="margin-left: 40%;">Huella de carbono</p><a href="https://piac.ecoblue.co/" > Cerrar sesion</a></p></div>
-	<?php require '../Coditas/Menu.php'?>
+	<div class="arriba">
+		<img src="../../../images/Logo.png">
+		<p style="margin-left: 40%;">Huella de carbono</p>
+		<p class="Cerrar1"> Cerrar sesion </p>
+	</div>
+	<div id="menu">
+		<?=$render->render($_SESSION['tipo'],$s,2);?>
+	</div>
 	<div id="centro_huella">
 		<center><p style="color:black;">Reporte de consumos.</p></center><br>	
 		<p style="color: black; text-align:justify; font-size: 1.0vw; width: 90%; margin-left: 5%;">En esta sección debemos registrar mensualmente los consumos teniendo en cuenta los alcances uno y dos para el año <b><?=date("Y")?></b>. <br>	

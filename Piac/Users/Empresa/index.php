@@ -1,13 +1,13 @@
 <?php
-require_once'../../src/consultas.php';
-require_once'../bean/renderMenu.php';
+require_once '../../src/consultas.php';
+require_once '../bean/renderMenu.php';
 $consultas= new consultas();
 $render= new renderMenu();
-session_start();
+session_start();/*
 if ($_SESSION['sede']==0) {
 	header('Location:../../index.php');
 	exit();
-}
+}*/
 
 
 ?>
@@ -18,14 +18,19 @@ if ($_SESSION['sede']==0) {
 	<link rel="shortcut icon" href="../../images/Logo.png" />
 	<link rel="stylesheet" type="text/css" href="../../css/empresa.css">
 	<link rel="stylesheet" type="text/css" href="../../css/arriba.css">
-	<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>|
+	<script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/head.js" ></script>
 	
 </head>
 <body>
-<div class="arriba"><img src="../../images/Logo.png"><p>Listado de empresas</p><a href="https://piac.ecoblue.co/index.php?c=1/"> Cerrar sesion</a></p></div>
+<div class="arriba">
+	<img src="../../images/Logo.png">
+	<p>Listado de empresas</p>
+	<p class="cerrar"> Cerrar sesion</p>
+</div>
 
 	<div id="menu">
-	<?=$render->render($_SESSION['tipo'],null);?>
+	<?=$render->render($_SESSION['tipo'],null,1);?>
 	</div>
 	<div id="centro">
 		<table border="0" >
@@ -41,7 +46,7 @@ if ($_SESSION['sede']==0) {
 					echo '<tr>';
 					echo '<td>'.$fila[1].'</td>';
 					echo '<td>'.$fila[2].'</td>';
-					echo '<td align="center"><a href="../Sede/home.php?s='.base64_encode($fila[0]).'"><button>Ir</button></a></td>';
+					echo '<td align="center"><a href="../Sede/index.php?s='.base64_encode($fila[0]).'"><button>Ir</button></a></td>';
 					echo '</tr>';
 				}
 

@@ -18,8 +18,6 @@
 					dataType:"HTML",
 					data:$('#formulario').serialize(),
 					success:function(data){
-						console.log(data);
-						console.log(atob(data));
 						let men = atob(data);
 						var para= jQuery.parseJSON(men);
 						if (para.error=="true") {
@@ -27,7 +25,7 @@
 						}
 						else
 						{
-							window.location=para.direc;
+							window.location=para.direc;						
 						}
 					}
 				})

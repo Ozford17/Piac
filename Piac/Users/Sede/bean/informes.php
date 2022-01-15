@@ -2,8 +2,10 @@
 <?php 
 	require_once '../../../src/consultas.php';
 	$consultas= new consultas();
+	require_once '../../bean/renderMenu.php';
+	$render= new renderMenu();
 	$s=$_GET['s'];
-
+	session_start();
 
 	function MostrarDatos_auto($datos, $d){
 		$consultas= new consultas();
@@ -170,6 +172,7 @@
 	<link rel="stylesheet" type="text/css" href="../../../css/arriba.css">
 	<script src="https://www.chartjs.org/dist/2.8.0/Chart.min.js"></script>
 	<script type="text/javascript" src="../../../src/js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript" src="../../../js/head.js" ></script>
 	
 	<script type="text/javascript">
 		
@@ -619,9 +622,14 @@
 </head>
 <body>
 
-	<div class="arriba"><img src="../../../images/Logo.png"><p style="margin-left: 40%;">informes de carbono</p><a href="https://piac.ecoblue.co/" > Cerrar sesion</a></p></div>
-	<?php require '../Coditas/Menu.php'?>
-
+	<div class="arriba">
+		<img src="../../../images/Logo.png">
+		<p style="margin-left: 40%;">informes de carbono</p>
+		<p class="Cerrar1"> Cerrar sesion</p>
+	</div>
+	<div id="menu">
+		<?=$render->render($_SESSION['tipo'],$s,2);?>
+	</div>
 	<div id="centro_huella" style="">
 		<div style="width: 95%;">	
 			<p style="color:black;">Seleccione el año en el que quiere que se le muestre los informes <select name="ano_informe" id="ano_informe"><option value="Selecc">Año</option><?php 
