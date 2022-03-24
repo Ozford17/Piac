@@ -274,8 +274,10 @@ if (isset($_POST['nombres']) && !empty($_POST['nombres'])) {
 			$consultas->insertar_huella_energia($codigo,$sede,$factor_emision,$cantidad_energia,$cantidad,$fecha,$fecha);
 		}
 
-		echo '<script> alert("Se cargaron todos los datos de huella de carbono");</script>';
-		//window.location="../carbono.php?s='.base64_encode($sede).'";
+		echo '<script> 
+			alert("Se cargaron todos los datos de huella de carbono");
+			window.location="../carbono.php?s='.base64_encode($sede).'";
+			</script>';
 	}
 
 	
